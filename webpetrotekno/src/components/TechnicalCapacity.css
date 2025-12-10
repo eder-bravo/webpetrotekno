@@ -1,0 +1,144 @@
+.technical-capacity {
+    background-color: var(--white);
+    color: #333;
+}
+
+.tech-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.tech-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.tech-title {
+    font-size: 2.5rem;
+    color: var(--secondary);
+    /* Dark Navy */
+    margin-bottom: 20px;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    /* User requested uppercase */
+}
+
+.tech-title .text-blue {
+    color: #000080;
+    /* Deep Blue from reference */
+}
+
+.tech-description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: 40px;
+}
+
+.tech-subtitle {
+    font-size: 2rem;
+    color: #000080;
+    margin-bottom: 20px;
+}
+
+.tech-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-tech {
+    padding: 10px 30px;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-blue {
+    background-color: #000080;
+    color: white;
+}
+
+.btn-outline-blue {
+    background-color: transparent;
+    color: #000080;
+    border: 2px solid #000080;
+}
+
+/* Right Column Stats */
+.tech-stats-list {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Align to right like reference */
+}
+
+.tech-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: right;
+    margin: 20px 0;
+}
+
+.tech-stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.tech-stat-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #000080;
+    letter-spacing: 1px;
+    margin-bottom: -5px;
+}
+
+.tech-stat-number {
+    font-size: 5rem;
+    font-weight: 800;
+    color: #000080;
+    line-height: 1;
+    font-family: var(--font-heading);
+}
+
+.tech-icon-wrapper {
+    opacity: 0.2;
+    /* Subtle icon */
+}
+
+.text-blue-light {
+    color: #000080;
+}
+
+/* Divider lines if we want them */
+.tech-stat-divider {
+    width: 60%;
+    height: 1px;
+    background-color: #ddd;
+    margin-left: auto;
+}
+
+@media (max-width: 768px) {
+    .tech-layout {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tech-stats-list {
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .tech-stat-row {
+        flex-direction: row-reverse;
+        text-align: left;
+        justify-content: flex-end;
+    }
+}

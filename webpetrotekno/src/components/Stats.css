@@ -1,0 +1,68 @@
+.stats {
+    background-color: #f0f2f5;
+    /* Align with Services for alternating flow */
+    color: var(--secondary);
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.circle-chart {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.progress-ring__circle-bg {
+    stroke: #e0e0e0;
+    stroke-width: 8;
+    fill: transparent;
+}
+
+.progress-ring__circle {
+    stroke-width: 8;
+    stroke-linecap: round;
+    fill: transparent;
+}
+
+.stat-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.stat-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.stat-info p {
+    font-size: 0.9rem;
+    color: #666;
+    max-width: 200px;
+}
