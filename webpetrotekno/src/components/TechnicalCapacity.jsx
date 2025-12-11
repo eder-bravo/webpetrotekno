@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tractor, Drill, Car } from 'lucide-react'; // More accurate icons
+import { Truck, Wrench, Car } from '@phosphor-icons/react';
 import './TechnicalCapacity.css';
 
 const TechnicalCapacity = () => {
@@ -28,7 +28,7 @@ const TechnicalCapacity = () => {
                     <div className="tech-stats-list">
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                <Tractor size={60} strokeWidth={1.5} className="text-blue-light" />
+                                <Truck size={60} weight="duotone" className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">MAQUINARIA MAYOR</span>
@@ -40,7 +40,7 @@ const TechnicalCapacity = () => {
 
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                <Drill size={60} strokeWidth={1.5} className="text-blue-light" />
+                                <Wrench size={60} weight="duotone" className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">MAQUINARIA MENOR</span>
@@ -52,7 +52,7 @@ const TechnicalCapacity = () => {
 
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                <Car size={60} strokeWidth={1.5} className="text-blue-light" />
+                                <Car size={60} weight="duotone" className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">VEHÍCULOS</span>

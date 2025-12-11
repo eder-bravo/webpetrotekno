@@ -25,7 +25,7 @@ const Navbar = () => {
                 <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
                     <a href="#hero" onClick={() => setMenuOpen(false)}>Inicio</a>
                     <a href="#services" onClick={() => setMenuOpen(false)}>Servicios</a>
-                    <a href="#portfolio" onClick={() => setMenuOpen(false)}>Proyectos</a>
+                    <a href="#obras" onClick={() => setMenuOpen(false)}>Obras</a>
                     <a href="#contact" onClick={() => setMenuOpen(false)} className="btn btn-nav">Contacto</a>
                 </div>
 

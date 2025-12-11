@@ -1,0 +1,117 @@
+/* MexicoMap.css */
+
+.mexico-map-section {
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Force the section line to be blue in this section, matching Stats section */
+.mexico-map-section .section-line {
+    width: 60px;
+    height: 4px;
+    background: #004488;
+    margin: 0 auto 20px;
+}
+
+.map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.mexico-svg-map {
+    width: 100%;
+    height: auto;
+    stroke: #004488;
+    /* Blue outline as requested */
+    stroke-width: 1px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+    /* Allow for subtle scale effects if needed, though mostly using color */
+}
+
+/* Base style for all locations */
+.svg-map__location {
+    fill: #e0e0e0;
+    /* Animate fill, filter, and stroke changes smoothly */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    outline: none;
+}
+
+/* Hover style for non-highlighted locations (darker gray) */
+.svg-map__location:hover {
+    fill: #d0d0d0;
+    stroke-width: 1.5px;
+}
+
+/* Specific style for highlighted locations (overrides base style) */
+path.svg-map__location--highlighted {
+    fill: var(--primary, #FFFF00) !important;
+    cursor: pointer;
+    /* Ensure the element stays above others during hover transform if we used z-index (svg doesn't support z-index same way, but good to note) */
+}
+
+/* Hover style for highlighted locations (darker yellow) */
+path.svg-map__location--highlighted:hover {
+    fill: #e6e600 !important;
+    /* Clearly darker yellow */
+    filter: brightness(0.85);
+    /* Slightly clearer dimming */
+    stroke: #003366;
+    /* Darker blue border */
+    stroke-width: 2px;
+    /* Slight emphasis on border */
+}
+
+.map-tooltip {
+    position: fixed;
+    /* Fixed relative to viewport to follow mouse easily without overflow issues */
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    z-index: 1000;
+    text-align: left;
+    min-width: 200px;
+    border-left: 4px solid #004488;
+    transform: translate(-50%, -100%);
+    /* Center above cursor */
+    /* Add a small transition for the tooltip movement/appearance if desired, but usually fixed follow is better instant. 
+       We can animate the opacity instead */
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -90%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
+}
+
+.map-tooltip h4 {
+    margin: 0 0 5px;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.map-tooltip p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.map-tooltip .highlight-text {
+    color: #004488;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
