@@ -66,3 +66,14 @@
     color: #666;
     max-width: 200px;
 }
+
+.text-blue {
+    color: #004488;
+}
+
+.stats .section-line {
+    width: 60px;
+    height: 4px;
+    background: #004488;
+    margin: 0 auto 20px;
+}

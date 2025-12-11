@@ -3,6 +3,10 @@
     color: var(--white);
 }
 
+.portfolio .section-title {
+    color: var(--white);
+}
+
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));

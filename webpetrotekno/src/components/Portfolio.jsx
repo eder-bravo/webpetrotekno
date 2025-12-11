@@ -1,7 +1,7 @@
 import React from 'react';
-import p1 from '../assets/project1.png';
-import p2 from '../assets/project2.png';
-import p3 from '../assets/hero.png'; // Reusing hero for variety
+import p1 from '../assets/img4.webp';
+import p2 from '../assets/img6.webp';
+import p3 from '../assets/img5.webp';
 import './Portfolio.css';
 
 const projects = [

@@ -41,7 +41,7 @@ const StatCircle = ({ percentage, label, sublabel, color = "var(--primary)" }) =
 const Stats = () => {
     // Data inspired by generic corporate stats or the user's reference
     const statsData = [
-        { percentage: 98, label: "Clientes Satisfechos", sublabel: "Proyectos entregados a tiempo", color: "#FFD700" },
+        { percentage: 98, label: "Clientes Satisfechos", sublabel: "Proyectos entregados a tiempo", color: "#004488" },
         { percentage: 45, label: "Fuerza Laboral", sublabel: "Mujeres en el sector construcción", color: "#007BFF" },
         { percentage: 85, label: "Sustentabilidad", sublabel: "Materiales reciclados en obras", color: "#28a745" }
     ];
@@ -50,7 +50,7 @@ const Stats = () => {
         <section id="stats" className="stats section-padding">
             <div className="container">
                 <div className="section-header">
-                    <h2 className="section-title">Nuestro <span className="text-primary">Impacto</span></h2>
+                    <h2 className="section-title">Nuestro <span className="text-blue">Impacto</span></h2>
                     <div className="section-line"></div>
                     <p className="section-subtitle">Datos que respaldan nuestro compromiso con la excelencia y la sociedad.</p>
                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import logo from '../assets/logo_blanco.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -8,14 +9,14 @@ const Footer = () => {
             <div className="container">
                 <div className="footer-content">
                     <div className="footer-logo">
-                        <h2>CONSTRUCT<span className="text-primary">X</span></h2>
+                        <img src={logo} alt="Petrotekno Logo" className="footer-logo-img" />
                         <p>Ingeniería que transforma el paisaje.</p>
                     </div>
 
                     <div className="footer-contact">
                         <h3>Contacto</h3>
                         <p>Av. Reforma 222, CDMX</p>
-                        <p>contacto@constructx.mx</p>
+                        <p>contacto@petrotekno.mx</p>
                         <p>+52 (55) 1234 5678</p>
                     </div>
 
@@ -30,7 +31,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="footer-bottom">
-                    <p>&copy; {new Date().getFullYear()} ConstructX Ingeniería y Construcción. Todos los derechos reservados.</p>
+                    <p>&copy; {new Date().getFullYear()} Petrotekno Ingeniería y Construcción. Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>

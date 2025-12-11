@@ -84,20 +84,8 @@
     align-items: center;
     gap: 20px;
     text-align: right;
-    margin: 20px 0;
-}
-
-.tech-stat-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.tech-stat-label {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #000080;
-    letter-spacing: 1px;
-    margin-bottom: -5px;
+    margin: 40px 0;
+    /* Increased vertical spacing */
 }
 
 .tech-stat-number {
@@ -108,9 +96,24 @@
     font-family: var(--font-heading);
 }
 
+.tech-stat-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    /* Fixed width to align icons vertically */
+}
+
+/* ... existing styles ... */
+
 .tech-icon-wrapper {
-    opacity: 0.2;
-    /* Subtle icon */
+    opacity: 0.25;
+    /* Subtle watermark style */
+    margin-top: 6px;
+    /* Optical alignment with the big number */
+    width: 60px;
+    /* Ensure wrapper is consistent */
+    display: flex;
+    justify-content: center;
 }
 
 .text-blue-light {

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import heroBg from '../assets/hero.png'; // Fallback
 import './Hero.css';
 
+import videoBg from '../assets/video_petro.mp4';
+
 const Hero = () => {
     return (
         <section id="hero" className="hero">
@@ -16,8 +18,8 @@ const Hero = () => {
                     poster={heroBg}
                     className="hero-video"
                 >
-                    {/* Switching to a reliable CDN source for construction/cityscape */}
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-city-traffic-at-night-11-large.mp4" type="video/mp4" />
+                    {/* Switching to local asset */}
+                    <source src={videoBg} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
                 <div className="hero-overlay"></div>

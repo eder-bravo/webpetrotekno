@@ -1,5 +1,5 @@
 import React from 'react';
-import { Truck, HardHat, Cog } from 'lucide-react'; // Using approximate icons
+import { Tractor, Drill, Car } from 'lucide-react'; // More accurate icons
 import './TechnicalCapacity.css';
 
 const TechnicalCapacity = () => {
@@ -28,8 +28,7 @@ const TechnicalCapacity = () => {
                     <div className="tech-stats-list">
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                {/* Placeholder SVG for heavy machinery */}
-                                <Cog size={48} className="text-blue-light" />
+                                <Tractor size={60} strokeWidth={1.5} className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">MAQUINARIA MAYOR</span>
@@ -41,7 +40,7 @@ const TechnicalCapacity = () => {
 
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                <Truck size={48} className="text-blue-light" />
+                                <Drill size={60} strokeWidth={1.5} className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">MAQUINARIA MENOR</span>
@@ -53,7 +52,7 @@ const TechnicalCapacity = () => {
 
                         <div className="tech-stat-row">
                             <div className="tech-icon-wrapper">
-                                <HardHat size={48} className="text-blue-light" />
+                                <Car size={60} strokeWidth={1.5} className="text-blue-light" />
                             </div>
                             <div className="tech-stat-info">
                                 <span className="tech-stat-label">VEHÍCULOS</span>

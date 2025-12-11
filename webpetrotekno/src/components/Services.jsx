@@ -1,25 +1,25 @@
 import React from 'react';
-import { Truck, Hammer, Building2, Ruler } from 'lucide-react';
+import { Truck, Hammer, Buildings, Ruler } from '@phosphor-icons/react';
 import './Services.css';
 
 const servicesData = [
     {
-        icon: <Building2 size={40} />,
+        icon: <Buildings size={40} weight="duotone" />,
         title: "Edificación Vertical",
         description: "Construcción de complejos corporativos y residenciales con los más altos estándares de seguridad."
     },
     {
-        icon: <Truck size={40} />,
+        icon: <Truck size={40} weight="duotone" />,
         title: "Infraestructura Vial",
         description: "Carreteras, puentes y pavimentación desarrollados para durar y conectar comunidades."
     },
     {
-        icon: <Hammer size={40} />,
+        icon: <Hammer size={40} weight="duotone" />,
         title: "Obra Industrial",
         description: "Naves industriales y plantas de manufactura optimizadas para la productividad."
     },
     {
-        icon: <Ruler size={40} />,
+        icon: <Ruler size={40} weight="duotone" />,
         title: "Proyectos Llave en Mano",
         description: "Gestión integral desde el diseño hasta la entrega final operativa."
     }

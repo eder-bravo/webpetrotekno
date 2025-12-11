@@ -27,10 +27,19 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+}
+
+.logo-img {
+    height: 55px;
+    width: auto;
+    /* border-radius: 12px; Removed for sharp edges */
+    /* border: 2px solid rgba(255, 255, 255, 0.1); Removed for cleaner look */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); Removed per user request */
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
 }
 
 .text-primary {
@@ -59,9 +68,20 @@
     color: var(--primary);
 }
 
-.btn-nav {
+.nav-links .btn-nav {
     padding: 8px 24px;
     font-size: 0.85rem;
+    background: transparent;
+    border: 2px solid var(--white);
+    color: var(--white) !important;
+    text-shadow: none;
+    font-weight: 700;
+}
+
+.nav-links .btn-nav:hover {
+    background: var(--white);
+    color: var(--secondary) !important;
+    transform: translateY(-2px);
 }
 
 .menu-toggle {

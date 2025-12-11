@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, HardHat } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logo from '../assets/logo_blanco.png';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -18,8 +19,7 @@ const Navbar = () => {
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="container navbar-content">
                 <div className="logo">
-                    <HardHat size={32} color="var(--primary)" />
-                    <span>CONSTRUCT<span className="text-primary">X</span></span>
+                    <img src={logo} alt="Petrotekno Logo" className="logo-img" />
                 </div>
 
                 <div className={`nav-links ${menuOpen ? 'active' : ''}`}>

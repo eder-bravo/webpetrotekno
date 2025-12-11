@@ -12,9 +12,13 @@
     margin-bottom: 60px;
 }
 
-.footer-logo h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+.footer-logo-img {
+    height: 80px;
+    width: auto;
+    margin-bottom: 25px;
+    /* border-radius: 12px; Removed for sharp aesthetic */
+    /* border: 2px solid rgba(255, 255, 255, 0.1); */
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); Removed per user request */
 }
 
 .footer-logo p {
