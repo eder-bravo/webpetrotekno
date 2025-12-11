@@ -28,7 +28,15 @@ const Portfolio = () => {
                 <div className="portfolio-grid">
                     {projects.map((project, index) => (
                         <div key={index} className="portfolio-item">
-                            <img src={project.img} alt={project.title} />
+                            <img
+                                src={project.img}
+                                alt={project.title}
+                                loading="lazy"
+                                decoding="async"
+                                width="800"
+                                height="600"
+                                style={{ objectFit: 'cover' }}
+                            />
                             <div className="portfolio-overlay">
                                 <span className="portfolio-cat">{project.cat}</span>
                                 <h3 className="portfolio-title">{project.title}</h3>
