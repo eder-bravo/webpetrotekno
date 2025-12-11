@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import heroBg from '../assets/hero.png'; // Fallback
+// heroBg import removed as it is no longer needed for poster
 import './Hero.css';
 
 import videoBg from '../assets/video_petro.mp4';
 
 const Hero = () => {
+    const [videoLoaded, setVideoLoaded] = useState(false);
+
     return (
         <section id="hero" className="hero">
             {/* Video Background */}
-            <div className="hero-video-container">
+            <div className="hero-video-container" style={{ backgroundColor: 'black' }}>
                 <video
                     autoPlay
                     loop
                     muted
                     playsInline
-                    poster={heroBg}
-                    className="hero-video"
+                    className={`hero-video ${videoLoaded ? 'video-loaded' : ''}`}
+                    onLoadedData={() => setVideoLoaded(true)}
+                    style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out' }}
                 >
                     {/* Switching to local asset */}
                     <source src={videoBg} type="video/mp4" />
