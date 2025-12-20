@@ -48,17 +48,11 @@ class ObraController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'imagen' => 'nullable|image|max:5120', // 5MB max
-            'meta_image' => 'nullable|image|max:2048', // 2MB max
         ]);
 
         // Subir imagen principal
         if ($request->hasFile('imagen')) {
             $validated['imagen'] = $request->file('imagen')->store('obras', 'public');
-        }
-
-        // Subir imagen SEO
-        if ($request->hasFile('meta_image')) {
-            $validated['meta_image'] = $request->file('meta_image')->store('obras/seo', 'public');
         }
 
         // Asignar orden
@@ -95,7 +89,6 @@ class ObraController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'imagen' => 'nullable|image|max:5120',
-            'meta_image' => 'nullable|image|max:2048',
         ]);
 
         // Subir nueva imagen principal
@@ -105,14 +98,6 @@ class ObraController extends Controller
                 Storage::disk('public')->delete($obra->imagen);
             }
             $validated['imagen'] = $request->file('imagen')->store('obras', 'public');
-        }
-
-        // Subir nueva imagen SEO
-        if ($request->hasFile('meta_image')) {
-            if ($obra->meta_image) {
-                Storage::disk('public')->delete($obra->meta_image);
-            }
-            $validated['meta_image'] = $request->file('meta_image')->store('obras/seo', 'public');
         }
 
         $obra->update($validated);
@@ -129,9 +114,6 @@ class ObraController extends Controller
         // Eliminar imágenes
         if ($obra->imagen) {
             Storage::disk('public')->delete($obra->imagen);
-        }
-        if ($obra->meta_image) {
-            Storage::disk('public')->delete($obra->meta_image);
         }
 
         $obra->delete();

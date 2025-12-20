@@ -55,11 +55,6 @@ class ServicioController extends Controller
             $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
         }
 
-        // Subir imagen SEO
-        if ($request->hasFile('meta_image')) {
-            $validated['meta_image'] = $request->file('meta_image')->store('servicios/seo', 'public');
-        }
-
         // Asignar orden
         $validated['orden'] = Servicio::max('orden') + 1;
 
@@ -105,14 +100,6 @@ class ServicioController extends Controller
             $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
         }
 
-        // Subir nueva imagen SEO
-        if ($request->hasFile('meta_image')) {
-            if ($servicio->meta_image) {
-                Storage::disk('public')->delete($servicio->meta_image);
-            }
-            $validated['meta_image'] = $request->file('meta_image')->store('servicios/seo', 'public');
-        }
-
         $servicio->update($validated);
 
         return redirect()->route('panel.servicios.index')
@@ -126,9 +113,6 @@ class ServicioController extends Controller
     {
         if ($servicio->imagen) {
             Storage::disk('public')->delete($servicio->imagen);
-        }
-        if ($servicio->meta_image) {
-            Storage::disk('public')->delete($servicio->meta_image);
         }
 
         $servicio->delete();

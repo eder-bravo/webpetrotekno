@@ -38,7 +38,6 @@ class PublicController extends Controller
                 'contenido' => $obra->contenido,
                 'meta_title' => $obra->meta_title,
                 'meta_description' => $obra->meta_description,
-                'meta_image' => $obra->meta_image ? asset('storage/' . $obra->meta_image) : null,
             ];
         });
 
@@ -65,7 +64,6 @@ class PublicController extends Controller
             'contenido' => $obra->contenido,
             'meta_title' => $obra->meta_title,
             'meta_description' => $obra->meta_description,
-            'meta_image' => $obra->meta_image ? asset('storage/' . $obra->meta_image) : null,
         ]);
     }
 
@@ -85,7 +83,6 @@ class PublicController extends Controller
                 'imagen' => $servicio->imagen ? asset('storage/' . $servicio->imagen) : null,
                 'meta_title' => $servicio->meta_title,
                 'meta_description' => $servicio->meta_description,
-                'meta_image' => $servicio->meta_image ? asset('storage/' . $servicio->meta_image) : null,
             ];
         });
 
@@ -113,7 +110,6 @@ class PublicController extends Controller
             'imagen' => $servicio->imagen ? asset('storage/' . $servicio->imagen) : null,
             'meta_title' => $servicio->meta_title,
             'meta_description' => $servicio->meta_description,
-            'meta_image' => $servicio->meta_image ? asset('storage/' . $servicio->meta_image) : null,
         ]);
     }
 

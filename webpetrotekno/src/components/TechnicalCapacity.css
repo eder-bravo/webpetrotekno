@@ -51,11 +51,15 @@
 }
 
 .btn-tech {
-    padding: 10px 30px;
-    font-weight: 700;
-    border-radius: 4px;
+    padding: 12px 32px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
     border: none;
     cursor: pointer;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    transition: var(--transition-fast);
 }
 
 .btn-blue {

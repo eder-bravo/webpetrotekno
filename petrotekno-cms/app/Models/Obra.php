@@ -20,7 +20,6 @@ class Obra extends Model
         'orden',
         'meta_title',
         'meta_description',
-        'meta_image',
     ];
 
     protected $casts = [

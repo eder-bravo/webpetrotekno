@@ -45,6 +45,7 @@ class RedSocial extends Model
             'tiktok' => 'TikTok',
             'whatsapp' => 'WhatsApp',
             'telegram' => 'Telegram',
+            'otro' => 'Otro',
         ];
     }
 }

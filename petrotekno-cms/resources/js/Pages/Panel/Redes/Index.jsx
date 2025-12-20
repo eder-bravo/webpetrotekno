@@ -1,7 +1,7 @@
 import { Head, useForm, router } from '@inertiajs/react';
 import PanelLayout from '@/Layouts/PanelLayout';
-import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical, X } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical, X, Link2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import {
     DndContext,
     closestCenter,
@@ -19,18 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const iconEmojis = {
-    facebook: '📘',
-    instagram: '📷',
-    twitter: '🐦',
-    linkedin: '💼',
-    youtube: '🎬',
-    tiktok: '🎵',
-    whatsapp: '💬',
-    telegram: '✈️',
-};
-
-function SortableItem({ red, onEdit, onDelete }) {
+function SortableItem({ red, onEdit, onDelete, iconos }) {
     const {
         attributes,
         listeners,
@@ -43,6 +32,9 @@ function SortableItem({ red, onEdit, onDelete }) {
         transform: CSS.Transform.toString(transform),
         transition,
     };
+
+    // Obtener el nombre del icono para mostrar
+    const iconLabel = iconos[red.icono] || red.icono || 'Enlace';
 
     return (
         <div
@@ -58,8 +50,8 @@ function SortableItem({ red, onEdit, onDelete }) {
                 <GripVertical className="w-5 h-5" />
             </button>
 
-            <div className="w-10 h-10 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-xl">
-                {iconEmojis[red.icono] || '🔗'}
+            <div className="w-10 h-10 flex-shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <Link2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -106,6 +98,11 @@ export default function RedesIndex({ redes: initialRedes, iconos }) {
     const [showModal, setShowModal] = useState(false);
     const [editingRed, setEditingRed] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ open: false, red: null });
+
+    // Sincronizar estado local cuando cambian las props (después de crear/editar)
+    useEffect(() => {
+        setRedes(initialRedes);
+    }, [initialRedes]);
 
     const { data, setData, post, put, processing, errors, reset } = useForm({
         nombre: '',
@@ -233,6 +230,7 @@ export default function RedesIndex({ redes: initialRedes, iconos }) {
                                 <SortableItem
                                     key={red.id}
                                     red={red}
+                                    iconos={iconos}
                                     onEdit={openEditModal}
                                     onDelete={handleDelete}
                                 />
@@ -290,17 +288,17 @@ export default function RedesIndex({ redes: initialRedes, iconos }) {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Icono
+                                    Tipo de red social
                                 </label>
                                 <select
                                     value={data.icono}
                                     onChange={(e) => setData('icono', e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                 >
-                                    <option value="">Seleccionar icono</option>
+                                    <option value="">Seleccionar tipo</option>
                                     {Object.entries(iconos).map(([value, label]) => (
                                         <option key={value} value={value}>
-                                            {iconEmojis[value]} {label}
+                                            {label}
                                         </option>
                                     ))}
                                 </select>

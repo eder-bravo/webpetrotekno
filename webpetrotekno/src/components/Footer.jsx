@@ -1,37 +1,87 @@
 import React from 'react';
-import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, Globe, Link2, MessageCircle, Send } from 'lucide-react';
+import { useConfig, useRedes } from '../hooks/useApi';
+import LogoLink from './LogoLink';
 import logo from '../assets/logo_blanco.png';
 import './Footer.css';
 
+// Mapeo de nombres de iconos a componentes
+const socialIconMap = {
+    Facebook: Facebook,
+    Twitter: Twitter,
+    Linkedin: Linkedin,
+    Instagram: Instagram,
+    Youtube: Youtube,
+    Globe: Globe,
+    facebook: Facebook,
+    twitter: Twitter,
+    linkedin: Linkedin,
+    instagram: Instagram,
+    youtube: Youtube,
+    tiktok: Globe,
+    whatsapp: MessageCircle,
+    telegram: Send,
+    otro: Link2,
+};
+
+// Datos de fallback
+const fallbackConfig = {
+    contacto_direccion: 'Av. Reforma 222, CDMX',
+    contacto_email: 'contacto@petrotekno.mx',
+    contacto_telefono: '+52 (55) 1234 5678',
+    slogan: 'Ingeniería que transforma el paisaje.',
+};
+
+const fallbackRedes = [
+    { id: 1, nombre: 'Facebook', icono: 'Facebook', url: '#' },
+    { id: 2, nombre: 'LinkedIn', icono: 'Linkedin', url: '#' },
+    { id: 3, nombre: 'Twitter', icono: 'Twitter', url: '#' },
+    { id: 4, nombre: 'Instagram', icono: 'Instagram', url: '#' },
+];
+
 const Footer = () => {
+    const { data: config } = useConfig();
+    const { data: redes } = useRedes();
+
+    const displayConfig = config || fallbackConfig;
+    const displayRedes = redes && redes.length > 0 ? redes : fallbackRedes;
+
+    const getSocialIcon = (iconName) => {
+        const IconComponent = socialIconMap[iconName] || Globe;
+        return <IconComponent size={24} />;
+    };
+
     return (
         <footer id="contact" className="footer">
             <div className="container">
                 <div className="footer-content">
                     <div className="footer-logo">
-                        <img src={logo} alt="Petrotekno Logo" className="footer-logo-img" />
-                        <p>Ingeniería que transforma el paisaje.</p>
+                        <LogoLink>
+                            <img src={displayConfig.logo || logo} alt="Petrotekno Logo" className="footer-logo-img" />
+                        </LogoLink>
+                        <p>{displayConfig.slogan}</p>
                     </div>
 
                     <div className="footer-contact">
                         <h3>Contacto</h3>
-                        <p>Av. Reforma 222, CDMX</p>
-                        <p>contacto@petrotekno.mx</p>
-                        <p>+52 (55) 1234 5678</p>
+                        <p>{displayConfig.contacto_direccion}</p>
+                        <p><a href={`mailto:${displayConfig.contacto_email}`}>{displayConfig.contacto_email}</a></p>
+                        <p><a href={`tel:${displayConfig.contacto_telefono?.replace(/\s/g, '')}`}>{displayConfig.contacto_telefono}</a></p>
                     </div>
 
                     <div className="footer-social">
                         <h3>Síguenos</h3>
                         <div className="social-icons">
-                            <a href="#"><Facebook size={24} /></a>
-                            <a href="#"><Linkedin size={24} /></a>
-                            <a href="#"><Twitter size={24} /></a>
-                            <a href="#"><Instagram size={24} /></a>
+                            {displayRedes.map((red) => (
+                                <a key={red.id} href={red.url} target="_blank" rel="noopener noreferrer" title={red.nombre}>
+                                    {getSocialIcon(red.icono)}
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
                 <div className="footer-bottom">
-                    <p>&copy; {new Date().getFullYear()} Petrotekno Ingeniería y Construcción. Todos los derechos reservados.</p>
+                    <p>&copy; {new Date().getFullYear()} {displayConfig.site_title || 'Petrotekno Ingeniería y Construcción'}. Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>
