@@ -28,6 +28,7 @@ Route::prefix('panel')->name('panel.')->middleware(CodigoAcceso::class)->group(f
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     
     // Obras
+    Route::get('obras/reorder', [ObraController::class, 'reorderView'])->name('obras.reorder.view');
     Route::resource('obras', ObraController::class)->except(['show']);
     Route::post('obras/reorder', [ObraController::class, 'reorder'])->name('obras.reorder');
     

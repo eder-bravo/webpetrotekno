@@ -1,0 +1,268 @@
+/* Obras Page Styles */
+.obras-page {
+    background-color: #0a0a0a;
+}
+
+.obras-header {
+    margin-bottom: 2.5rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #f0c400;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #ffd700;
+}
+
+.obras-description {
+    color: #999;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Filtros */
+.obras-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-dropdown {
+    position: relative;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.filter-button.active {
+    background-color: rgba(240, 196, 0, 0.15);
+    border-color: #f0c400;
+    color: #f0c400;
+}
+
+.filter-button .chevron {
+    transition: transform 0.2s ease;
+}
+
+.filter-button .chevron.open {
+    transform: rotate(180deg);
+}
+
+.filter-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 250px;
+    max-height: 350px;
+    overflow-y: auto;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    padding: 0.5rem;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.filter-option:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.filter-option.selected {
+    background-color: rgba(240, 196, 0, 0.15);
+    color: #f0c400;
+}
+
+.clear-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 8px;
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-filter:hover {
+    background-color: rgba(255, 100, 100, 0.1);
+    border-color: #ff6b6b;
+}
+
+/* Filter Badge */
+.filter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(240, 196, 0, 0.1);
+    border: 1px solid rgba(240, 196, 0, 0.3);
+    border-radius: 8px;
+    color: #f0c400;
+    font-size: 0.9rem;
+}
+
+.filter-badge strong {
+    color: #fff;
+}
+
+.badge-count {
+    margin-left: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(240, 196, 0, 0.2);
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Grouped Sections */
+.obras-grouped {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-bottom: 4rem;
+}
+
+.estado-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 3rem;
+}
+
+.estado-section:last-child {
+    border-bottom: none;
+}
+
+.estado-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0c400;
+}
+
+.estado-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.estado-title svg {
+    color: #f0c400;
+}
+
+.estado-title h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    font-family: var(--font-heading, 'Oswald', sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.estado-count {
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    color: #999;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Loading & Empty states */
+.loading-message,
+.empty-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #999;
+    font-size: 1.1rem;
+}
+
+.empty-message {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .obras-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-dropdown {
+        width: 100%;
+    }
+
+    .filter-button {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .filter-menu {
+        width: 100%;
+    }
+
+    .clear-filter {
+        justify-content: center;
+    }
+
+    .estado-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .estado-title h2 {
+        font-size: 1.25rem;
+    }
+}

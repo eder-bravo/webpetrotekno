@@ -4,15 +4,17 @@ import TiptapEditor from '@/Components/TiptapEditor';
 import { ArrowLeft, Save, Upload, X, CheckCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
-export default function ObraForm({ obra, categorias }) {
+export default function ObraForm({ obra, categorias, estados }) {
     const isEditing = !!obra;
     const [imagePreview, setImagePreview] = useState(obra?.imagen ? `/storage/${obra.imagen}` : null);
+    const [imageError, setImageError] = useState(null);
     const { flash } = usePage().props;
     const imageInputRef = useRef(null);
 
     const { data, setData, post, put, processing, errors, recentlySuccessful } = useForm({
         nombre: obra?.nombre || '',
         categoria: obra?.categoria || '',
+        estado: obra?.estado || '',
         contenido: obra?.contenido || '',
         destacado: obra?.destacado || false,
         activo: obra?.activo ?? true,
@@ -38,7 +40,25 @@ export default function ObraForm({ obra, categorias }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
+        setImageError(null);
+        
         if (file) {
+            // Validar tamaño (10MB máximo)
+            const maxSize = 10 * 1024 * 1024; // 10MB en bytes
+            if (file.size > maxSize) {
+                setImageError('La imagen es demasiado grande. El tamaño máximo es 10MB.');
+                e.target.value = '';
+                return;
+            }
+            
+            // Validar tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                setImageError('Tipo de archivo no permitido. Usa JPG, PNG, GIF o WebP.');
+                e.target.value = '';
+                return;
+            }
+            
             setData('imagen', file);
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -51,6 +71,10 @@ export default function ObraForm({ obra, categorias }) {
     const removeImage = () => {
         setData('imagen', null);
         setImagePreview(null);
+        setImageError(null);
+        if (imageInputRef.current) {
+            imageInputRef.current.value = '';
+        }
     };
 
     return (
@@ -106,7 +130,26 @@ export default function ObraForm({ obra, categorias }) {
                                 </select>
                             </div>
 
-                            <div className="flex items-center gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Estado *
+                                </label>
+                                <select
+                                    value={data.estado}
+                                    onChange={(e) => setData('estado', e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                >
+                                    <option value="">Seleccionar estado</option>
+                                    {Object.entries(estados).map(([code, name]) => (
+                                        <option key={code} value={code}>{name}</option>
+                                    ))}
+                                </select>
+                                {errors.estado && (
+                                    <p className="mt-1 text-sm text-red-500">{errors.estado}</p>
+                                )}
+                            </div>
+
+                            <div className="sm:col-span-2">
                                 <label className="flex items-center">
                                     <input
                                         type="checkbox"
@@ -118,6 +161,11 @@ export default function ObraForm({ obra, categorias }) {
                                         Destacado en inicio
                                     </span>
                                 </label>
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 ml-6">
+                                    Recomendado: mantener entre 3 y 6 obras destacadas para mejor presentación
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-6">
                                 <label className="flex items-center">
                                     <input
                                         type="checkbox"
@@ -164,19 +212,19 @@ export default function ObraForm({ obra, categorias }) {
                                     Click para subir imagen
                                 </span>
                                 <span className="text-xs text-gray-400 mt-1">
-                                    PNG, JPG, WebP hasta 5MB
+                                    PNG, JPG, WebP hasta 10MB
                                 </span>
                                 <input
                                     ref={imageInputRef}
                                     type="file"
                                     className="hidden"
-                                    accept="image/*"
+                                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
                                     onChange={handleImageChange}
                                 />
                             </div>
                         )}
-                        {errors.imagen && (
-                            <p className="mt-2 text-sm text-red-500">{errors.imagen}</p>
+                        {(errors.imagen || imageError) && (
+                            <p className="mt-2 text-sm text-red-500">{errors.imagen || imageError}</p>
                         )}
                     </div>
 

@@ -14,7 +14,7 @@ class UploadController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:5120', // 5MB max
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
         ]);
 
         $path = $request->file('image')->store('contenido/imagenes', 'public');
@@ -30,7 +30,7 @@ class UploadController extends Controller
     public function uploadVideo(Request $request)
     {
         $request->validate([
-            'video' => 'required|mimetypes:video/mp4,video/webm|max:102400', // 100MB max
+            'video' => 'required|mimetypes:video/mp4,video/webm|max:51200', // 50MB max
         ]);
 
         $path = $request->file('video')->store('contenido/videos', 'public');

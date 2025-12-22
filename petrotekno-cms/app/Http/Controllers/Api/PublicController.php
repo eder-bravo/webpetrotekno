@@ -23,6 +23,11 @@ class PublicController extends Controller
             $query->destacados();
         }
 
+        // Filtrar por estado si se solicita
+        if ($request->has('estado') && $request->estado) {
+            $query->byEstado($request->estado);
+        }
+
         // Limitar resultados si se solicita
         if ($request->has('limit')) {
             $query->limit((int) $request->limit);
@@ -35,6 +40,7 @@ class PublicController extends Controller
                 'slug' => $obra->slug,
                 'imagen' => $obra->imagen ? asset('storage/' . $obra->imagen) : null,
                 'categoria' => $obra->categoria,
+                'estado' => $obra->estado,
                 'contenido' => $obra->contenido,
                 'meta_title' => $obra->meta_title,
                 'meta_description' => $obra->meta_description,
@@ -42,6 +48,32 @@ class PublicController extends Controller
         });
 
         return response()->json($obras);
+    }
+
+    /**
+     * Obtener estadísticas de obras por estado para el mapa
+     */
+    public function obrasPorEstado()
+    {
+        $estadosMexico = Obra::getEstadosMexico();
+        
+        $estadisticas = Obra::activos()
+            ->whereNotNull('estado')
+            ->selectRaw('estado, COUNT(*) as count')
+            ->groupBy('estado')
+            ->pluck('count', 'estado')
+            ->toArray();
+
+        // Formatear para el frontend con nombres de estados
+        $resultado = [];
+        foreach ($estadisticas as $estadoId => $count) {
+            $resultado[$estadoId] = [
+                'count' => $count,
+                'name' => $estadosMexico[$estadoId] ?? $estadoId,
+            ];
+        }
+
+        return response()->json($resultado);
     }
 
     /**
@@ -55,15 +87,51 @@ class PublicController extends Controller
             return response()->json(['error' => 'Obra no encontrada'], 404);
         }
 
+        // Obtener obras anterior y siguiente (basado en orden e id)
+        $anterior = Obra::activos()
+            ->where(function ($query) use ($obra) {
+                $query->where('orden', '<', $obra->orden)
+                    ->orWhere(function ($q) use ($obra) {
+                        $q->where('orden', '=', $obra->orden)
+                          ->where('id', '<', $obra->id);
+                    });
+            })
+            ->orderBy('orden', 'desc')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $siguiente = Obra::activos()
+            ->where(function ($query) use ($obra) {
+                $query->where('orden', '>', $obra->orden)
+                    ->orWhere(function ($q) use ($obra) {
+                        $q->where('orden', '=', $obra->orden)
+                          ->where('id', '>', $obra->id);
+                    });
+            })
+            ->orderBy('orden', 'asc')
+            ->orderBy('id', 'asc')
+            ->first();
+
         return response()->json([
             'id' => $obra->id,
             'nombre' => $obra->nombre,
             'slug' => $obra->slug,
             'imagen' => $obra->imagen ? asset('storage/' . $obra->imagen) : null,
             'categoria' => $obra->categoria,
+            'estado' => $obra->estado,
             'contenido' => $obra->contenido,
             'meta_title' => $obra->meta_title,
             'meta_description' => $obra->meta_description,
+            'navegacion' => [
+                'anterior' => $anterior ? [
+                    'slug' => $anterior->slug,
+                    'nombre' => $anterior->nombre,
+                ] : null,
+                'siguiente' => $siguiente ? [
+                    'slug' => $siguiente->slug,
+                    'nombre' => $siguiente->nombre,
+                ] : null,
+            ],
         ]);
     }
 

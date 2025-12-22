@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function ServicioForm({ servicio, iconos }) {
     const isEditing = !!servicio;
     const [imagePreview, setImagePreview] = useState(servicio?.imagen ? `/storage/${servicio.imagen}` : null);
+    const [imageError, setImageError] = useState(null);
     const { flash } = usePage().props;
     const imageInputRef = useRef(null);
 
@@ -38,7 +39,25 @@ export default function ServicioForm({ servicio, iconos }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
+        setImageError(null);
+        
         if (file) {
+            // Validar tamaño (10MB máximo)
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                setImageError('La imagen es demasiado grande. El tamaño máximo es 10MB.');
+                e.target.value = '';
+                return;
+            }
+            
+            // Validar tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                setImageError('Tipo de archivo no permitido. Usa JPG, PNG, GIF o WebP.');
+                e.target.value = '';
+                return;
+            }
+            
             setData('imagen', file);
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -51,6 +70,10 @@ export default function ServicioForm({ servicio, iconos }) {
     const removeImage = () => {
         setData('imagen', null);
         setImagePreview(null);
+        setImageError(null);
+        if (imageInputRef.current) {
+            imageInputRef.current.value = '';
+        }
     };
 
     return (
@@ -170,16 +193,19 @@ export default function ServicioForm({ servicio, iconos }) {
                                     Click para subir imagen
                                 </span>
                                 <span className="text-xs text-gray-400 mt-1">
-                                    PNG, JPG, WebP hasta 5MB
+                                    PNG, JPG, WebP hasta 10MB
                                 </span>
                                 <input
                                     ref={imageInputRef}
                                     type="file"
                                     className="hidden"
-                                    accept="image/*"
+                                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
                                     onChange={handleImageChange}
                                 />
                             </div>
+                        )}
+                        {(errors.imagen || imageError) && (
+                            <p className="mt-2 text-sm text-red-500">{errors.imagen || imageError}</p>
                         )}
                     </div>
 

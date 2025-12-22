@@ -27,7 +27,7 @@
 }
 
 .tech-title .text-blue {
-    color: #000080;
+    color: #004488;
     /* Deep Blue from reference */
 }
 
@@ -41,7 +41,7 @@
 
 .tech-subtitle {
     font-size: 2rem;
-    color: #000080;
+    color: #004488;
     margin-bottom: 20px;
 }
 
@@ -63,14 +63,14 @@
 }
 
 .btn-blue {
-    background-color: #000080;
+    background-color: #004488;
     color: white;
 }
 
 .btn-outline-blue {
     background-color: transparent;
-    color: #000080;
-    border: 2px solid #000080;
+    color: #004488;
+    border: 2px solid #004488;
 }
 
 /* Right Column Stats */
@@ -95,7 +95,7 @@
 .tech-stat-number {
     font-size: 5rem;
     font-weight: 800;
-    color: #000080;
+    color: #004488;
     line-height: 1;
     font-family: var(--font-heading);
 }
@@ -121,7 +121,7 @@
 }
 
 .text-blue-light {
-    color: #000080;
+    color: #004488;
 }
 
 /* Divider lines if we want them */

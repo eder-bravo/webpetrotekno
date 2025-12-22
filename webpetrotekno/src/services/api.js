@@ -44,9 +44,17 @@ export async function getObras(options = {}) {
     const params = new URLSearchParams();
     if (options.destacados) params.append('destacados', '1');
     if (options.limit) params.append('limit', options.limit);
+    if (options.estado) params.append('estado', options.estado);
     
     const query = params.toString();
     return fetchAPI(`/obras${query ? `?${query}` : ''}`);
+}
+
+/**
+ * Obtener estadísticas de obras por estado para el mapa
+ */
+export async function getObrasPorEstado() {
+    return fetchAPI('/obras/por-estado');
 }
 
 /**

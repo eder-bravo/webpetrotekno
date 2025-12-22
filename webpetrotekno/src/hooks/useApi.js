@@ -67,6 +67,23 @@ export function useObras(options = {}) {
 }
 
 /**
+ * Hook para obtener estadísticas de obras por estado
+ */
+export function useObrasPorEstado() {
+    return useApi(() => import('../services/api.js').then(m => m.getObrasPorEstado()));
+}
+
+/**
+ * Hook para obtener una obra por slug
+ */
+export function useObra(slug) {
+    return useApi(
+        () => import('../services/api.js').then(m => m.getObra(slug)),
+        [slug]
+    );
+}
+
+/**
  * Hook para obtener redes sociales
  */
 export function useRedes() {

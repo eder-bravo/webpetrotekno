@@ -1,52 +1,47 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import PanelLayout from '@/Layouts/PanelLayout';
-import { Plus, Edit, Trash2, Eye, EyeOff, Star, GripVertical, CheckCircle, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, Star, ArrowUpDown, CheckCircle, X, ChevronLeft, ChevronRight, Filter, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import {
-    DndContext,
-    closestCenter,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from '@dnd-kit/core';
-import {
-    arrayMove,
-    SortableContext,
-    sortableKeyboardCoordinates,
-    useSortable,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
-function SortableItem({ obra, onDelete }) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-    } = useSortable({ id: obra.id });
+// Mapa de estados mexicanos
+const ESTADOS_MEXICO = {
+    'agu': 'Aguascalientes',
+    'bcn': 'Baja California',
+    'bcs': 'Baja California Sur',
+    'cam': 'Campeche',
+    'chp': 'Chiapas',
+    'chh': 'Chihuahua',
+    'coa': 'Coahuila',
+    'col': 'Colima',
+    'cmx': 'Ciudad de México',
+    'dur': 'Durango',
+    'gua': 'Guanajuato',
+    'gro': 'Guerrero',
+    'hid': 'Hidalgo',
+    'jal': 'Jalisco',
+    'mex': 'México',
+    'mic': 'Michoacán',
+    'mor': 'Morelos',
+    'nay': 'Nayarit',
+    'nle': 'Nuevo León',
+    'oax': 'Oaxaca',
+    'pue': 'Puebla',
+    'que': 'Querétaro',
+    'roo': 'Quintana Roo',
+    'slp': 'San Luis Potosí',
+    'sin': 'Sinaloa',
+    'son': 'Sonora',
+    'tab': 'Tabasco',
+    'tam': 'Tamaulipas',
+    'tla': 'Tlaxcala',
+    'ver': 'Veracruz',
+    'yuc': 'Yucatán',
+    'zac': 'Zacatecas',
+};
 
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    };
-
+function ObraItem({ obra, onDelete }) {
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            className="flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
-        >
-            <button
-                {...attributes}
-                {...listeners}
-                className="cursor-grab text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-                <GripVertical className="w-5 h-5" />
-            </button>
-
+        <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="w-20 h-20 flex-shrink-0">
                 {obra.imagen ? (
                     <img
@@ -67,6 +62,11 @@ function SortableItem({ obra, onDelete }) {
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                     {obra.categoria || 'Sin categoría'}
+                    {obra.estado && (
+                        <span className="ml-2 text-xs text-gray-400">
+                            • Estado: {ESTADOS_MEXICO[obra.estado] || obra.estado}
+                        </span>
+                    )}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
                     {obra.destacado && (
@@ -107,15 +107,76 @@ function SortableItem({ obra, onDelete }) {
     );
 }
 
-export default function ObrasIndex({ obras: initialObras }) {
-    const [obras, setObras] = useState(initialObras);
+function Pagination({ links, meta }) {
+    if (!links || links.length <= 3) return null;
+
+    return (
+        <div className="flex items-center justify-between mt-6">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+                Mostrando {meta.from} a {meta.to} de {meta.total} obras
+            </p>
+            <div className="flex items-center gap-1">
+                {links.map((link, index) => {
+                    if (link.label.includes('Previous')) {
+                        return (
+                            <Link
+                                key={index}
+                                href={link.url || '#'}
+                                className={`p-2 rounded-lg transition-colors ${
+                                    link.url
+                                        ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700'
+                                        : 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                                }`}
+                                preserveScroll
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                            </Link>
+                        );
+                    }
+                    if (link.label.includes('Next')) {
+                        return (
+                            <Link
+                                key={index}
+                                href={link.url || '#'}
+                                className={`p-2 rounded-lg transition-colors ${
+                                    link.url
+                                        ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700'
+                                        : 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                                }`}
+                                preserveScroll
+                            >
+                                <ChevronRight className="w-5 h-5" />
+                            </Link>
+                        );
+                    }
+                    return (
+                        <Link
+                            key={index}
+                            href={link.url || '#'}
+                            className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                                link.active
+                                    ? 'bg-yellow-500 text-gray-900 font-medium'
+                                    : link.url
+                                    ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700'
+                                    : 'text-gray-300 dark:text-gray-600'
+                            }`}
+                            preserveScroll
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+export default function ObrasIndex({ obras: paginatedObras, totalDestacados, estados, estadosConObras, filtroEstado }) {
     const [deleteModal, setDeleteModal] = useState({ open: false, obra: null });
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(!!flash?.success);
 
-    useEffect(() => {
-        setObras(initialObras);
-    }, [initialObras]);
+    const obras = paginatedObras.data;
+    const { links, ...meta } = paginatedObras;
 
     useEffect(() => {
         if (flash?.success) {
@@ -125,39 +186,6 @@ export default function ObrasIndex({ obras: initialObras }) {
         }
     }, [flash]);
 
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
-
-    const handleDragEnd = async (event) => {
-        const { active, over } = event;
-
-        if (active.id !== over.id) {
-            setObras((items) => {
-                const oldIndex = items.findIndex((i) => i.id === active.id);
-                const newIndex = items.findIndex((i) => i.id === over.id);
-                const newItems = arrayMove(items, oldIndex, newIndex);
-
-                // Guardar nuevo orden
-                fetch('/panel/obras/reorder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        orden: newItems.map((item) => item.id),
-                    }),
-                });
-
-                return newItems;
-            });
-        }
-    };
-
     const handleDelete = (obra) => {
         setDeleteModal({ open: true, obra });
     };
@@ -166,11 +194,17 @@ export default function ObrasIndex({ obras: initialObras }) {
         if (deleteModal.obra) {
             router.delete(`/panel/obras/${deleteModal.obra.id}`, {
                 onSuccess: () => {
-                    setObras(obras.filter((o) => o.id !== deleteModal.obra.id));
                     setDeleteModal({ open: false, obra: null });
                 },
             });
         }
+    };
+
+    const handleFilterChange = (estado) => {
+        router.get('/panel/obras', estado ? { estado } : {}, {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -191,36 +225,90 @@ export default function ObrasIndex({ obras: initialObras }) {
             )}
 
             <div className="flex items-center justify-between mb-6">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {obras.length} obra{obras.length !== 1 ? 's' : ''} en total
-                </p>
-                <Link
-                    href="/panel/obras/create"
-                    className="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium rounded-lg transition-colors"
+                <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {meta.total} obra{meta.total !== 1 ? 's' : ''} en total
+                        {filtroEstado && (
+                            <span className="ml-1">
+                                en <strong className="text-gray-700 dark:text-gray-300">{estados[filtroEstado]}</strong>
+                            </span>
+                        )}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <span className={`font-medium ${
+                            totalDestacados >= 3 && totalDestacados <= 6 
+                                ? 'text-green-600 dark:text-green-400' 
+                                : 'text-yellow-600 dark:text-yellow-400'
+                        }`}>
+                            {totalDestacados} obras destacadas
+                        </span>
+                        {' '} • Recomendado: mantener entre 3 y 6 destacadas
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Link
+                        href="/panel/obras/reorder"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-lg transition-colors"
+                    >
+                        <ArrowUpDown className="w-5 h-5 mr-2" />
+                        Reordenar
+                    </Link>
+                    <Link
+                        href="/panel/obras/create"
+                        className="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium rounded-lg transition-colors"
+                    >
+                        <Plus className="w-5 h-5 mr-2" />
+                        Nueva Obra
+                    </Link>
+                </div>
+            </div>
+
+            {/* Filtro por estado */}
+            <div className="mb-6 flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <Filter className="w-4 h-4" />
+                    <span>Filtrar por estado:</span>
+                </div>
+                <select
+                    value={filtroEstado || ''}
+                    onChange={(e) => handleFilterChange(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Nueva Obra
-                </Link>
+                    <option value="">Todos los estados</option>
+                    {estadosConObras.sort((a, b) => {
+                        const nameA = estados[a] || a;
+                        const nameB = estados[b] || b;
+                        return nameA.localeCompare(nameB);
+                    }).map((estadoCode) => (
+                        <option key={estadoCode} value={estadoCode}>
+                            {estados[estadoCode] || estadoCode}
+                        </option>
+                    ))}
+                </select>
+                {filtroEstado && (
+                    <button
+                        onClick={() => handleFilterChange('')}
+                        className="inline-flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                    >
+                        <X className="w-4 h-4 mr-1" />
+                        Limpiar
+                    </button>
+                )}
             </div>
 
             {obras.length > 0 ? (
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                >
-                    <SortableContext items={obras.map((o) => o.id)} strategy={verticalListSortingStrategy}>
-                        <div className="space-y-3">
-                            {obras.map((obra) => (
-                                <SortableItem
-                                    key={obra.id}
-                                    obra={obra}
-                                    onDelete={handleDelete}
-                                />
-                            ))}
-                        </div>
-                    </SortableContext>
-                </DndContext>
+                <>
+                    <div className="space-y-3">
+                        {obras.map((obra) => (
+                            <ObraItem
+                                key={obra.id}
+                                obra={obra}
+                                onDelete={handleDelete}
+                            />
+                        ))}
+                    </div>
+                    <Pagination links={links} meta={meta} />
+                </>
             ) : (
                 <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
                     <p className="text-gray-500 dark:text-gray-400 mb-4">

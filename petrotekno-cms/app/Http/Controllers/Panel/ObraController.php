@@ -7,6 +7,7 @@ use App\Models\Obra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class ObraController extends Controller
@@ -14,12 +15,58 @@ class ObraController extends Controller
     /**
      * Mostrar listado de obras
      */
-    public function index()
+    public function index(Request $request)
     {
-        $obras = Obra::ordenados()->get();
+        $query = Obra::ordenados();
+
+        // Filtrar por estado si se especifica
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $obras = $query->paginate(10)->withQueryString();
+        $totalDestacados = Obra::where('destacado', true)->count();
+
+        // Obtener estados que tienen obras para el filtro
+        $estadosConObras = Obra::whereNotNull('estado')
+            ->distinct()
+            ->pluck('estado')
+            ->toArray();
 
         return Inertia::render('Panel/Obras/Index', [
             'obras' => $obras,
+            'totalDestacados' => $totalDestacados,
+            'estados' => Obra::getEstadosMexico(),
+            'estadosConObras' => $estadosConObras,
+            'filtroEstado' => $request->estado,
+        ]);
+    }
+
+    /**
+     * Mostrar vista de reordenamiento
+     */
+    public function reorderView(Request $request)
+    {
+        $query = Obra::ordenados();
+
+        // Filtrar por estado si se especifica
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $obras = $query->paginate(10)->withQueryString();
+
+        // Obtener estados que tienen obras para el filtro
+        $estadosConObras = Obra::whereNotNull('estado')
+            ->distinct()
+            ->pluck('estado')
+            ->toArray();
+
+        return Inertia::render('Panel/Obras/Reorder', [
+            'obras' => $obras,
+            'estados' => Obra::getEstadosMexico(),
+            'estadosConObras' => $estadosConObras,
+            'filtroEstado' => $request->estado,
         ]);
     }
 
@@ -31,6 +78,7 @@ class ObraController extends Controller
         return Inertia::render('Panel/Obras/Form', [
             'obra' => null,
             'categorias' => $this->getCategorias(),
+            'estados' => Obra::getEstadosMexico(),
         ]);
     }
 
@@ -42,12 +90,13 @@ class ObraController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria' => 'nullable|string|max:255',
+            'estado' => ['nullable', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
             'contenido' => 'nullable|string',
             'destacado' => 'boolean',
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'imagen' => 'nullable|image|max:5120', // 5MB max
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB max (PHP limit)
         ]);
 
         // Subir imagen principal
@@ -72,6 +121,7 @@ class ObraController extends Controller
         return Inertia::render('Panel/Obras/Form', [
             'obra' => $obra,
             'categorias' => $this->getCategorias(),
+            'estados' => Obra::getEstadosMexico(),
         ]);
     }
 
@@ -83,12 +133,13 @@ class ObraController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria' => 'nullable|string|max:255',
+            'estado' => ['nullable', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
             'contenido' => 'nullable|string',
             'destacado' => 'boolean',
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'imagen' => 'nullable|image|max:5120',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
         ]);
 
         // Subir nueva imagen principal
@@ -98,6 +149,9 @@ class ObraController extends Controller
                 Storage::disk('public')->delete($obra->imagen);
             }
             $validated['imagen'] = $request->file('imagen')->store('obras', 'public');
+        } else {
+            // Si no hay nueva imagen, no modificar la existente
+            unset($validated['imagen']);
         }
 
         $obra->update($validated);
@@ -129,11 +183,12 @@ class ObraController extends Controller
     {
         $request->validate([
             'orden' => 'required|array',
-            'orden.*' => 'integer|exists:obras,id',
+            'orden.*.id' => 'required|integer|exists:obras,id',
+            'orden.*.orden' => 'required|integer|min:1',
         ]);
 
-        foreach ($request->orden as $index => $id) {
-            Obra::where('id', $id)->update(['orden' => $index]);
+        foreach ($request->orden as $item) {
+            Obra::where('id', $item['id'])->update(['orden' => $item['orden']]);
         }
 
         return response()->json(['success' => true]);

@@ -14,6 +14,7 @@ class Obra extends Model
         'slug',
         'imagen',
         'categoria',
+        'estado',
         'contenido',
         'destacado',
         'activo',
@@ -58,5 +59,51 @@ class Obra extends Model
     public function scopeOrdenados($query)
     {
         return $query->orderBy('orden', 'asc');
+    }
+
+    public function scopeByEstado($query, $estado)
+    {
+        return $query->where('estado', $estado);
+    }
+
+    /**
+     * Lista de estados mexicanos con sus IDs (compatibles con @svg-maps/mexico)
+     */
+    public static function getEstadosMexico(): array
+    {
+        return [
+            'agu' => 'Aguascalientes',
+            'bcn' => 'Baja California',
+            'bcs' => 'Baja California Sur',
+            'cam' => 'Campeche',
+            'chp' => 'Chiapas',
+            'chh' => 'Chihuahua',
+            'coa' => 'Coahuila',
+            'col' => 'Colima',
+            'cmx' => 'Ciudad de México',
+            'dur' => 'Durango',
+            'gua' => 'Guanajuato',
+            'gro' => 'Guerrero',
+            'hid' => 'Hidalgo',
+            'jal' => 'Jalisco',
+            'mex' => 'México',
+            'mic' => 'Michoacán',
+            'mor' => 'Morelos',
+            'nay' => 'Nayarit',
+            'nle' => 'Nuevo León',
+            'oax' => 'Oaxaca',
+            'pue' => 'Puebla',
+            'que' => 'Querétaro',
+            'roo' => 'Quintana Roo',
+            'slp' => 'San Luis Potosí',
+            'sin' => 'Sinaloa',
+            'son' => 'Sonora',
+            'tab' => 'Tabasco',
+            'tam' => 'Tamaulipas',
+            'tla' => 'Tlaxcala',
+            'ver' => 'Veracruz',
+            'yuc' => 'Yucatán',
+            'zac' => 'Zacatecas',
+        ];
     }
 }

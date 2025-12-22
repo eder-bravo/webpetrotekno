@@ -46,8 +46,8 @@ class ServicioController extends Controller
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'imagen' => 'nullable|image|max:5120',
-            'meta_image' => 'nullable|image|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
+            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
         // Subir imagen principal
@@ -88,8 +88,8 @@ class ServicioController extends Controller
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'imagen' => 'nullable|image|max:5120',
-            'meta_image' => 'nullable|image|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
+            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
         // Subir nueva imagen principal
@@ -98,6 +98,14 @@ class ServicioController extends Controller
                 Storage::disk('public')->delete($servicio->imagen);
             }
             $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
+        } else {
+            // Si no hay nueva imagen, no modificar la existente
+            unset($validated['imagen']);
+        }
+
+        // Igual para meta_image
+        if (!$request->hasFile('meta_image')) {
+            unset($validated['meta_image']);
         }
 
         $servicio->update($validated);

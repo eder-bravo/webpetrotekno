@@ -115,3 +115,43 @@ path.svg-map__location--highlighted:hover {
     font-weight: 600;
     margin-bottom: 3px;
 }
+
+.map-tooltip .tooltip-action {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* Leyenda del mapa */
+.map-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #004488;
+}
+
+.legend-highlighted {
+    background-color: var(--primary, #FFFF00);
+}
+
+.legend-default {
+    background-color: #e0e0e0;
+}

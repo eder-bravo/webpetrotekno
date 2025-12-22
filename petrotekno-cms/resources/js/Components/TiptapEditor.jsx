@@ -318,6 +318,20 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
     const addImage = useCallback(async (file) => {
         if (!file || !editor) return;
 
+        // Validar tamaño (10MB máximo)
+        const maxSize = 10 * 1024 * 1024;
+        if (file.size > maxSize) {
+            setUploadStatus({ type: 'error', message: 'La imagen es muy grande. Máximo 10MB.' });
+            return;
+        }
+
+        // Validar tipo
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+            setUploadStatus({ type: 'error', message: 'Tipo no permitido. Usa JPG, PNG, GIF o WebP.' });
+            return;
+        }
+
         setUploading(true);
         setUploadStatus(null);
 
@@ -345,7 +359,8 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
                 setUploadStatus({ type: 'success', message: 'Imagen subida correctamente' });
             } else {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || 'Error al subir la imagen');
+                const errorMsg = errorData.errors?.image?.[0] || errorData.message || 'Error al subir la imagen';
+                throw new Error(errorMsg);
             }
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -357,6 +372,20 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
 
     const addVideo = useCallback(async (file) => {
         if (!file || !editor) return;
+
+        // Validar tamaño (50MB máximo)
+        const maxSize = 50 * 1024 * 1024;
+        if (file.size > maxSize) {
+            setUploadStatus({ type: 'error', message: 'El video es muy grande. Máximo 50MB. Usa YouTube para videos más grandes.' });
+            return;
+        }
+
+        // Validar tipo
+        const allowedTypes = ['video/mp4', 'video/webm'];
+        if (!allowedTypes.includes(file.type)) {
+            setUploadStatus({ type: 'error', message: 'Tipo no permitido. Usa MP4 o WebM.' });
+            return;
+        }
 
         setUploading(true);
         setUploadStatus(null);
@@ -390,7 +419,8 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
                 setUploadStatus({ type: 'success', message: 'Video subido correctamente' });
             } else {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || 'Error al subir el video');
+                const errorMsg = errorData.errors?.video?.[0] || errorData.message || 'Error al subir el video';
+                throw new Error(errorMsg);
             }
         } catch (error) {
             console.error('Error uploading video:', error);
@@ -544,7 +574,7 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
                     <input
                         ref={imageInputRef}
                         type="file"
-                        accept="image/*"
+                        accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
                         className="hidden"
                         onChange={(e) => {
                             if (e.target.files?.[0]) {

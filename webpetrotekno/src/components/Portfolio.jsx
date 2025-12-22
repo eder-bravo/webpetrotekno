@@ -46,6 +46,10 @@ const Portfolio = () => {
         }, 0);
     };
 
+    const handleObraClick = (slug) => {
+        navigate(`/obras/${slug}`);
+    };
+
     return (
         <section id="portfolio" className="portfolio section-padding">
             <div className="container">
@@ -65,7 +69,12 @@ const Portfolio = () => {
 
                 <div className="portfolio-grid">
                     {displayData.map((project, index) => (
-                        <div key={project.id || index} className="portfolio-item">
+                        <div 
+                            key={project.id || index} 
+                            className="portfolio-item"
+                            onClick={() => project.slug && handleObraClick(project.slug)}
+                            style={{ cursor: project.slug ? 'pointer' : 'default' }}
+                        >
                             <img
                                 src={getImage(project, index)}
                                 alt={project.nombre}
