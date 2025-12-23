@@ -21,26 +21,51 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Si no estamos en la home, el navbar siempre debe tener fondo
+    const isHome = location.pathname === '/';
+    const shouldHaveBackground = !isHome || scrolled;
+
     const logoSrc = config?.logo || logo;
 
     const handleNavigation = (path) => {
         setMenuOpen(false);
-        if (path.startsWith('#')) {
+        if (path === '/') {
+            // Si ya estamos en home, scroll al top
+            if (location.pathname === '/') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Si no, navegar a home y scroll al top
+                navigate('/');
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 150);
+            }
+        } else if (path.startsWith('#')) {
             if (location.pathname === '/') {
                 // Scroll to section if on home page
                 const element = document.querySelector(path);
                 element?.scrollIntoView({ behavior: 'smooth' });
             } else {
-                // Navigate to home and scroll
+                // Navigate to home and then scroll to section
                 navigate('/');
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    setTimeout(() => {
+                        const element = document.querySelector(path);
+                        element?.scrollIntoView({ behavior: 'smooth' });
+                    }, 200);
+                }, 150);
             }
         } else {
             navigate(path);
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }, 0);
         }
     };
 
     return (
-        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <nav className={`navbar ${shouldHaveBackground ? 'scrolled' : ''}`}>
             <div className="container navbar-content">
                 <LogoLink className="logo">
                     <img src={logoSrc} alt="Petrotekno Logo" className="logo-img" />

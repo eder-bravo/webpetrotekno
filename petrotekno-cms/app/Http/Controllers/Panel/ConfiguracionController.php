@@ -35,11 +35,12 @@ class ConfiguracionController extends Controller
             'site_description' => 'nullable|string|max:500',
             'slogan' => 'nullable|string|max:255',
             'logo' => 'nullable|image|max:2048',
+            'cv_empresa' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
         // Guardar configuraciones de texto
         foreach ($validated as $clave => $valor) {
-            if ($clave !== 'logo' && $valor !== null) {
+            if (!in_array($clave, ['logo', 'cv_empresa']) && $valor !== null) {
                 Configuracion::establecer($clave, $valor, 'text');
             }
         }
@@ -52,6 +53,16 @@ class ConfiguracionController extends Controller
             }
             $logoPath = $request->file('logo')->store('config', 'public');
             Configuracion::establecer('logo', $logoPath, 'image');
+        }
+
+        // Subir CV de empresa si se proporciona
+        if ($request->hasFile('cv_empresa')) {
+            $cvActual = Configuracion::obtener('cv_empresa');
+            if ($cvActual) {
+                Storage::disk('public')->delete($cvActual);
+            }
+            $cvPath = $request->file('cv_empresa')->store('config', 'public');
+            Configuracion::establecer('cv_empresa', $cvPath, 'file');
         }
 
         return redirect()->route('panel.configuracion.index')

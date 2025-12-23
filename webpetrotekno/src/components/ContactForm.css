@@ -71,9 +71,9 @@
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: #004488;
     background-color: white;
-    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 68, 136, 0.1);
 }
 
 .form-group textarea {
@@ -89,8 +89,8 @@
     justify-content: center;
     gap: 10px;
     padding: 15px 40px;
-    background: var(--primary);
-    color: var(--secondary);
+    background: #004488;
+    color: var(--white);
     font-family: var(--font-heading);
     font-weight: 600;
     text-transform: uppercase;
@@ -102,9 +102,9 @@
 }
 
 .btn-submit:hover:not(:disabled) {
-    background: var(--primary-dark);
+    background: #003366;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 68, 136, 0.3);
 }
 
 .btn-submit:disabled {

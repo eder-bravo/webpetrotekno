@@ -7,6 +7,9 @@ export default function ConfiguracionIndex({ configuracion }) {
     const [logoPreview, setLogoPreview] = useState(
         configuracion.logo ? `/storage/${configuracion.logo}` : null
     );
+    const [cvFileName, setCvFileName] = useState(
+        configuracion.cv_empresa ? configuracion.cv_empresa.split('/').pop() : null
+    );
     const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm({
@@ -17,6 +20,7 @@ export default function ConfiguracionIndex({ configuracion }) {
         site_description: configuracion.site_description || '',
         slogan: configuracion.slogan || '',
         logo: null,
+        cv_empresa: null,
     });
 
     const passwordForm = useForm({
@@ -57,6 +61,19 @@ export default function ConfiguracionIndex({ configuracion }) {
     const removeLogo = () => {
         setData('logo', null);
         setLogoPreview(null);
+    };
+
+    const handleCvChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('cv_empresa', file);
+            setCvFileName(file.name);
+        }
+    };
+
+    const removeCv = () => {
+        setData('cv_empresa', null);
+        setCvFileName(null);
     };
 
     return (
@@ -105,6 +122,64 @@ export default function ConfiguracionIndex({ configuracion }) {
                                 <p>Recomendado: PNG con fondo transparente</p>
                                 <p>Tamaño máximo: 2MB</p>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* CV de la Empresa */}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                            CV de la Empresa
+                        </h2>
+
+                        <div className="space-y-4">
+                            {cvFileName ? (
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded">
+                                            <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-gray-900 dark:text-white">{cvFileName}</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">PDF</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={removeCv}
+                                        className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors">
+                                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subir CV de la empresa
+                                    </span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                        PDF, máximo 10MB
+                                    </span>
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        accept=".pdf"
+                                        onChange={handleCvChange}
+                                    />
+                                </label>
+                            )}
+                            {configuracion.cv_empresa && !data.cv_empresa && (
+                                <a
+                                    href={`/storage/${configuracion.cv_empresa}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center text-sm text-yellow-600 hover:text-yellow-500"
+                                >
+                                    Ver CV actual
+                                </a>
+                            )}
                         </div>
                     </div>
 

@@ -215,4 +215,23 @@ class PublicController extends Controller
 
         return response()->json($redes);
     }
-}
+
+    /**
+     * Descargar CV de la empresa
+     */
+    public function descargarCv()
+    {
+        $cvPath = Configuracion::obtener('cv_empresa');
+        
+        if (!$cvPath) {
+            return response()->json(['error' => 'CV no disponible'], 404);
+        }
+
+        $fullPath = storage_path('app/public/' . $cvPath);
+        
+        if (!file_exists($fullPath)) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        return response()->download($fullPath, 'CV-Empresa-Petrotekno.pdf');
+    }

@@ -30,6 +30,9 @@ class ConfiguracionSeeder extends Seeder
             
             // Slogan
             ['clave' => 'slogan', 'valor' => 'Ingeniería que transforma el paisaje.', 'tipo' => 'text'],
+            
+            // CV de la Empresa
+            ['clave' => 'cv_empresa', 'valor' => '', 'tipo' => 'file'],
         ];
 
         foreach ($configuraciones as $config) {

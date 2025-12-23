@@ -54,8 +54,8 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                    <a href="#portfolio" className="btn">Ver Proyectos</a>
-                    <a href="#contact" className="btn btn-outline">Contáctanos</a>
+                    <a href="/api/config/cv-empresa" target="_blank" rel="noopener noreferrer" className="btn">Descargar CV</a>
+                    <a href="/contacto" className="btn btn-outline">Contáctanos</a>
                 </motion.div>
             </div>
         </section>

@@ -18,38 +18,38 @@ const ContactInfo = () => {
             <h2>Información de contacto</h2>
 
             <div className="info-cards">
-                <div className="info-card">
+                <a href={`tel:${displayConfig.contacto_telefono?.replace(/\s/g, '')}`} className="info-card">
                     <div className="icon-box">
                         <Phone size={32} />
                     </div>
                     <h3>Teléfono</h3>
                     <p>{displayConfig.contacto_telefono}</p>
-                    <a href={`tel:${displayConfig.contacto_telefono?.replace(/\s/g, '')}`} className="contact-link">
+                    <span className="contact-link">
                         Llamar ahora
-                    </a>
-                </div>
+                    </span>
+                </a>
 
-                <div className="info-card">
+                <a href={`mailto:${displayConfig.contacto_email}`} className="info-card">
                     <div className="icon-box">
                         <Mail size={32} />
                     </div>
                     <h3>Email</h3>
                     <p>{displayConfig.contacto_email}</p>
-                    <a href={`mailto:${displayConfig.contacto_email}`} className="contact-link">
+                    <span className="contact-link">
                         Enviar email
-                    </a>
-                </div>
+                    </span>
+                </a>
 
-                <div className="info-card">
+                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="info-card">
                     <div className="icon-box">
                         <MapPin size={32} />
                     </div>
                     <h3>Ubicación</h3>
                     <p>{displayConfig.contacto_direccion}</p>
-                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="contact-link">
+                    <span className="contact-link">
                         Ver en mapa
-                    </a>
-                </div>
+                    </span>
+                </a>
 
                 <div className="info-card">
                     <div className="icon-box">
