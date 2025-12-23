@@ -52,7 +52,8 @@
     align-items: center;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links .nav-button {
     font-weight: 500;
     font-size: 0.95rem;
     text-transform: uppercase;
@@ -62,9 +63,14 @@
     /* FORCE WHITE */
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     /* LEGIBILITY */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .nav-button:hover {
     color: var(--primary);
 }
 
