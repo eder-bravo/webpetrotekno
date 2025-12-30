@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["php82", "nginx"]
+
+[phases.build]
+cmds = ["composer install --optimize-autoloader --no-dev"]
+
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
+
+[variables]
+PHP_UPLOAD_MAX_FILESIZE = "50M"
+PHP_POST_MAX_SIZE = "60M"
+PHP_MEMORY_LIMIT = "256M"
+NGINX_CLIENT_MAX_BODY_SIZE = "50M"
