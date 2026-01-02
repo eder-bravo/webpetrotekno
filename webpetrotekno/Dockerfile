@@ -13,7 +13,11 @@ RUN npm ci --legacy-peer-deps
 # Copiar el resto de archivos del proyecto
 COPY . .
 
-# Build de producción
+# Declarar variable de entorno para el build
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
+# Build de producción (Vite leerá VITE_API_URL del environment)
 RUN npm run build
 
 # Production stage
