@@ -73,6 +73,7 @@ RUN mkdir -p \
     /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/logs \
+    /var/www/html/storage/app/public/obras \
     /var/www/html/bootstrap/cache \
     /var/www/html/database \
     && touch /var/www/html/database/database.sqlite \
@@ -90,6 +91,9 @@ RUN mkdir -p \
 
 # Copiar configuración de Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copiar configuración de PHP
+COPY public/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 # Copiar script de inicio
 COPY docker-entrypoint.sh /usr/local/bin/
