@@ -57,7 +57,7 @@ php-fpm -D
 
 # Verificar que PHP-FPM está corriendo
 sleep 2
-if ! pgrep -x "php-fpm" > /dev/null; then
+if ! pgrep "php-fpm" > /dev/null; then
     echo "❌ Error: PHP-FPM no se inició correctamente"
     exit 1
 fi
