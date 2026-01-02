@@ -1,0 +1,52 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+!storage/framework/.gitignore
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+!bootstrap/cache/.gitignore
+
+# Database (no incluir la BD local)
+*.sqlite
+*.sqlite-journal
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+tests/
+.phpunit.result.cache
+phpunit.xml
+playwright-report/
+test-results/
+
+# Documentation
+README.md
+*.md
+
+# Otros
+.DS_Store
+Thumbs.db
