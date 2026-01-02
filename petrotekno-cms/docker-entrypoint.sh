@@ -26,6 +26,11 @@ echo "🔒 Configurando permisos..."
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
+# Asegurar que el archivo de logs existe y tiene permisos correctos
+touch /var/www/html/storage/logs/laravel.log
+chown www-data:www-data /var/www/html/storage/logs/laravel.log
+chmod 664 /var/www/html/storage/logs/laravel.log
+
 # Limpiar cachés previos
 echo "🧹 Limpiando cachés..."
 php artisan config:clear || true
