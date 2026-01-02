@@ -3,12 +3,14 @@ set -e
 
 echo "🚀 Iniciando Petrotekno CMS..."
 
-# Verificar que existe el archivo .env
-if [ ! -f .env ]; then
-    echo "❌ Error: No se encontró el archivo .env"
+# Verificar que las variables de entorno críticas están configuradas
+if [ -z "$APP_KEY" ]; then
+    echo "❌ Error: APP_KEY no está configurada"
     echo "   Por favor configura las variables de entorno en Dokploy"
     exit 1
 fi
+
+echo "✅ Variables de entorno cargadas correctamente"
 
 # Asegurar que la base de datos SQLite existe
 echo "📦 Verificando base de datos SQLite..."
