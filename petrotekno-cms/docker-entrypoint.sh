@@ -23,15 +23,30 @@ fi
 
 # Dar permisos correctos
 echo "🔒 Configurando permisos..."
+
+# Crear toda la estructura de storage necesaria
 mkdir -p /var/www/html/storage/app/public/obras
 mkdir -p /var/www/html/storage/app/public/config
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+mkdir -p /var/www/html/storage/framework/cache/data
+mkdir -p /var/www/html/storage/framework/sessions
+mkdir -p /var/www/html/storage/framework/views
+mkdir -p /var/www/html/storage/logs
 
-# Asegurar que el archivo de logs existe y tiene permisos correctos
+# Crear archivo de log si no existe
 touch /var/www/html/storage/logs/laravel.log
-chown www-data:www-data /var/www/html/storage/logs/laravel.log
-chmod 664 /var/www/html/storage/logs/laravel.log
+
+# Eliminar symlink anterior si existe (para recrearlo correctamente)
+rm -f /var/www/html/public/storage
+
+# Aplicar permisos correctos a www-data
+chown -R www-data:www-data /var/www/html/storage
+chown -R www-data:www-data /var/www/html/bootstrap/cache
+chown -R www-data:www-data /var/www/html/database
+chmod -R 775 /var/www/html/storage
+chmod -R 775 /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/database
+
+echo "✅ Permisos configurados"
 
 # Limpiar cachés previos
 echo "🧹 Limpiando cachés..."
@@ -54,9 +69,17 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Crear enlace simbólico de storage si no existe
+# Crear enlace simbólico de storage (forzar recreación)
 echo "🔗 Configurando storage link..."
-php artisan storage:link || echo "   Storage link ya existe"
+php artisan storage:link --force || echo "   Error creando storage link"
+
+# Verificar que el symlink existe
+if [ -L /var/www/html/public/storage ]; then
+    echo "✅ Storage link creado correctamente"
+else
+    echo "⚠️  Creando symlink manualmente..."
+    ln -sf /var/www/html/storage/app/public /var/www/html/public/storage
+fi
 
 # Iniciar PHP-FPM en background
 echo "🐘 Iniciando PHP-FPM..."
