@@ -24,27 +24,34 @@ fi
 # Dar permisos correctos
 echo "🔒 Configurando permisos..."
 
-# Crear toda la estructura de storage necesaria
+# Crear toda la estructura de storage necesaria (importante cuando hay volumen montado)
 mkdir -p /var/www/html/storage/app/public/obras
 mkdir -p /var/www/html/storage/app/public/config
 mkdir -p /var/www/html/storage/framework/cache/data
 mkdir -p /var/www/html/storage/framework/sessions
 mkdir -p /var/www/html/storage/framework/views
+mkdir -p /var/www/html/storage/framework/testing
 mkdir -p /var/www/html/storage/logs
 
 # Crear archivo de log si no existe
 touch /var/www/html/storage/logs/laravel.log
 
+# Crear .gitignore en storage si no existe (Laravel lo necesita)
+if [ ! -f /var/www/html/storage/.gitignore ]; then
+    echo "*" > /var/www/html/storage/.gitignore
+    echo "!.gitignore" >> /var/www/html/storage/.gitignore
+fi
+
 # Eliminar symlink anterior si existe (para recrearlo correctamente)
 rm -f /var/www/html/public/storage
 
-# Aplicar permisos correctos a www-data
+# Aplicar permisos correctos - IMPORTANTE: usar 777 para volúmenes Docker
+chmod -R 777 /var/www/html/storage
+chmod -R 777 /var/www/html/bootstrap/cache
+chmod -R 777 /var/www/html/database
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
 chown -R www-data:www-data /var/www/html/database
-chmod -R 775 /var/www/html/storage
-chmod -R 775 /var/www/html/bootstrap/cache
-chmod -R 775 /var/www/html/database
 
 echo "✅ Permisos configurados"
 
