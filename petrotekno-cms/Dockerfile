@@ -35,11 +35,16 @@ RUN apk add --no-cache \
     git \
     curl \
     oniguruma-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
     pdo \
     pdo_sqlite \
     zip \
-    mbstring
+    mbstring \
+    gd
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
