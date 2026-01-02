@@ -30,17 +30,12 @@ COPY composer.json composer.lock ./
 # Instalar dependencias de PHP
 RUN composer install \
     --no-dev \
-    --no-scripts \
-    --no-autoloader \
     --optimize-autoloader \
     --no-interaction \
     --prefer-dist
 
 # Copiar el resto de los archivos de la aplicación
 COPY . .
-
-# Completar instalación de Composer
-RUN composer dump-autoload --optimize
 
 # Crear estructura de directorios y permisos
 RUN mkdir -p \
