@@ -27,15 +27,19 @@ WORKDIR /var/www/html
 # Copiar solo archivos de dependencias primero (mejor caching)
 COPY composer.json composer.lock ./
 
-# Instalar dependencias de PHP
+# Instalar dependencias de PHP (sin scripts, los ejecutaremos después)
 RUN composer install \
     --no-dev \
+    --no-scripts \
     --optimize-autoloader \
     --no-interaction \
     --prefer-dist
 
 # Copiar el resto de los archivos de la aplicación
 COPY . .
+
+# Ejecutar scripts post-install de Laravel ahora que tenemos todos los archivos
+RUN composer run-script post-autoload-dump
 
 # Crear estructura de directorios y permisos
 RUN mkdir -p \
