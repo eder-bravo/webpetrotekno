@@ -1,5 +1,5 @@
 # Dockerfile for Petrotekno CMS (Laravel 12)
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Instalar dependencias del sistema y extensiones PHP necesarias
 RUN apk add --no-cache \
