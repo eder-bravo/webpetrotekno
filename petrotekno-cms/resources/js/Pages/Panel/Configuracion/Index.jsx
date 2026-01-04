@@ -4,9 +4,7 @@ import { Save, Upload, X, Key } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ConfiguracionIndex({ configuracion }) {
-    const [logoPreview, setLogoPreview] = useState(
-        configuracion.logo ? `/storage/${configuracion.logo}` : null
-    );
+    const [logoPreview, setLogoPreview] = useState('/images/logo.png?' + Date.now());
     const [cvFileName, setCvFileName] = useState(
         configuracion.cv_empresa ? configuracion.cv_empresa.split('/').pop() : null
     );
@@ -33,6 +31,10 @@ export default function ConfiguracionIndex({ configuracion }) {
         e.preventDefault();
         post('/panel/configuracion', {
             forceFormData: true,
+            onSuccess: () => {
+                setLogoPreview('/images/logo.png?' + Date.now());
+                setData('logo', null);
+            },
         });
     };
 
@@ -60,7 +62,7 @@ export default function ConfiguracionIndex({ configuracion }) {
 
     const removeLogo = () => {
         setData('logo', null);
-        setLogoPreview(null);
+        setLogoPreview('/images/logo.png?' + Date.now());
     };
 
     const handleCvChange = (e) => {
@@ -89,38 +91,38 @@ export default function ConfiguracionIndex({ configuracion }) {
                         </h2>
 
                         <div className="flex items-start gap-6">
-                            {logoPreview ? (
-                                <div className="relative">
-                                    <img
-                                        src={logoPreview}
-                                        alt="Logo"
-                                        className="h-24 object-contain bg-gray-900 rounded-lg p-4"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={removeLogo}
-                                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                                    >
-                                        <X className="w-4 h-4" />
-                                    </button>
+                            <div className="relative">
+                                <img
+                                    src={logoPreview}
+                                    alt="Logo"
+                                    className="h-24 object-contain bg-gray-900 rounded-lg p-4"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextElementSibling.style.display = 'flex';
+                                    }}
+                                />
+                                <div className="hidden h-24 w-48 items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                    <span className="text-gray-400">Sin logo</span>
                                 </div>
-                            ) : (
-                                <label className="flex flex-col items-center justify-center w-48 h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors">
-                                    <Upload className="w-6 h-6 text-gray-400 mb-1" />
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                                        Subir logo
+                            </div>
+                            <div className="flex-1">
+                                <label className="inline-flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors">
+                                    <Upload className="w-5 h-5 text-gray-400 mr-2" />
+                                    <span className="text-sm text-gray-600 dark:text-gray-300">
+                                        Cambiar logo
                                     </span>
                                     <input
                                         type="file"
                                         className="hidden"
-                                        accept="image/*"
+                                        accept="image/png"
                                         onChange={handleLogoChange}
                                     />
                                 </label>
-                            )}
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                                <p>Recomendado: PNG con fondo transparente</p>
-                                <p>Tamaño máximo: 2MB</p>
+                                <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <p><strong>Formato requerido:</strong> PNG con fondo transparente</p>
+                                    <p>Tamaño máximo: 2MB</p>
+                                    <p className="text-xs mt-1 text-gray-400">Ruta: /images/logo.png</p>
+                                </div>
                             </div>
                         </div>
                     </div>

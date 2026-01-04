@@ -188,10 +188,8 @@ class PublicController extends Controller
     {
         $config = Configuracion::todas();
         
-        // Procesar imagen del logo
-        if (!empty($config['logo'])) {
-            $config['logo'] = asset('storage/' . $config['logo']);
-        }
+        // No incluir el logo (se sirve desde /images/logo.png)
+        unset($config['logo']);
 
         // Eliminar código de acceso de la respuesta pública
         unset($config['codigo_acceso']);

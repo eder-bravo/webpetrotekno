@@ -34,7 +34,7 @@ class ConfiguracionController extends Controller
             'site_title' => 'nullable|string|max:255',
             'site_description' => 'nullable|string|max:500',
             'slogan' => 'nullable|string|max:255',
-            'logo' => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|mimes:png|max:2048',
             'cv_empresa' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
@@ -45,14 +45,24 @@ class ConfiguracionController extends Controller
             }
         }
 
-        // Subir logo si se proporciona
+        // Subir logo si se proporciona - siempre lo guarda como logo.png en public/images
         if ($request->hasFile('logo')) {
-            $logoActual = Configuracion::obtener('logo');
-            if ($logoActual) {
-                Storage::disk('public')->delete($logoActual);
+            $logoFile = $request->file('logo');
+            
+            // Asegurar que existe el directorio
+            $publicImagesPath = public_path('images');
+            if (!file_exists($publicImagesPath)) {
+                mkdir($publicImagesPath, 0755, true);
             }
-            $logoPath = $request->file('logo')->store('config', 'public');
-            Configuracion::establecer('logo', $logoPath, 'image');
+            
+            // Eliminar logo anterior si existe
+            $logoPath = public_path('images/logo.png');
+            if (file_exists($logoPath)) {
+                unlink($logoPath);
+            }
+            
+            // Mover el archivo a public/images/logo.png
+            $logoFile->move($publicImagesPath, 'logo.png');
         }
 
         // Subir CV de empresa si se proporciona

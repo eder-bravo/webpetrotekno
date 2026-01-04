@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useConfig } from '../hooks/useApi';
 import LogoLink from './LogoLink';
-import logo from '../assets/logo_blanco.png';
+import logoFallback from '../assets/logo_blanco.png';
 import './Navbar.css';
+
+const normalizeApiBaseUrl = (rawBaseUrl) => {
+    if (!rawBaseUrl) return '';
+    const trimmed = String(rawBaseUrl).trim().replace(/\/+$/, '');
+    if (!trimmed) return '';
+    return trimmed.replace(/\/api$/, '');
+};
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const { data: config } = useConfig();
+    const [logoSrc, setLogoSrc] = useState(logoFallback);
     const navigate = useNavigate();
     const location = useLocation();
+    
+    const apiBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
+    const currentMinute = Math.floor(Date.now() / 60000);
+    const logoUrl = apiBaseUrl ? `${apiBaseUrl}/images/logo.png?v=${currentMinute}` : `/images/logo.png?v=${currentMinute}`;
+
+    useEffect(() => {
+        const img = new Image();
+        img.onload = () => setLogoSrc(logoUrl);
+        img.onerror = () => setLogoSrc(logoFallback);
+        img.src = logoUrl;
+    }, [logoUrl]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -24,8 +41,6 @@ const Navbar = () => {
     // Si no estamos en la home, el navbar siempre debe tener fondo
     const isHome = location.pathname === '/';
     const shouldHaveBackground = !isHome || scrolled;
-
-    const logoSrc = config?.logo || logo;
 
     const handleNavigation = (path) => {
         setMenuOpen(false);

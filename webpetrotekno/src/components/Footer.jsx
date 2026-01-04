@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, Globe, Link2, MessageCircle, Send } from 'lucide-react';
 import { useConfig, useRedes } from '../hooks/useApi';
 import LogoLink from './LogoLink';
-import logo from '../assets/logo_blanco.png';
+import logoFallback from '../assets/logo_blanco.png';
 import './Footer.css';
+
+const normalizeApiBaseUrl = (rawBaseUrl) => {
+    if (!rawBaseUrl) return '';
+    const trimmed = String(rawBaseUrl).trim().replace(/\/+$/, '');
+    if (!trimmed) return '';
+    return trimmed.replace(/\/api$/, '');
+};
 
 // Mapeo de nombres de iconos a componentes
 const socialIconMap = {
@@ -42,6 +49,18 @@ const fallbackRedes = [
 const Footer = () => {
     const { data: config } = useConfig();
     const { data: redes } = useRedes();
+    const [logoSrc, setLogoSrc] = useState(logoFallback);
+
+    const apiBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
+    const currentMinute = Math.floor(Date.now() / 60000);
+    const logoUrl = apiBaseUrl ? `${apiBaseUrl}/images/logo.png?v=${currentMinute}` : `/images/logo.png?v=${currentMinute}`;
+
+    useEffect(() => {
+        const img = new Image();
+        img.onload = () => setLogoSrc(logoUrl);
+        img.onerror = () => setLogoSrc(logoFallback);
+        img.src = logoUrl;
+    }, [logoUrl]);
 
     const displayConfig = config || fallbackConfig;
     const displayRedes = redes && redes.length > 0 ? redes : fallbackRedes;
@@ -57,7 +76,7 @@ const Footer = () => {
                 <div className="footer-content">
                     <div className="footer-logo">
                         <LogoLink>
-                            <img src={displayConfig.logo || logo} alt="Petrotekno Logo" className="footer-logo-img" />
+                            <img src={logoSrc} alt="Petrotekno Logo" className="footer-logo-img" />
                         </LogoLink>
                         <p>{displayConfig.slogan}</p>
                     </div>
