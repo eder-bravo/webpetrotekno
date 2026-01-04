@@ -22,10 +22,30 @@ test('Generate Screenshots', async ({ page, request }) => {
   await page.waitForLoadState('networkidle');
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-dashboard.png'), fullPage: true });
 
+  // Obras List
+  await page.goto('/panel/obras');
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-obras-list.png'), fullPage: true });
+
   // Obras Editor (Create New)
   await page.goto('/panel/obras/create');
   await page.waitForLoadState('networkidle');
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-obras-editor.png'), fullPage: true });
+
+  // Servicios List
+  await page.goto('/panel/servicios');
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-servicios-list.png'), fullPage: true });
+
+  // Servicios Editor (Create New)
+  await page.goto('/panel/servicios/create');
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-servicios-editor.png'), fullPage: true });
+
+  // Configuración
+  await page.goto('/panel/configuracion');
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-configuracion.png'), fullPage: true });
 
   // --- Frontend Screenshots ---
   console.log('Taking Frontend Screenshots...');

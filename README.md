@@ -193,9 +193,17 @@ Consulta la documentación detallada en la carpeta `docs/`:
 
 ### Backend (CMS)
 
-| Dashboard | Editor de Obras |
-|-----------|-----------------|
-| ![Dashboard](docs/screenshots/panel-dashboard.png) | ![Editor](docs/screenshots/panel-obras-editor.png) |
+| Dashboard | Configuración |
+|-----------|---------------|
+| ![Dashboard](docs/screenshots/panel-dashboard.png) | ![Configuración](docs/screenshots/panel-configuracion.png) |
+
+| Lista de Obras | Editor de Obras |
+|----------------|-----------------|
+| ![Lista Obras](docs/screenshots/panel-obras-list.png) | ![Editor Obras](docs/screenshots/panel-obras-editor.png) |
+
+| Lista de Servicios | Editor de Servicios |
+|--------------------|---------------------|
+| ![Lista Servicios](docs/screenshots/panel-servicios-list.png) | ![Editor Servicios](docs/screenshots/panel-servicios-editor.png) |
 
 ### Frontend (Público)
 
