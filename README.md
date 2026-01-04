@@ -191,11 +191,21 @@ Consulta la documentación detallada en la carpeta `docs/`:
 
 ## 📸 Screenshots
 
-Se recomienda documentar visualmente el proyecto. Guarda las capturas en `docs/screenshots/`:
-- `panel-dashboard.png`
-- `panel-obras-editor.png`
-- `mapa-interactivo.png`
-- `homepage.png`
+### Backend (CMS)
+
+| Dashboard | Editor de Obras |
+|-----------|-----------------|
+| ![Dashboard](docs/screenshots/panel-dashboard.png) | ![Editor](docs/screenshots/panel-obras-editor.png) |
+
+### Frontend (Público)
+
+| Homepage | Mapa Interactivo |
+|----------|------------------|
+| ![Homepage](docs/screenshots/homepage.png) | ![Mapa](docs/screenshots/mapa-interactivo.png) |
+
+| Detalle de Obra | Contacto |
+|-----------------|----------|
+| ![Detalle](docs/screenshots/obra-detalle.png) | ![Contacto](docs/screenshots/contacto.png) |
 
 ## 📄 Licencia
 
