@@ -3,6 +3,7 @@
 > Sistema web integral para empresa de ingeniería y construcción, compuesto por un CMS administrativo y un sitio público de alto rendimiento.
 
 ![Status](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
+![License](https://img.shields.io/badge/License-Proprietary-lightgrey)
 ![Laravel](https://img.shields.io/badge/Laravel-12.0-FF2D20?logo=laravel&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-7.0-646CFF?logo=vite&logoColor=white)
@@ -217,4 +218,6 @@ Consulta la documentación detallada en la carpeta `docs/`:
 
 ## 📄 Licencia
 
-Este proyecto es privado y confidencial. Todos los derechos reservados.
+Este repositorio se publica con fines de portafolio/demostración. **No se otorga permiso** para usar, modificar, redistribuir o vender este software.
+
+Ver [LICENSE](LICENSE).
