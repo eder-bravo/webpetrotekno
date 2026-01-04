@@ -131,7 +131,6 @@ export default function ConfiguracionIndex({ configuracion }) {
                                 <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                     <p><strong>Formato requerido:</strong> PNG con fondo transparente</p>
                                     <p>Tamaño máximo: 2MB</p>
-                                    <p className="text-xs mt-1 text-gray-400">Ruta: /images/logo.png</p>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +152,7 @@ export default function ConfiguracionIndex({ configuracion }) {
                                             </svg>
                                         </div>
                                         <div>
-                                            <p className="font-medium text-gray-900 dark:text-white">{cvFileName}</p>
+                                            <p className="font-medium text-gray-900 dark:text-white">CV de la empresa.pdf</p>
                                             <p className="text-sm text-gray-500 dark:text-gray-400">PDF</p>
                                         </div>
                                     </div>
