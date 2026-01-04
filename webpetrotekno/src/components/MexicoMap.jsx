@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import Mexico from '@svg-maps/mexico';
 import { motion } from 'framer-motion';
+import { useObrasPorEstado } from '../hooks/useApi';
 import './MexicoMap.css';
 
-// Project data mapped by state ID. 
-// IDs strictly match those found in node_modules/@svg-maps/mexico/index.js ('tam', 'nle', etc.)
-const projectData = {
-    "tam": { count: 3, description: "Infraestructura portuaria" },
-    "nle": { count: 5, description: "Edificios corporativos" }
-};
-
 const MexicoMap = () => {
+    const navigate = useNavigate();
+    // Cargar datos dinámicos de obras por estado desde la API
+    const { data: obrasPorEstado, loading } = useObrasPorEstado();
+    
     // hoveredLocation: Controls VISIBILITY only (true/false equivalent)
     const [hoveredLocation, setHoveredLocation] = useState(null);
     // tooltipContent: Controls CONTENT. Persists even when hoveredLocation is null to allow exit animation.
@@ -23,8 +22,8 @@ const MexicoMap = () => {
     const handleLocationMouseOver = (event, location) => {
         const locationId = location.id;
         const locationName = location.name;
-        // Check if we have data for this location
-        const data = projectData[locationId] || {};
+        // Check if we have data for this location from the API
+        const data = obrasPorEstado?.[locationId] || {};
 
         // Update position immediately
         setTooltipPosition({ x: event.clientX, y: event.clientY });
@@ -32,8 +31,8 @@ const MexicoMap = () => {
         // Update content to be shown
         setTooltipContent({
             id: locationId,
-            name: locationName,
-            ...data
+            name: data.name || locationName,
+            count: data.count || 0,
         });
 
         // Trigger visibility
@@ -52,8 +51,18 @@ const MexicoMap = () => {
         }
     };
 
+    const handleLocationClick = (locationId) => {
+        // Solo navegar si el estado tiene obras
+        if (obrasPorEstado?.[locationId]?.count > 0) {
+            navigate(`/obras?estado=${locationId}`);
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }, 0);
+        }
+    };
+
     const getLocationClassName = (locationId) => {
-        if (projectData[locationId]) {
+        if (obrasPorEstado?.[locationId]?.count > 0) {
             return 'svg-map__location--highlighted';
         }
         return 'svg-map__location';
@@ -71,24 +80,42 @@ const MexicoMap = () => {
                 </div>
 
                 <div className="map-container" onMouseMove={handleMouseMove}>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox={Mexico.viewBox}
-                        className="mexico-svg-map"
-                        aria-label={Mexico.label}
-                    >
-                        {Mexico.locations.map((location) => (
-                            <path
-                                key={location.id}
-                                id={location.id}
-                                name={location.name}
-                                d={location.path}
-                                className={getLocationClassName(location.id)}
-                                onMouseOver={(e) => handleLocationMouseOver(e, location)}
-                                onMouseOut={handleLocationMouseOut}
-                            />
-                        ))}
-                    </svg>
+                    {loading ? (
+                        <div style={{ padding: '4rem', color: '#999' }}>Cargando mapa...</div>
+                    ) : (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox={Mexico.viewBox}
+                            className="mexico-svg-map"
+                            aria-label={Mexico.label}
+                        >
+                            {Mexico.locations.map((location) => (
+                                <path
+                                    key={location.id}
+                                    id={location.id}
+                                    name={location.name}
+                                    d={location.path}
+                                    className={getLocationClassName(location.id)}
+                                    onMouseOver={(e) => handleLocationMouseOver(e, location)}
+                                    onMouseOut={handleLocationMouseOut}
+                                    onClick={() => handleLocationClick(location.id)}
+                                    style={{ cursor: obrasPorEstado?.[location.id]?.count > 0 ? 'pointer' : 'default' }}
+                                />
+                            ))}
+                        </svg>
+                    )}
+                </div>
+
+                {/* Leyenda */}
+                <div className="map-legend">
+                    <div className="legend-item">
+                        <span className="legend-color legend-highlighted"></span>
+                        <span>Estados con obras (clic para ver)</span>
+                    </div>
+                    <div className="legend-item">
+                        <span className="legend-color legend-default"></span>
+                        <span>Próximamente</span>
+                    </div>
                 </div>
 
                 {/* Persistent Tooltip: Always rendered, opacity toggled. */}
@@ -114,13 +141,13 @@ const MexicoMap = () => {
                         {tooltipContent && (
                             <>
                                 <h4>{tooltipContent.name}</h4>
-                                {tooltipContent.count ? (
+                                {tooltipContent.count > 0 ? (
                                     <>
-                                        <p className="highlight-text">{tooltipContent.count} Obras</p>
-                                        <p>{tooltipContent.description}</p>
+                                        <p className="highlight-text">{tooltipContent.count} {tooltipContent.count === 1 ? 'Obra' : 'Obras'}</p>
+                                        <p className="tooltip-action">Clic para ver obras</p>
                                     </>
                                 ) : (
-                                    <p>Cobertura disponible</p>
+                                    <p>Próximamente</p>
                                 )}
                             </>
                         )}

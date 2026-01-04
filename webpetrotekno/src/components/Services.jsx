@@ -1,31 +1,61 @@
 import React from 'react';
-import { Truck, Hammer, Buildings, Ruler } from '@phosphor-icons/react';
+import * as PhosphorIcons from '@phosphor-icons/react';
+import { useServicios } from '../hooks/useApi';
 import './Services.css';
 
-const servicesData = [
+// Mapeo de nombres de iconos a componentes
+const iconMap = {
+    Buildings: PhosphorIcons.Buildings,
+    Truck: PhosphorIcons.Truck,
+    Hammer: PhosphorIcons.Hammer,
+    Ruler: PhosphorIcons.Ruler,
+    Wrench: PhosphorIcons.Wrench,
+    HardHat: PhosphorIcons.HardHat,
+    Crane: PhosphorIcons.Crane,
+    Factory: PhosphorIcons.Factory,
+    Path: PhosphorIcons.Path,
+    BridgeIcon: PhosphorIcons.Bridge,
+};
+
+// Datos de fallback cuando la API no está disponible
+const fallbackData = [
     {
-        icon: <Buildings size={40} weight="duotone" />,
-        title: "Edificación Vertical",
-        description: "Construcción de complejos corporativos y residenciales con los más altos estándares de seguridad."
+        id: 1,
+        icono: 'Buildings',
+        titulo: "Edificación Vertical",
+        descripcion_corta: "Construcción de complejos corporativos y residenciales con los más altos estándares de seguridad."
     },
     {
-        icon: <Truck size={40} weight="duotone" />,
-        title: "Infraestructura Vial",
-        description: "Carreteras, puentes y pavimentación desarrollados para durar y conectar comunidades."
+        id: 2,
+        icono: 'Truck',
+        titulo: "Infraestructura Vial",
+        descripcion_corta: "Carreteras, puentes y pavimentación desarrollados para durar y conectar comunidades."
     },
     {
-        icon: <Hammer size={40} weight="duotone" />,
-        title: "Obra Industrial",
-        description: "Naves industriales y plantas de manufactura optimizadas para la productividad."
+        id: 3,
+        icono: 'Hammer',
+        titulo: "Obra Industrial",
+        descripcion_corta: "Naves industriales y plantas de manufactura optimizadas para la productividad."
     },
     {
-        icon: <Ruler size={40} weight="duotone" />,
-        title: "Proyectos Llave en Mano",
-        description: "Gestión integral desde el diseño hasta la entrega final operativa."
+        id: 4,
+        icono: 'Ruler',
+        titulo: "Proyectos Llave en Mano",
+        descripcion_corta: "Gestión integral desde el diseño hasta la entrega final operativa."
     }
 ];
 
 const Services = () => {
+    const { data: servicios, loading, error } = useServicios();
+    
+    // Usar datos de la API o fallback
+    const displayData = servicios && servicios.length > 0 ? servicios : fallbackData;
+
+    const getIcon = (iconName) => {
+        const IconComponent = iconMap[iconName] || PhosphorIcons.Wrench;
+        return <IconComponent size={40} weight="duotone" />;
+    };
+
     return (
         <section id="services" className="services section-padding">
             <div className="container">
@@ -36,13 +66,15 @@ const Services = () => {
                 </div>
 
                 <div className="services-grid">
-                    {servicesData.map((service, index) => (
-                        <div key={index} className="service-card">
-                            <div className="service-icon">{service.icon}</div>
-                            <h3>{service.title}</h3>
-                            <p>{service.description}</p>
-                            <a href="#" className="service-link">Leer más &rarr;</a>
-                        </div>
+                    {displayData.map((service) => (
+                        <a key={service.id} href="#" className="service-card">
+                            <div className="service-icon">
+                                {getIcon(service.icono)}
+                            </div>
+                            <h3>{service.titulo}</h3>
+                            <p>{service.descripcion_corta}</p>
+                            <span className="service-link">LEER MÁS →</span>
+                        </a>
                     ))}
                 </div>
             </div>

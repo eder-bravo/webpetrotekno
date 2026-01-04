@@ -1,24 +1,21 @@
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Stats from './components/Stats';
-import TechnicalCapacity from './components/TechnicalCapacity';
-import MexicoMap from './components/MexicoMap';
-import Portfolio from './components/Portfolio';
-import Footer from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Obras from './pages/Obras';
+import ObraDetalle from './pages/ObraDetalle';
+import Contacto from './pages/Contacto';
 
 function App() {
   return (
-    <div className="app">
-      <Navbar />
-      <Hero />
-      <Services />
-      <TechnicalCapacity />
-      <Stats />
-      <MexicoMap />
-      <Portfolio />
-      <Footer />
-    </div>
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/obras" element={<Obras />} />
+          <Route path="/obras/:slug" element={<ObraDetalle />} />
+          <Route path="/contacto" element={<Contacto />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
