@@ -5,46 +5,58 @@ const SCREENSHOTS_DIR = path.join(__dirname, '../../../docs/screenshots');
 const FRONTEND_URL = 'http://localhost:5174';
 
 test('Generate Screenshots', async ({ page, request }) => {
-  test.setTimeout(60000); // Increase timeout
+  test.setTimeout(90000);
 
   // --- Backend Screenshots ---
   console.log('Taking Backend Screenshots...');
-  await page.goto('/panel/login');
   
-  // Check if already logged in or need login
-  if (await page.isVisible('input[name="codigo_acceso"]')) {
-      await page.fill('input[name="codigo_acceso"]', 'petrotekno2024');
-      await page.click('button[type="submit"]');
-      await page.waitForURL('**/panel');
-  }
+  // Go to login page
+  await page.goto('http://127.0.0.1:8000/panel/login');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
+  
+  // Login with password petrotekno2024
+  await page.locator('input[name="codigo_acceso"]').fill('petrotekno2024');
+  await page.locator('button[type="submit"]').click();
+  await page.waitForTimeout(4000);
   
   // Dashboard
-  await page.waitForLoadState('networkidle');
+  console.log('Capturing Dashboard...');
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-dashboard.png'), fullPage: true });
 
   // Obras List
-  await page.goto('/panel/obras');
-  await page.waitForLoadState('networkidle');
+  console.log('Capturing Obras List...');
+  await page.goto('http://127.0.0.1:8000/panel/obras');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-obras-list.png'), fullPage: true });
 
-  // Obras Editor (Create New)
-  await page.goto('/panel/obras/create');
-  await page.waitForLoadState('networkidle');
+  // Obras Editor
+  console.log('Capturing Obras Editor...');
+  await page.goto('http://127.0.0.1:8000/panel/obras/create');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-obras-editor.png'), fullPage: true });
 
   // Servicios List
-  await page.goto('/panel/servicios');
-  await page.waitForLoadState('networkidle');
+  console.log('Capturing Servicios List...');
+  await page.goto('http://127.0.0.1:8000/panel/servicios');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-servicios-list.png'), fullPage: true });
 
-  // Servicios Editor (Create New)
-  await page.goto('/panel/servicios/create');
-  await page.waitForLoadState('networkidle');
+  // Servicios Editor
+  console.log('Capturing Servicios Editor...');
+  await page.goto('http://127.0.0.1:8000/panel/servicios/create');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-servicios-editor.png'), fullPage: true });
 
   // Configuración
-  await page.goto('/panel/configuracion');
-  await page.waitForLoadState('networkidle');
+  console.log('Capturing Configuracion...');
+  await page.goto('http://127.0.0.1:8000/panel/configuracion');
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'panel-configuracion.png'), fullPage: true });
 
   // --- Frontend Screenshots ---
