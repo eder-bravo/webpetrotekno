@@ -14,7 +14,8 @@ RUN npm ci --legacy-peer-deps
 COPY . .
 
 # Declarar variable de entorno para el build
-ARG VITE_API_URL
+# Esta debe ser pasada con --build-arg durante docker build
+ARG VITE_API_URL=https://cmspetro.110694.xyz
 ENV VITE_API_URL=$VITE_API_URL
 
 # Build de producción (Vite leerá VITE_API_URL del environment)
