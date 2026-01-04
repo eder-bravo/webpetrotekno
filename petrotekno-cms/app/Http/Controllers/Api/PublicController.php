@@ -235,3 +235,5 @@ class PublicController extends Controller
 
         return response()->download($fullPath, 'CV-Empresa-Petrotekno.pdf');
     }
+
+}

@@ -1,4 +1,13 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+function normalizeApiBaseUrl(rawBaseUrl) {
+    if (!rawBaseUrl) return '/api';
+
+    const trimmed = String(rawBaseUrl).trim().replace(/\/+$/, '');
+    if (!trimmed) return '/api';
+
+    return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+}
+
+const API_URL = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
 
 /**
  * Función base para hacer peticiones a la API

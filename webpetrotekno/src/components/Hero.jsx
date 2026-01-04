@@ -5,8 +5,17 @@ import './Hero.css';
 
 import videoBg from '../assets/video_petro.mp4';
 
+const normalizeApiBaseUrl = (rawBaseUrl) => {
+    if (!rawBaseUrl) return '/api';
+    const trimmed = String(rawBaseUrl).trim().replace(/\/+$/, '');
+    if (!trimmed) return '/api';
+    return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
+
 const Hero = () => {
     const [videoLoaded, setVideoLoaded] = useState(false);
+    const apiBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
+    const cvUrl = `${apiBaseUrl}/config/cv-empresa`;
 
     return (
         <section id="hero" className="hero">
@@ -54,7 +63,7 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                    <a href="/api/config/cv-empresa" target="_blank" rel="noopener noreferrer" className="btn">Descargar CV</a>
+                    <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="btn">Descargar CV</a>
                     <a href="/contacto" className="btn btn-outline">Contáctanos</a>
                 </motion.div>
             </div>

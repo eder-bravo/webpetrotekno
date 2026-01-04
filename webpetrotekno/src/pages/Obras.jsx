@@ -58,7 +58,7 @@ function Obras() {
     const [selectedEstado, setSelectedEstado] = useState(estadoParam || '');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     
-    const { data: obras, loading } = useObras();
+    const { data: obras, loading, error } = useObras();
     const navigate = useNavigate();
 
     // Actualizar selectedEstado cuando cambia el parámetro de URL
@@ -237,6 +237,12 @@ function Obras() {
                         </div>
                     )}
 
+                    {!loading && error && (
+                        <div className="empty-message">
+                            Error cargando obras: {error}
+                        </div>
+                    )}
+
                     {/* Contenido agrupado por estado */}
                     {!loading && !selectedEstado && Object.keys(obrasPorEstado).length > 0 && (
                         <div className="obras-grouped">
@@ -309,7 +315,7 @@ function Obras() {
                     )}
 
                     {/* Mensaje si no hay obras */}
-                    {!loading && filteredObras.length === 0 && (
+                    {!loading && !error && filteredObras.length === 0 && (
                         <div className="empty-message">
                             {selectedEstado 
                                 ? `No hay obras disponibles en ${ESTADOS_MEXICO[selectedEstado]}.`
