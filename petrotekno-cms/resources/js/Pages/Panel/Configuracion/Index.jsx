@@ -4,6 +4,8 @@ import { Save, Upload, X, Key } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ConfiguracionIndex({ configuracion }) {
+    // Estado para controlar si se está mostrando un preview temporal o el logo guardado
+    const [isPreviewingNewLogo, setIsPreviewingNewLogo] = useState(false);
     const [logoPreview, setLogoPreview] = useState('/images/logo.png?' + Date.now());
     const [cvFileName, setCvFileName] = useState(
         configuracion.cv_empresa ? configuracion.cv_empresa.split('/').pop() : null
@@ -32,7 +34,10 @@ export default function ConfiguracionIndex({ configuracion }) {
         post('/panel/configuracion', {
             forceFormData: true,
             onSuccess: () => {
-                setLogoPreview('/images/logo.png?' + Date.now());
+                // Después de guardar exitosamente, resetear el estado
+                const newTimestamp = Date.now();
+                setLogoPreview('/images/logo.png?' + newTimestamp);
+                setIsPreviewingNewLogo(false);
                 setData('logo', null);
             },
         });
@@ -52,6 +57,7 @@ export default function ConfiguracionIndex({ configuracion }) {
         const file = e.target.files?.[0];
         if (file) {
             setData('logo', file);
+            setIsPreviewingNewLogo(true);
             const reader = new FileReader();
             reader.onload = (e) => {
                 setLogoPreview(e.target.result);
@@ -62,6 +68,7 @@ export default function ConfiguracionIndex({ configuracion }) {
 
     const removeLogo = () => {
         setData('logo', null);
+        setIsPreviewingNewLogo(false);
         setLogoPreview('/images/logo.png?' + Date.now());
     };
 
@@ -93,23 +100,17 @@ export default function ConfiguracionIndex({ configuracion }) {
                         <div className="flex items-start gap-6">
                             <div className="relative">
                                 <img
+                                    key={logoPreview}
                                     src={logoPreview}
                                     alt="Logo"
                                     className="h-24 object-contain bg-gray-900 rounded-lg p-4"
-                                    onError={(e) => {
-                                        e.target.style.display = 'none';
-                                        e.target.nextElementSibling.style.display = 'flex';
-                                    }}
                                 />
-                                <div className="hidden h-24 w-48 items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                    <span className="text-gray-400">Sin logo</span>
-                                </div>
                             </div>
                             <div className="flex-1">
                                 <label className="inline-flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors">
                                     <Upload className="w-5 h-5 text-gray-400 mr-2" />
                                     <span className="text-sm text-gray-600 dark:text-gray-300">
-                                        Cambiar logo
+                                        {isPreviewingNewLogo ? 'Cambiar logo seleccionado' : 'Cambiar logo'}
                                     </span>
                                     <input
                                         type="file"
@@ -118,6 +119,15 @@ export default function ConfiguracionIndex({ configuracion }) {
                                         onChange={handleLogoChange}
                                     />
                                 </label>
+                                {isPreviewingNewLogo && (
+                                    <button
+                                        type="button"
+                                        onClick={removeLogo}
+                                        className="mt-2 text-sm text-red-600 hover:text-red-700"
+                                    >
+                                        Cancelar y usar logo actual
+                                    </button>
+                                )}
                                 <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                     <p><strong>Formato requerido:</strong> PNG con fondo transparente</p>
                                     <p>Tamaño máximo: 2MB</p>
