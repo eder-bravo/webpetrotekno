@@ -233,7 +233,21 @@ class PublicController extends Controller
             return response()->json(['error' => 'Archivo no encontrado'], 404);
         }
 
-        return response()->download($fullPath, 'CV-Empresa-Petrotekno.pdf');
+        $mimeType = mime_content_type($fullPath);
+        $fileName = basename($fullPath);
+        
+        // Para PDFs e imágenes, usar 'inline' para previsualización
+        $previewTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+        
+        if (in_array($mimeType, $previewTypes)) {
+            return response()->file($fullPath, [
+                'Content-Type' => $mimeType,
+                'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+            ]);
+        }
+        
+        // Para otros tipos de archivo, forzar descarga
+        return response()->download($fullPath, $fileName);
     }
 
 }
