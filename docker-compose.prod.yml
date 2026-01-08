@@ -1,12 +1,7 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
-#
-# IMPORTANTE: Los servicios DEBEN estar en dokploy-network
-# para que Traefik pueda descubrirlos y rutear el tráfico
+# Versión simplificada - sin configuración de red personalizada
 
 services:
-  # ==========================================
-  # BACKEND - Laravel CMS (PHP + Nginx)
-  # ==========================================
   backend:
     build:
       context: ./petrotekno-cms
@@ -31,18 +26,13 @@ services:
       - petrotekno_storage:/var/www/html/storage/app/public
       - petrotekno_database:/var/www/html/database
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/config" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/config"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
-    networks:
-      - dokploy-network
     restart: always
 
-  # ==========================================
-  # FRONTEND - React SPA (Nginx)
-  # ==========================================
   frontend:
     build:
       context: ./webpetrotekno
@@ -52,22 +42,8 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    networks:
-      - dokploy-network
     restart: always
 
-# ==========================================
-# VOLÚMENES PERSISTENTES
-# ==========================================
 volumes:
   petrotekno_storage:
-    name: petrotekno_storage
   petrotekno_database:
-    name: petrotekno_database
-
-# ==========================================
-# RED - Conectar a la red de Dokploy/Traefik
-# ==========================================
-networks:
-  dokploy-network:
-    external: true
