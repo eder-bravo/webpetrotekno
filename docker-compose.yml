@@ -1,0 +1,94 @@
+# Docker Compose para Petrotekno - Desarrollo Local
+#
+# USO:
+#   docker-compose up --build          # Construir e iniciar todo
+#   docker-compose up -d               # Iniciar en background
+#   docker-compose logs -f             # Ver logs
+#   docker-compose down                # Detener todo
+#   docker-compose down -v             # Detener y eliminar volúmenes
+#
+# ACCESO:
+#   Frontend: http://localhost:3000
+#   Backend:  http://localhost:8080
+#   API:      http://localhost:8080/api/config
+
+services:
+  # ==========================================
+  # BACKEND - Laravel CMS (PHP + Nginx)
+  # ==========================================
+  backend:
+    build:
+      context: ./petrotekno-cms
+      dockerfile: Dockerfile
+    container_name: petrotekno-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_NAME=Petrotekno CMS
+      - APP_ENV=local
+      - APP_KEY=${APP_KEY:-base64:iFY1y0lhKpRBrDoo85ATTsyNzGervYO5+Xu/mBnPyH4=}
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - APP_LOCALE=es
+      - APP_FALLBACK_LOCALE=es
+      - APP_FAKER_LOCALE=es_MX
+      - LOG_CHANNEL=stack
+      - LOG_LEVEL=debug
+      - DB_CONNECTION=sqlite
+      - SESSION_DRIVER=file
+      - SESSION_LIFETIME=120
+      - CACHE_STORE=file
+      - QUEUE_CONNECTION=sync
+      - FILESYSTEM_DISK=local
+    volumes:
+      # Persistencia de datos
+      - backend_storage:/var/www/html/storage/app/public
+      - backend_database:/var/www/html/database
+      # Config nginx para desarrollo (sin HTTPS forzado)
+      - ./petrotekno-cms/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/config" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - petrotekno-network
+    restart: unless-stopped
+
+  # ==========================================
+  # FRONTEND - React SPA (Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./webpetrotekno
+      dockerfile: Dockerfile
+      args:
+        # En desarrollo local, el frontend llama al backend por el puerto expuesto
+        - VITE_API_URL=http://localhost:8080
+    container_name: petrotekno-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - petrotekno-network
+    restart: unless-stopped
+
+# ==========================================
+# VOLÚMENES PERSISTENTES
+# ==========================================
+volumes:
+  backend_storage:
+    name: petrotekno_storage
+  backend_database:
+    name: petrotekno_database
+
+# ==========================================
+# RED INTERNA
+# ==========================================
+networks:
+  petrotekno-network:
+    name: petrotekno-network
+    driver: bridge

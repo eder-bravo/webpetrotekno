@@ -11,3 +11,4 @@ Route::get('/servicios', [PublicController::class, 'servicios']);
 Route::get('/servicios/{slug}', [PublicController::class, 'servicio']);
 Route::get('/config', [PublicController::class, 'config']);
 Route::get('/config/cv-empresa', [PublicController::class, 'descargarCv']);
+Route::get('/redes', [PublicController::class, 'redes']);
