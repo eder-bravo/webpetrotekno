@@ -1,7 +1,7 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
 #
 # Este archivo está optimizado para despliegue en Dokploy
-# Los dominios se configuran en la interfaz de Dokploy, NO con labels de Traefik
+# Los dominios se configuran en la interfaz de Dokploy
 
 services:
   # ==========================================
@@ -11,7 +11,6 @@ services:
     build:
       context: ./petrotekno-cms
       dockerfile: Dockerfile
-    container_name: petrotekno-backend
     environment:
       - APP_NAME=${APP_NAME:-Petrotekno CMS}
       - APP_ENV=production
@@ -37,10 +36,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-    networks:
-      - dokploy-network
-    expose:
-      - "8080"
     restart: always
 
   # ==========================================
@@ -52,14 +47,9 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_URL=${BACKEND_URL:-https://cms.petrotekno.com}
-    container_name: petrotekno-frontend
     depends_on:
       backend:
         condition: service_healthy
-    networks:
-      - dokploy-network
-    expose:
-      - "80"
     restart: always
 
 # ==========================================
@@ -70,10 +60,3 @@ volumes:
     name: petrotekno_storage
   petrotekno_database:
     name: petrotekno_database
-
-# ==========================================
-# RED - Usar la red de Dokploy
-# ==========================================
-networks:
-  dokploy-network:
-    external: true
