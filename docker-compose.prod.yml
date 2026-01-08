@@ -39,6 +39,8 @@ services:
       start_period: 60s
     networks:
       - dokploy-network
+    expose:
+      - "8080"
     restart: always
 
   # ==========================================
@@ -56,6 +58,8 @@ services:
         condition: service_healthy
     networks:
       - dokploy-network
+    expose:
+      - "80"
     restart: always
 
 # ==========================================
