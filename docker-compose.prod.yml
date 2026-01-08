@@ -1,7 +1,7 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
 #
-# Este archivo está optimizado para despliegue en Dokploy
-# Los dominios se configuran en la interfaz de Dokploy
+# IMPORTANTE: Los servicios DEBEN estar en dokploy-network
+# para que Traefik pueda descubrirlos y rutear el tráfico
 
 services:
   # ==========================================
@@ -36,6 +36,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    networks:
+      - dokploy-network
     restart: always
 
   # ==========================================
@@ -50,6 +52,8 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    networks:
+      - dokploy-network
     restart: always
 
 # ==========================================
@@ -60,3 +64,10 @@ volumes:
     name: petrotekno_storage
   petrotekno_database:
     name: petrotekno_database
+
+# ==========================================
+# RED - Conectar a la red de Dokploy/Traefik
+# ==========================================
+networks:
+  dokploy-network:
+    external: true
