@@ -1,7 +1,7 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
 #
 # Este archivo está optimizado para despliegue en Dokploy
-# Usa este archivo en lugar del docker-compose.yml de desarrollo
+# Los dominios se configuran en la interfaz de Dokploy, NO con labels de Traefik
 
 services:
   # ==========================================
@@ -29,7 +29,6 @@ services:
       - QUEUE_CONNECTION=sync
       - FILESYSTEM_DISK=local
     volumes:
-      # Persistencia de datos - IMPORTANTE para que no se pierdan entre deploys
       - petrotekno_storage:/var/www/html/storage/app/public
       - petrotekno_database:/var/www/html/database
     healthcheck:
@@ -39,14 +38,8 @@ services:
       retries: 3
       start_period: 60s
     networks:
-      - petrotekno-network
+      - dokploy-network
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`${BACKEND_DOMAIN:-cms.petrotekno.com}`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.backend.loadbalancer.server.port=8080"
 
   # ==========================================
   # FRONTEND - React SPA (Nginx)
@@ -56,21 +49,14 @@ services:
       context: ./webpetrotekno
       dockerfile: Dockerfile
       args:
-        # URL del backend para las llamadas API
         - VITE_API_URL=${BACKEND_URL:-https://cms.petrotekno.com}
     container_name: petrotekno-frontend
     depends_on:
       backend:
         condition: service_healthy
     networks:
-      - petrotekno-network
+      - dokploy-network
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_DOMAIN:-petrotekno.com}`) || Host(`${FRONTEND_DOMAIN_WWW:-www.petrotekno.com}`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
 
 # ==========================================
 # VOLÚMENES PERSISTENTES
@@ -82,9 +68,8 @@ volumes:
     name: petrotekno_database
 
 # ==========================================
-# RED
+# RED - Usar la red de Dokploy
 # ==========================================
 networks:
-  petrotekno-network:
-    name: petrotekno-network
-    driver: bridge
+  dokploy-network:
+    external: true
