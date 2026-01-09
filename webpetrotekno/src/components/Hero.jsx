@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import './Hero.css';
 
 import videoBg from '../assets/video_petro.mp4';
+import videoPoster from '../assets/video_poster.jpg';
 
 const normalizeApiBaseUrl = (rawBaseUrl) => {
     if (!rawBaseUrl) return '/api';
@@ -19,16 +20,16 @@ const Hero = () => {
 
     const handleCvClick = async (e) => {
         e.preventDefault();
-        
+
         try {
             // Hacer petición HEAD para obtener el tipo de contenido
             const response = await fetch(cvUrl, { method: 'HEAD' });
             const contentType = response.headers.get('content-type');
-            
+
             // Tipos que se pueden previsualizar en el navegador
             const previewTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
             const canPreview = previewTypes.some(type => contentType?.includes(type));
-            
+
             if (canPreview) {
                 // Abrir en nueva pestaña para previsualización
                 window.open(cvUrl, '_blank', 'noopener,noreferrer');
@@ -57,6 +58,7 @@ const Hero = () => {
                     loop
                     muted
                     playsInline
+                    poster={videoPoster}
                     className={`hero-video ${videoLoaded ? 'video-loaded' : ''}`}
                     onLoadedData={() => setVideoLoaded(true)}
                     style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out' }}
