@@ -1,12 +1,8 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
 #
-# IMPORTANTE: Los servicios DEBEN estar en dokploy-network
-# para que Traefik los descubra automáticamente
+# Los servicios DEBEN estar en dokploy-network para Traefik
 
 services:
-  # ==========================================
-  # BACKEND - Laravel CMS (PHP + Nginx)
-  # ==========================================
   backend:
     build:
       context: ./petrotekno-cms
@@ -42,14 +38,11 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.petrotekno-backend.rule=Host(`cmspetrotekno.110694.xyz`)"
-      - "traefik.http.routers.petrotekno-backend.entrypoints=websecure"
-      - "traefik.http.routers.petrotekno-backend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.petrotekno-backend.loadbalancer.server.port=8080"
+      - "traefik.http.routers.cms-petro-2026.rule=Host(`cmspetrotekno.110694.xyz`)"
+      - "traefik.http.routers.cms-petro-2026.entrypoints=websecure"
+      - "traefik.http.routers.cms-petro-2026.tls.certresolver=letsencrypt"
+      - "traefik.http.services.cms-petro-2026-svc.loadbalancer.server.port=8080"
 
-  # ==========================================
-  # FRONTEND - React SPA (Nginx)
-  # ==========================================
   frontend:
     build:
       context: ./webpetrotekno
@@ -65,23 +58,17 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.petrotekno-frontend.rule=Host(`webpetrotekno.110694.xyz`)"
-      - "traefik.http.routers.petrotekno-frontend.entrypoints=websecure"
-      - "traefik.http.routers.petrotekno-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.petrotekno-frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.web-petro-2026.rule=Host(`webpetrotekno.110694.xyz`)"
+      - "traefik.http.routers.web-petro-2026.entrypoints=websecure"
+      - "traefik.http.routers.web-petro-2026.tls.certresolver=letsencrypt"
+      - "traefik.http.services.web-petro-2026-svc.loadbalancer.server.port=80"
 
-# ==========================================
-# VOLÚMENES PERSISTENTES
-# ==========================================
 volumes:
   petrotekno_storage:
     name: petrotekno_storage
   petrotekno_database:
     name: petrotekno_database
 
-# ==========================================
-# RED - Conectar a la red de Dokploy/Traefik
-# ==========================================
 networks:
   dokploy-network:
     external: true
