@@ -2,8 +2,6 @@
 #
 # IMPORTANTE: Los servicios DEBEN estar en dokploy-network
 # para que Traefik los descubra automáticamente
-#
-# NOTA: Los dominios se configuran en Dokploy UI, no aquí
 
 services:
   # ==========================================
@@ -42,6 +40,12 @@ services:
     networks:
       - dokploy-network
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.petrotekno-backend.rule=Host(`cmspetrotekno.110694.xyz`)"
+      - "traefik.http.routers.petrotekno-backend.entrypoints=websecure"
+      - "traefik.http.routers.petrotekno-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.petrotekno-backend.loadbalancer.server.port=8080"
 
   # ==========================================
   # FRONTEND - React SPA (Nginx)
@@ -51,7 +55,7 @@ services:
       context: ./webpetrotekno
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=${BACKEND_URL:-https://cmspetrotekno.110694.xyz}
+        - VITE_API_URL=https://cmspetrotekno.110694.xyz
     container_name: petrotekno-frontend
     depends_on:
       backend:
@@ -59,6 +63,12 @@ services:
     networks:
       - dokploy-network
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.petrotekno-frontend.rule=Host(`webpetrotekno.110694.xyz`)"
+      - "traefik.http.routers.petrotekno-frontend.entrypoints=websecure"
+      - "traefik.http.routers.petrotekno-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.petrotekno-frontend.loadbalancer.server.port=80"
 
 # ==========================================
 # VOLÚMENES PERSISTENTES
