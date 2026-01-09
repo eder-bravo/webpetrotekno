@@ -1,6 +1,12 @@
 # Docker Compose para PRODUCCIÓN en Dokploy
 #
 # Los servicios DEBEN estar en dokploy-network para Traefik
+#
+# Variables de entorno requeridas:
+#   - APP_KEY: Clave de encriptación de Laravel
+#   - BACKEND_URL: URL completa del backend (ej: https://cms.ejemplo.com)
+#   - BACKEND_DOMAIN: Dominio del backend sin protocolo (ej: cms.ejemplo.com)
+#   - FRONTEND_DOMAIN: Dominio del frontend sin protocolo (ej: www.ejemplo.com)
 
 services:
   backend:
@@ -13,7 +19,7 @@ services:
       - APP_ENV=production
       - APP_KEY=${APP_KEY}
       - APP_DEBUG=false
-      - APP_URL=${BACKEND_URL:-https://cmspetrotekno.110694.xyz}
+      - APP_URL=${BACKEND_URL}
       - APP_LOCALE=es
       - APP_FALLBACK_LOCALE=es
       - LOG_CHANNEL=stack
@@ -38,17 +44,17 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cms-petro-2026.rule=Host(`cmspetrotekno.110694.xyz`)"
-      - "traefik.http.routers.cms-petro-2026.entrypoints=websecure"
-      - "traefik.http.routers.cms-petro-2026.tls.certresolver=letsencrypt"
-      - "traefik.http.services.cms-petro-2026-svc.loadbalancer.server.port=8080"
+      - "traefik.http.routers.petrotekno-backend.rule=Host(`${BACKEND_DOMAIN}`)"
+      - "traefik.http.routers.petrotekno-backend.entrypoints=websecure"
+      - "traefik.http.routers.petrotekno-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.petrotekno-backend.loadbalancer.server.port=8080"
 
   frontend:
     build:
       context: ./webpetrotekno
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=https://cmspetrotekno.110694.xyz
+        - VITE_API_URL=${BACKEND_URL}
     container_name: petrotekno-frontend
     depends_on:
       backend:
@@ -58,10 +64,10 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web-petro-2026.rule=Host(`webpetrotekno.110694.xyz`)"
-      - "traefik.http.routers.web-petro-2026.entrypoints=websecure"
-      - "traefik.http.routers.web-petro-2026.tls.certresolver=letsencrypt"
-      - "traefik.http.services.web-petro-2026-svc.loadbalancer.server.port=80"
+      - "traefik.http.routers.petrotekno-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
+      - "traefik.http.routers.petrotekno-frontend.entrypoints=websecure"
+      - "traefik.http.routers.petrotekno-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.petrotekno-frontend.loadbalancer.server.port=80"
 
 volumes:
   petrotekno_storage:
