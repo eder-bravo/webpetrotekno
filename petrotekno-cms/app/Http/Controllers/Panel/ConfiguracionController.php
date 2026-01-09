@@ -48,19 +48,19 @@ class ConfiguracionController extends Controller
         // Subir logo si se proporciona - siempre lo guarda como logo.png en public/images
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
-            
+
             // Asegurar que existe el directorio
             $publicImagesPath = public_path('images');
             if (!file_exists($publicImagesPath)) {
                 mkdir($publicImagesPath, 0755, true);
             }
-            
+
             // Eliminar logo anterior si existe
             $logoPath = public_path('images/logo.png');
             if (file_exists($logoPath)) {
                 unlink($logoPath);
             }
-            
+
             // Mover el archivo a public/images/logo.png
             $logoFile->move($publicImagesPath, 'logo.png');
         }
@@ -71,7 +71,13 @@ class ConfiguracionController extends Controller
             if ($cvActual) {
                 Storage::disk('public')->delete($cvActual);
             }
-            $cvPath = $request->file('cv_empresa')->store('config', 'public');
+
+            // Obtener extensión del archivo subido
+            $extension = $request->file('cv_empresa')->getClientOriginalExtension();
+            $fileName = 'CV-petrotekno.' . $extension;
+
+            // Guardar con nombre legible
+            $cvPath = $request->file('cv_empresa')->storeAs('config', $fileName, 'public');
             Configuracion::establecer('cv_empresa', $cvPath, 'file');
         }
 
