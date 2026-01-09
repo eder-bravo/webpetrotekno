@@ -56,7 +56,7 @@ class PublicController extends Controller
     public function obrasPorEstado()
     {
         $estadosMexico = Obra::getEstadosMexico();
-        
+
         $estadisticas = Obra::activos()
             ->whereNotNull('estado')
             ->selectRaw('estado, COUNT(*) as count')
@@ -93,7 +93,7 @@ class PublicController extends Controller
                 $query->where('orden', '<', $obra->orden)
                     ->orWhere(function ($q) use ($obra) {
                         $q->where('orden', '=', $obra->orden)
-                          ->where('id', '<', $obra->id);
+                            ->where('id', '<', $obra->id);
                     });
             })
             ->orderBy('orden', 'desc')
@@ -105,7 +105,7 @@ class PublicController extends Controller
                 $query->where('orden', '>', $obra->orden)
                     ->orWhere(function ($q) use ($obra) {
                         $q->where('orden', '=', $obra->orden)
-                          ->where('id', '>', $obra->id);
+                            ->where('id', '>', $obra->id);
                     });
             })
             ->orderBy('orden', 'asc')
@@ -187,7 +187,7 @@ class PublicController extends Controller
     public function config()
     {
         $config = Configuracion::todas();
-        
+
         // No incluir el logo (se sirve desde /images/logo.png)
         unset($config['logo']);
 
@@ -220,32 +220,36 @@ class PublicController extends Controller
     public function descargarCv()
     {
         $cvPath = Configuracion::obtener('cv_empresa');
-        
+
         if (!$cvPath) {
             return response()->json(['error' => 'CV no disponible'], 404);
         }
 
-        $fullPath = storage_path('app/public/' . $cvPath);
-        
-        if (!file_exists($fullPath)) {
-            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        $storage = \Illuminate\Support\Facades\Storage::disk('public');
+
+        // Verificar si el archivo existe
+        if (!$storage->exists($cvPath)) {
+            return response()->json(['error' => 'Archivo no encontrado', 'path' => $cvPath], 404);
         }
 
+        // Obtener path absoluto del archivo
+        $fullPath = $storage->path($cvPath);
+
+        // Usar nombre amigable para la descarga
+        $extension = pathinfo($cvPath, PATHINFO_EXTENSION);
+        $fileName = 'CV-Petrotekno.' . $extension;
+
+        // Obtener mime type
         $mimeType = mime_content_type($fullPath);
-        $fileName = basename($fullPath);
-        
+
         // Para PDFs e imágenes, usar 'inline' para previsualización
         $previewTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
-        
-        if (in_array($mimeType, $previewTypes)) {
-            return response()->file($fullPath, [
-                'Content-Type' => $mimeType,
-                'Content-Disposition' => 'inline; filename="' . $fileName . '"'
-            ]);
-        }
-        
-        // Para otros tipos de archivo, forzar descarga
-        return response()->download($fullPath, $fileName);
+        $disposition = in_array($mimeType, $previewTypes) ? 'inline' : 'attachment';
+
+        return response()->file($fullPath, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => $disposition . '; filename="' . $fileName . '"',
+        ]);
     }
 
 }
