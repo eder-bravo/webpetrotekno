@@ -57,6 +57,16 @@ export function useServicios() {
 }
 
 /**
+ * Hook para obtener un servicio por slug
+ */
+export function useServicio(slug) {
+    return useApi(
+        () => import('../services/api.js').then(m => m.getServicio(slug)),
+        [slug]
+    );
+}
+
+/**
  * Hook para obtener obras
  */
 export function useObras(options = {}) {

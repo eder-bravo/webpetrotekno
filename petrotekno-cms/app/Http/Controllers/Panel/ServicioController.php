@@ -160,8 +160,15 @@ class ServicioController extends Controller
             'HardHat' => 'Casco',
             'Crane' => 'Grúa',
             'Factory' => 'Fábrica',
-            'Road' => 'Carretera',
+            'Path' => 'Carretera / Camino',
             'Bridge' => 'Puente',
+            'Leaf' => '🍃 Hoja (Ambiental)',
+            'Plant' => '🌱 Planta (Ambiente)',
+            'Tree' => '🌳 Árbol',
+            'Wind' => '💨 Viento (Energía)',
+            'Sun' => '☀️ Sol (Solar)',
+            'Drop' => '💧 Gota (Agua)',
+            'Recycle' => '♻️ Reciclaje',
         ];
     }
 }

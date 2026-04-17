@@ -6,7 +6,6 @@
 .services .section-title {
     margin-bottom: 15px;
     color: var(--white);
-    /* Changed to white for dark bg */
 }
 
 .section-line {
@@ -18,7 +17,6 @@
 
 .services .section-subtitle {
     color: var(--text-light);
-    /* Changed to light for dark bg */
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
@@ -26,56 +24,77 @@
 
 .services {
     background-color: var(--secondary);
-    /* Dark Navy Background */
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
+    align-items: stretch;
 }
 
 .service-card {
     background: var(--white);
     padding: 40px 30px;
     border-radius: 4px;
-    /* Slightly rounded, still industrial */
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     transition: var(--transition-fast);
     text-align: left;
     position: relative;
     overflow: hidden;
     border-bottom: 3px solid transparent;
+    text-decoration: none;
+    /* Flexbox para igualar altura y pegar el botón al fondo */
+    display: flex;
+    flex-direction: column;
 }
 
 .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
     border-bottom-color: var(--primary);
 }
 
 .service-icon {
     color: #004488;
     margin-bottom: 25px;
+    flex-shrink: 0;
 }
 
 .service-card h3 {
     color: var(--secondary);
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    line-height: 1.3;
 }
 
 .service-card p {
     color: #666;
-    margin-bottom: 25px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    /* Limitar a 3 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* Crece para empujar el botón al fondo */
+    flex-grow: 1;
 }
 
 .service-link {
     color: var(--secondary);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     display: inline-block;
     transition: color 0.2s;
+    /* Siempre al fondo de la tarjeta */
+    margin-top: 20px;
+    flex-shrink: 0;
+}
+
+.service-card:hover .service-link {
+    color: var(--primary);
 }

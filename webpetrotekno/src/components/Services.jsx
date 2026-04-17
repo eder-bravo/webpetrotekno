@@ -1,6 +1,8 @@
 import React from 'react';
 import * as PhosphorIcons from '@phosphor-icons/react';
+import { useNavigate } from 'react-router-dom';
 import { useServicios } from '../hooks/useApi';
+import { serviciosFallback } from '../data/serviciosFallback';
 import './Services.css';
 
 // Mapeo de nombres de iconos a componentes
@@ -13,47 +15,37 @@ const iconMap = {
     HardHat: PhosphorIcons.HardHat,
     Crane: PhosphorIcons.Crane,
     Factory: PhosphorIcons.Factory,
+    Bridge: PhosphorIcons.Bridge,
     Path: PhosphorIcons.Path,
-    BridgeIcon: PhosphorIcons.Bridge,
+    // Iconos ambientales
+    Leaf: PhosphorIcons.Leaf,
+    Plant: PhosphorIcons.Plant,
+    Tree: PhosphorIcons.Tree,
+    Wind: PhosphorIcons.Wind,
+    Sun: PhosphorIcons.Sun,
+    Drop: PhosphorIcons.Drop,
+    Recycle: PhosphorIcons.Recycle,
 };
 
-// Datos de fallback cuando la API no está disponible
-const fallbackData = [
-    {
-        id: 1,
-        icono: 'Buildings',
-        titulo: "Edificación Vertical",
-        descripcion_corta: "Construcción de complejos corporativos y residenciales con los más altos estándares de seguridad."
-    },
-    {
-        id: 2,
-        icono: 'Truck',
-        titulo: "Infraestructura Vial",
-        descripcion_corta: "Carreteras, puentes y pavimentación desarrollados para durar y conectar comunidades."
-    },
-    {
-        id: 3,
-        icono: 'Hammer',
-        titulo: "Obra Industrial",
-        descripcion_corta: "Naves industriales y plantas de manufactura optimizadas para la productividad."
-    },
-    {
-        id: 4,
-        icono: 'Ruler',
-        titulo: "Proyectos Llave en Mano",
-        descripcion_corta: "Gestión integral desde el diseño hasta la entrega final operativa."
-    }
-];
+
 
 const Services = () => {
     const { data: servicios, loading, error } = useServicios();
+    const navigate = useNavigate();
     
     // Usar datos de la API o fallback
-    const displayData = servicios && servicios.length > 0 ? servicios : fallbackData;
+    const displayData = servicios && servicios.length > 0 ? servicios : serviciosFallback;
 
     const getIcon = (iconName) => {
         const IconComponent = iconMap[iconName] || PhosphorIcons.Wrench;
         return <IconComponent size={40} weight="duotone" />;
+    };
+
+    const handleServiceClick = (e, service) => {
+        e.preventDefault();
+        if (service.slug) {
+            navigate(`/servicios/${service.slug}`);
+        }
     };
 
     return (
@@ -67,7 +59,12 @@ const Services = () => {
 
                 <div className="services-grid">
                     {displayData.map((service) => (
-                        <a key={service.id} href="#" className="service-card">
+                        <a
+                            key={service.id}
+                            href={service.slug ? `/servicios/${service.slug}` : '#'}
+                            className="service-card"
+                            onClick={(e) => handleServiceClick(e, service)}
+                        >
                             <div className="service-icon">
                                 {getIcon(service.icono)}
                             </div>
