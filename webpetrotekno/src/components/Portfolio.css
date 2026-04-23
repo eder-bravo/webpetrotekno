@@ -9,8 +9,23 @@
 
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
+    justify-content: start;
+}
+
+/* Tablet: 2 columnas */
+@media (max-width: 900px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Móvil: 1 columna */
+@media (max-width: 560px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .portfolio-item {
@@ -72,6 +87,11 @@
     transform: translateY(30px);
     transition: transform 0.5s 0.1s ease;
     line-height: 1.3;
+    /* Truncar texto largo */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .portfolio-btn {
@@ -136,4 +156,35 @@
 
 .btn-ver-mas:hover svg {
     transform: translateX(5px);
+}
+
+/* ── Móvil: overlay siempre visible, texto proporcional ── */
+@media (max-width: 560px) {
+    /* Tarjetas más cortas en formato portrait */
+    .portfolio-item {
+        aspect-ratio: 16 / 9;
+    }
+
+    /* Overlay visible sin necesidad de hover */
+    .portfolio-item .portfolio-overlay {
+        opacity: 1;
+        background: rgba(10, 25, 47, 0.68);
+    }
+
+    .portfolio-item .portfolio-cat,
+    .portfolio-item .portfolio-title {
+        transform: translateY(0);
+    }
+
+    .portfolio-cat {
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+
+    .portfolio-title {
+        font-size: 1rem;
+        margin-bottom: 0;
+        -webkit-line-clamp: 2;
+    }
 }

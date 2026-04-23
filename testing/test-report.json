@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-04-22T19:20:10.576Z",
+  "tests": [
+    {
+      "success": true,
+      "status": 200,
+      "title": "molten-pathfinder",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshotPath": "/Users/ebravo/proyectos/webpetrotekno/testing/screenshots/frontend-homepage.png"
+    },
+    {
+      "success": true,
+      "status": 200,
+      "title": "",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshotPath": "/Users/ebravo/proyectos/webpetrotekno/testing/screenshots/backend-api-config.png"
+    },
+    {
+      "success": true,
+      "status": 200,
+      "title": "Acceso al Panel - Petrotekno CMS",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshotPath": "/Users/ebravo/proyectos/webpetrotekno/testing/screenshots/backend-panel-login.png"
+    }
+  ]
+}

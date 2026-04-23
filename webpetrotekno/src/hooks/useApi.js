@@ -13,10 +13,13 @@ export function useApi(apiFn, deps = []) {
     useEffect(() => {
         let cancelled = false;
 
+        // Limpiar datos anteriores al cambiar dependencias
+        setData(null);
+        setLoading(true);
+        setError(null);
+
         async function fetchData() {
             try {
-                setLoading(true);
-                setError(null);
                 const result = await apiFn();
                 if (!cancelled) {
                     setData(result);

@@ -9,14 +9,10 @@ import p3 from '../assets/img5.webp';
 import p4 from '../assets/img1.webp';
 import p5 from '../assets/img2.webp';
 import p6 from '../assets/img3.webp';
+import { obrasFallback } from '../data/obrasFallback';
 import './Portfolio.css';
 
-// Datos de fallback cuando la API no está disponible
-const fallbackProjects = [
-    { id: 1, imagen: p1, nombre: 'Torre Corporativa Zenith', categoria: 'Edificación Vertical', destacado: true },
-    { id: 2, imagen: p2, nombre: 'Refinería del Norte', categoria: 'Industrial / Energía', destacado: true },
-    { id: 3, imagen: p3, nombre: 'Puente Bicentenario', categoria: 'Infraestructura', destacado: true },
-];
+
 
 // Imágenes de fallback por índice
 const fallbackImages = [p1, p2, p3, p4, p5, p6];
@@ -26,8 +22,9 @@ const Portfolio = () => {
     const { data: obras, loading } = useObras({ destacados: true });
     const navigate = useNavigate();
     
-    // Usar datos de la API o fallback
-    const displayData = obras && obras.length > 0 ? obras : fallbackProjects;
+    // Usar datos de la API o fallback (filtrar solo los destacados para el home)
+    const featuredFallback = obrasFallback.filter(o => o.destacado);
+    const displayData = obras && obras.length > 0 ? obras : featuredFallback;
 
     const getImage = (obra, index) => {
         // Si la obra tiene imagen de la API, usarla

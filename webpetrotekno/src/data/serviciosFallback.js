@@ -12,7 +12,6 @@ export const serviciosFallback = [
         descripcion_corta:
             'Realizar de proyectos destinados al mejoramiento ambiental y energético, mediante la búsqueda de alternativas que permitan brindar soluciones adecuadas a las necesidades de nuestros clientes, dentro de la industria energética, presentes en distintas regiones de nuestro país.',
         contenido: `
-            <h2>Especialidad Ambiental</h2>
             <p>
                 Nos especializamos en el desarrollo de proyectos destinados al mejoramiento ambiental
                 y energético, mediante la búsqueda de alternativas que permitan brindar soluciones
@@ -42,7 +41,6 @@ export const serviciosFallback = [
         descripcion_corta:
             'Carreteras, puentes y pavimentación desarrollados para durar y conectar comunidades de todo el país.',
         contenido: `
-            <h2>Infraestructura Vial</h2>
             <p>
                 Desarrollamos proyectos de infraestructura vial con los más altos estándares de
                 calidad, conectando comunidades y facilitando el movimiento de personas y mercancías
@@ -66,7 +64,6 @@ export const serviciosFallback = [
         descripcion_corta:
             'Construcción de complejos corporativos y residenciales con los más altos estándares de calidad y seguridad.',
         contenido: `
-            <h2>Edificación Vertical</h2>
             <p>
                 Construimos edificios corporativos, residenciales e institucionales con diseños
                 modernos y funcionales, cumpliendo con todas las normas de construcción y
@@ -90,7 +87,6 @@ export const serviciosFallback = [
         descripcion_corta:
             'Naves industriales y plantas de manufactura optimizadas para la productividad y eficiencia operativa.',
         contenido: `
-            <h2>Obra Industrial</h2>
             <p>
                 Diseñamos y construimos instalaciones industriales optimizadas para maximizar
                 la productividad y eficiencia operativa de nuestros clientes.
@@ -113,7 +109,6 @@ export const serviciosFallback = [
         descripcion_corta:
             'Gestión integral desde el diseño, construcción y supervisión hasta la entrega final operativa del proyecto.',
         contenido: `
-            <h2>Proyectos Llave en Mano</h2>
             <p>
                 Ofrecemos una gestión integral de proyectos, desde la concepción y diseño
                 hasta la entrega final operativa, asumiendo la responsabilidad completa del

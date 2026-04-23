@@ -35,13 +35,29 @@ class Obra extends Model
 
         static::creating(function ($obra) {
             if (empty($obra->slug)) {
-                $obra->slug = Str::slug($obra->nombre);
+                $slug = Str::slug($obra->nombre);
+                $originalSlug = $slug;
+                $count = 1;
+
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $originalSlug . '-' . $count++;
+                }
+
+                $obra->slug = $slug;
             }
         });
 
         static::updating(function ($obra) {
             if ($obra->isDirty('nombre') && !$obra->isDirty('slug')) {
-                $obra->slug = Str::slug($obra->nombre);
+                $slug = Str::slug($obra->nombre);
+                $originalSlug = $slug;
+                $count = 1;
+
+                while (static::where('slug', $slug)->where('id', '!=', $obra->id)->exists()) {
+                    $slug = $originalSlug . '-' . $count++;
+                }
+
+                $obra->slug = $slug;
             }
         });
     }

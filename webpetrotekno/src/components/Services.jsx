@@ -27,7 +27,32 @@ const iconMap = {
     Recycle: PhosphorIcons.Recycle,
 };
 
-
+// Colores semánticos por icono — armonizan con el estilo navy + dorado del sitio
+const iconColors = {
+    // Ambientales: verdes naturales
+    Leaf:     '#2d7d46',   // verde bosque
+    Plant:    '#22863a',   // verde hoja viva
+    Tree:     '#1d6b35',   // verde oscuro
+    Recycle:  '#2d7d46',   // verde reciclaje
+    // Agua / Aire
+    Drop:     '#1a6fa8',   // azul agua
+    Wind:     '#4b8fa8',   // azul cielo
+    Sun:      '#d4860a',   // ámbar solar (no tan saturado como el amarillo primario)
+    // Infraestructura vial
+    Path:     '#c47a1a',   // ámbar carretera
+    Bridge:   '#8b6914',   // dorado oscuro
+    // Construcción / Edificación
+    Buildings:'#1e5f8e',   // azul acero
+    Crane:    '#1e5f8e',   // azul grua
+    Ruler:    '#2c4a6b',   // azul medición
+    // Industrial
+    Factory:  '#3a4f6b',   // azul industrial oscuro
+    Hammer:   '#7c5a2e',   // café herramienta
+    Wrench:   '#5c4a8a',   // lila mecánico
+    Truck:    '#4a6080',   // gris-azul transporte
+    // Proyectos llave en mano
+    HardHat:  '#b8710a',   // naranja casco (ámbar cálido)
+};
 
 const Services = () => {
     const { data: servicios, loading, error } = useServicios();
@@ -36,9 +61,12 @@ const Services = () => {
     // Usar datos de la API o fallback
     const displayData = servicios && servicios.length > 0 ? servicios : serviciosFallback;
 
-    const getIcon = (iconName) => {
+    const getIconColor = (iconName) => iconColors[iconName] || '#1e5f8e';
+
+    const getIcon = (iconName, size = 40) => {
         const IconComponent = iconMap[iconName] || PhosphorIcons.Wrench;
-        return <IconComponent size={40} weight="duotone" />;
+        const color = getIconColor(iconName);
+        return <IconComponent size={size} weight="duotone" color={color} />;
     };
 
     const handleServiceClick = (e, service) => {

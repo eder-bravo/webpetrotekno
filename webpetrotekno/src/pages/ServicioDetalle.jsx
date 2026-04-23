@@ -30,6 +30,28 @@ const iconMap = {
     Recycle: PhosphorIcons.Recycle,
 };
 
+// Colores semánticos por icono — misma paleta que Services.jsx
+const iconColors = {
+    Leaf:      '#2d7d46',
+    Plant:     '#22863a',
+    Tree:      '#1d6b35',
+    Recycle:   '#2d7d46',
+    Drop:      '#1a6fa8',
+    Wind:      '#4b8fa8',
+    Sun:       '#d4860a',
+    Path:      '#c47a1a',
+    Bridge:    '#8b6914',
+    Buildings: '#1e5f8e',
+    Crane:     '#1e5f8e',
+    Ruler:     '#2c4a6b',
+    Factory:   '#3a4f6b',
+    Hammer:    '#7c5a2e',
+    Wrench:    '#5c4a8a',
+    Truck:     '#4a6080',
+    HardHat:   '#b8710a',
+};
+
+
 function ServicioDetalle() {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -73,10 +95,27 @@ function ServicioDetalle() {
         }, 100);
     };
 
+    const getIconColor = (iconName) => iconColors[iconName] || '#1e5f8e';
+
     const getIcon = (iconName) => {
         const IconComponent = iconMap[iconName] || PhosphorIcons.Wrench;
-        return <IconComponent size={48} weight="duotone" />;
+        const color = getIconColor(iconName);
+        return <IconComponent size={48} weight="duotone" color={color} />;
     };
+
+    // Genera el estilo del bubble de icono según el color semántico
+    const getIconBubbleStyle = (iconName) => {
+        const color = getIconColor(iconName);
+        // Convierte hex a RGB para generar fondo translucido
+        const r = parseInt(color.slice(1, 3), 16);
+        const g = parseInt(color.slice(3, 5), 16);
+        const b = parseInt(color.slice(5, 7), 16);
+        return {
+            background: `rgba(${r}, ${g}, ${b}, 0.15)`,
+            border: `1.5px solid rgba(${r}, ${g}, ${b}, 0.35)`,
+        };
+    };
+
 
     if (loading && !servicio) {
         return (
@@ -118,64 +157,60 @@ function ServicioDetalle() {
 
     return (
         <>
-            <Navbar />
-            <section className="servicio-detalle-page">
-                <div className="container">
-                    {/* Header con link de regreso */}
-                    <div className="servicio-detalle-header">
+            <div className="servicio-detalle-page">
+                <Navbar />
+
+                {/* ── Hero Banner ── */}
+                <div className="servicio-hero">
+                    <div className="servicio-hero-inner">
                         <a href="/#services" onClick={handleGoBack} className="back-link">
-                            <ArrowLeft size={18} />
+                            <ArrowLeft size={16} />
                             Volver a servicios
                         </a>
-                    </div>
 
-                    {/* Imagen Principal */}
-                    {servicio.imagen && (
-                        <div className="servicio-imagen-hero">
-                            <img
-                                src={servicio.imagen}
-                                alt={servicio.titulo}
-                                loading="eager"
-                            />
-                        </div>
-                    )}
-
-                    {/* Información del Servicio */}
-                    <div className="servicio-info">
-                        {/* Icono + Título */}
-                        <div className="servicio-titulo-block">
+                        <div className="servicio-hero-content">
                             {servicio.icono && (
                                 <div className="servicio-icon-grande">
                                     {getIcon(servicio.icono)}
                                 </div>
                             )}
-                            <h1 className="servicio-titulo">{servicio.titulo}</h1>
-                        </div>
-
-                        {/* Descripción corta como intro */}
-                        {servicio.descripcion_corta && !servicio.contenido && (
-                            <p className="servicio-descripcion-intro">
-                                {servicio.descripcion_corta}
-                            </p>
-                        )}
-
-                        {/* Contenido Detallado */}
-                        {servicio.contenido ? (
-                            <div
-                                className="servicio-contenido"
-                                dangerouslySetInnerHTML={{ __html: servicio.contenido }}
-                            />
-                        ) : (
-                            <div className="servicio-contenido">
-                                <p>{servicio.descripcion_corta}</p>
+                            <div>
+                                <h1 className="servicio-titulo">{servicio.titulo}</h1>
+                                {servicio.descripcion_corta && (
+                                    <p className="servicio-subtitulo-hero">
+                                        {servicio.descripcion_corta}
+                                    </p>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </div>
                 </div>
-            </section>
+                <div className="servicio-hero-divider" />
+
+                {/* ── Cuerpo ── */}
+                <div className="servicio-body">
+                    {/* Imagen hero opcional */}
+                    {servicio.imagen && (
+                        <div className="servicio-imagen-hero">
+                            <img src={servicio.imagen} alt={servicio.titulo} loading="eager" />
+                        </div>
+                    )}
+
+                    {/* Contenido */}
+                    {servicio.contenido ? (
+                        <div
+                            className="servicio-contenido"
+                            dangerouslySetInnerHTML={{ __html: servicio.contenido }}
+                        />
+                    ) : (
+                        <p className="servicio-descripcion-intro">{servicio.descripcion_corta}</p>
+                    )}
+                </div>
+            </div>
             <Footer />
         </>
     );
+
 }
 
 export default ServicioDetalle;

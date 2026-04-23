@@ -135,17 +135,62 @@
 @media (max-width: 768px) {
     .tech-layout {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .tech-text {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .tech-title {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .tech-description {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .tech-subtitle {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+
+    .tech-buttons {
+        justify-content: center;
     }
 
     .tech-stats-list {
-        align-items: flex-start;
+        align-items: center;
         width: 100%;
+        min-width: unset;
     }
 
     .tech-stat-row {
-        flex-direction: row-reverse;
-        text-align: left;
-        justify-content: flex-end;
+        flex-direction: row;
+        text-align: center;
+        justify-content: center;
+        gap: 16px;
+        margin: 24px 0;
+    }
+
+    /* Los números grandes en móvil */
+    .tech-stat-number {
+        font-size: 3.5rem;
+    }
+
+    .tech-stat-info {
+        min-width: unset;
+        align-items: center;
+        text-align: center;
+    }
+
+    .tech-stat-divider {
+        width: 80%;
+        margin: 0 auto;
     }
 }

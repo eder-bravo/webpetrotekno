@@ -98,3 +98,23 @@
 .service-card:hover .service-link {
     color: var(--primary);
 }
+
+/* Tablet: 2 columnas */
+@media (max-width: 900px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Móvil: 1 columna */
+@media (max-width: 560px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .service-card {
+        padding: 28px 24px;
+    }
+}

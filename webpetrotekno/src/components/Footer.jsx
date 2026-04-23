@@ -88,9 +88,9 @@ const Footer = () => {
                         <p><a href={`tel:${displayConfig.contacto_telefono?.replace(/\s/g, '')}`}>{displayConfig.contacto_telefono}</a></p>
                     </div>
 
-                    <div className="footer-social">
-                        <h3>Síguenos</h3>
-                        <div className="social-icons">
+                    <div className="footer-social" style={{ textAlign: 'center' }}>
+                        <h3 style={{ textAlign: 'center' }}>Síguenos</h3>
+                        <div className="social-icons" style={{ justifyContent: 'center' }}>
                             {displayRedes.map((red) => (
                                 <a key={red.id} href={red.url} target="_blank" rel="noopener noreferrer" title={red.nombre}>
                                     {getSocialIcon(red.icono)}

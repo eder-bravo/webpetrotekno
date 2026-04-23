@@ -2,9 +2,27 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, Folder } from 'lucide-react';
 import { useObra } from '../hooks/useApi';
+import { obrasFallback } from '../data/obrasFallback';
+// Imágenes locales para el fallback
+import imgP1 from '../assets/img4.webp';
+import imgP2 from '../assets/img6.webp';
+import imgP3 from '../assets/img5.webp';
+import imgP4 from '../assets/img1.webp';
+import imgP5 from '../assets/img2.webp';
+import imgP6 from '../assets/img3.webp';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import './ObraDetalle.css';
+
+// Mapa de slug → imagen local
+const localImages = {
+    'puerto-matamoros': imgP2,
+    'conservacion-nuevo-laredo': imgP6,
+    'torre-zenith': imgP3,
+    'obra-industrial-norte': imgP4,
+    'puente-centenario': imgP5,
+    'pavimentacion-rural': imgP1,
+};
 
 // Mapa de estados mexicanos
 const ESTADOS_MEXICO = {
@@ -45,7 +63,23 @@ const ESTADOS_MEXICO = {
 function ObraDetalle() {
     const { slug } = useParams();
     const navigate = useNavigate();
-    const { data: obra, loading, error } = useObra(slug);
+    const { data: apiObra, loading, error } = useObra(slug);
+
+    // Si el API falla o no está disponible, buscar en el fallback local
+    const obraFromFallback = obrasFallback.find((o) => o.slug === slug);
+    
+    // Mapear contenido si viene del fallback (para que se renderice bien)
+    const obra = apiObra || (obraFromFallback ? {
+        ...obraFromFallback,
+        imagen: localImages[obraFromFallback.slug] || null,
+        contenido: obraFromFallback.descripcion
+            ? `<h2>Detalles del Proyecto</h2><p>${obraFromFallback.descripcion}</p>`
+            : null,
+    } : null);
+
+    // Imagen a mostrar: API > fallback local > placeholder
+    const imagenSrc = obra?.imagen || null;
+    const imagenAlt = obra?.nombre || 'Obra';
 
     // Scroll al inicio cuando se carga la página o cambia el slug
     useEffect(() => {
@@ -84,7 +118,7 @@ function ObraDetalle() {
         navigate(`/obras/${navSlug}`);
     };
 
-    if (loading) {
+    if (loading && !obra) {
         return (
             <>
                 <Navbar />
@@ -101,7 +135,7 @@ function ObraDetalle() {
         );
     }
 
-    if (error || !obra) {
+    if (!obra) {
         return (
             <>
                 <Navbar />
@@ -125,7 +159,7 @@ function ObraDetalle() {
     return (
         <>
             <Navbar />
-            <section className="obra-detalle-page">
+            <section className="obra-detalle-page" key={slug}>
                 <div className="container">
                     {/* Header */}
                     <div className="obra-detalle-header">
@@ -136,15 +170,26 @@ function ObraDetalle() {
                     </div>
 
                     {/* Imagen Principal */}
-                    {obra.imagen && (
-                        <div className="obra-imagen-hero">
+                    <div className="obra-imagen-hero">
+                        {imagenSrc ? (
                             <img 
-                                src={obra.imagen} 
-                                alt={obra.nombre}
+                                key={imagenSrc}
+                                src={imagenSrc}
+                                alt={imagenAlt}
                                 loading="eager"
+                                style={{ objectFit: 'cover' }}
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.parentElement.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+                                    e.target.parentElement.innerHTML += `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#666;font-size:1.2rem;">${imagenAlt}</div>`;
+                                }}
                             />
-                        </div>
-                    )}
+                        ) : (
+                            <div className="obra-imagen-placeholder">
+                                <span>{imagenAlt}</span>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Información de la Obra */}
                     <div className="obra-info">

@@ -33,13 +33,29 @@ class Servicio extends Model
 
         static::creating(function ($servicio) {
             if (empty($servicio->slug)) {
-                $servicio->slug = Str::slug($servicio->titulo);
+                $slug = Str::slug($servicio->titulo);
+                $originalSlug = $slug;
+                $count = 1;
+
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $originalSlug . '-' . $count++;
+                }
+
+                $servicio->slug = $slug;
             }
         });
 
         static::updating(function ($servicio) {
             if ($servicio->isDirty('titulo') && !$servicio->isDirty('slug')) {
-                $servicio->slug = Str::slug($servicio->titulo);
+                $slug = Str::slug($servicio->titulo);
+                $originalSlug = $slug;
+                $count = 1;
+
+                while (static::where('slug', $slug)->where('id', '!=', $servicio->id)->exists()) {
+                    $slug = $originalSlug . '-' . $count++;
+                }
+
+                $servicio->slug = $slug;
             }
         });
     }

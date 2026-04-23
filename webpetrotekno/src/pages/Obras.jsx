@@ -11,6 +11,7 @@ import p3 from '../assets/img5.webp';
 import p4 from '../assets/img1.webp';
 import p5 from '../assets/img2.webp';
 import p6 from '../assets/img3.webp';
+import { obrasFallback } from '../data/obrasFallback';
 import '../components/Portfolio.css';
 import './Obras.css';
 
@@ -90,12 +91,15 @@ function Obras() {
         return fallbackImages[index % fallbackImages.length];
     };
 
+    // Usar datos de la API o fallback
+    const allObras = obras && obras.length > 0 ? obras : obrasFallback;
+
     // Filtrar obras por estado seleccionado
     const filteredObras = useMemo(() => {
-        if (!obras) return [];
-        if (!selectedEstado) return obras;
-        return obras.filter(obra => obra.estado === selectedEstado);
-    }, [obras, selectedEstado]);
+        if (!allObras) return [];
+        if (!selectedEstado) return allObras;
+        return allObras.filter(obra => obra.estado === selectedEstado);
+    }, [allObras, selectedEstado]);
 
     // Agrupar obras por estado
     const obrasPorEstado = useMemo(() => {
@@ -111,32 +115,22 @@ function Obras() {
         });
         
         // Ordenar por nombre de estado
-        const sortedKeys = Object.keys(grouped).sort((a, b) => {
-            if (a === 'sin_estado') return 1;
-            if (b === 'sin_estado') return -1;
-            const nameA = ESTADOS_MEXICO[a] || a;
-            const nameB = ESTADOS_MEXICO[b] || b;
-            return nameA.localeCompare(nameB);
-        });
-        
-        const sortedGrouped = {};
-        sortedKeys.forEach(key => {
-            sortedGrouped[key] = grouped[key];
-        });
-        
-        return sortedGrouped;
+        return filteredObras.reduce((acc, obra) => {
+            const estado = obra.estado || 'Otros';
+            if (!acc[estado]) acc[estado] = [];
+            acc[estado].push(obra);
+            return acc;
+        }, {});
     }, [filteredObras]);
 
-    // Obtener estados únicos que tienen obras
+    // Obtener lista de estados que tienen obras
     const estadosConObras = useMemo(() => {
-        if (!obras) return [];
-        const estados = [...new Set(obras.filter(o => o.estado).map(o => o.estado))];
-        return estados.sort((a, b) => {
-            const nameA = ESTADOS_MEXICO[a] || a;
-            const nameB = ESTADOS_MEXICO[b] || b;
-            return nameA.localeCompare(nameB);
-        });
-    }, [obras]);
+        if (!allObras) return [];
+        const estados = [...new Set(allObras.map(o => o.estado))];
+        return estados.filter(Boolean).sort((a, b) => 
+            (ESTADOS_MEXICO[a] || a).localeCompare(ESTADOS_MEXICO[b] || b)
+        );
+    }, [allObras]);
 
     const handleEstadoChange = (estado) => {
         setSelectedEstado(estado);
@@ -237,7 +231,7 @@ function Obras() {
                         </div>
                     )}
 
-                    {!loading && error && (
+                    {!loading && error && allObras.length === 0 && (
                         <div className="empty-message">
                             Error cargando obras: {error}
                         </div>
