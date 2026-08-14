@@ -1,0 +1,74 @@
+- generic [ref=e3]:
+  - navigation [ref=e161]:
+    - generic [ref=e162]:
+      - link "Petrotekno Logo" [ref=e163] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e164]
+      - generic [ref=e165]:
+        - button "Inicio" [ref=e166] [cursor=pointer]
+        - button "Servicios" [ref=e167] [cursor=pointer]
+        - button "Obras" [ref=e168] [cursor=pointer]
+        - button "Contacto" [ref=e169] [cursor=pointer]
+  - generic [ref=e235]:
+    - link "Volver a obras" [ref=e237] [cursor=pointer]:
+      - /url: /obras
+      - img [ref=e238]
+      - text: Volver a obras
+    - img "Carretera Tampico-Mante" [ref=e241]
+    - generic [ref=e242]:
+      - generic [ref=e243]:
+        - generic [ref=e244]:
+          - img [ref=e245]
+          - text: Infraestructura Vial
+        - generic [ref=e247]:
+          - img [ref=e248]
+          - text: Tamaulipas
+      - heading "Carretera Tampico-Mante" [level=1] [ref=e251]
+      - generic [ref=e252]:
+        - heading "Modernización Vial Estratégica" [level=2] [ref=e253]
+        - paragraph [ref=e254]: La carretera Tampico-Mante es una arteria vial fundamental que conecta la zona metropolitana de Tampico con la ciudad de Mante, atravesando una de las regiones más productivas del estado de Tamaulipas.
+        - heading "Especificaciones Técnicas" [level=2] [ref=e255]
+        - paragraph [ref=e256]: El proyecto incluyó la ampliación a 4 carriles en un tramo de 85 kilómetros, con pavimento de concreto hidráulico de alta resistencia. Se instalaron sistemas de drenaje pluvial, señalización inteligente, iluminación LED en zonas urbanas, y se construyeron 12 puentes vehiculares y peatonales.
+        - heading "Beneficios" [level=2] [ref=e257]
+        - paragraph [ref=e258]: La modernización reduce los tiempos de traslado en un 40%, mejora la seguridad vial con una disminución del 60% en accidentes, y potencia el desarrollo económico de las comunidades ribereñas.
+    - navigation [ref=e259]:
+      - button "Obra anterior Puerto Industrial de Altamira" [ref=e261] [cursor=pointer]:
+        - img [ref=e262]
+        - generic [ref=e264]:
+          - generic [ref=e265]: Obra anterior
+          - generic [ref=e266]: Puerto Industrial de Altamira
+      - button "Siguiente obra Planta Petroquímica Madero" [ref=e268] [cursor=pointer]:
+        - generic [ref=e269]:
+          - generic [ref=e270]: Siguiente obra
+          - generic [ref=e271]: Planta Petroquímica Madero
+        - img [ref=e272]
+  - contentinfo [ref=e205]:
+    - generic [ref=e206]:
+      - generic [ref=e207]:
+        - generic [ref=e208]:
+          - link "Petrotekno Logo" [ref=e209] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e210]
+          - paragraph [ref=e211]: Ingeniería que transforma el paisaje.
+        - generic [ref=e212]:
+          - heading "Contacto" [level=3] [ref=e213]
+          - paragraph [ref=e214]: Av. Reforma 222, CDMX
+          - paragraph [ref=e215]:
+            - link "contacto@petrotekno.mx" [ref=e216] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e217]:
+            - link "+52 (55) 1234 5678" [ref=e218] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e219]:
+          - heading "Síguenos" [level=3] [ref=e220]
+          - generic [ref=e221]:
+            - link "Facebook Contrataciones" [ref=e222] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e223]
+            - link "google" [ref=e225] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e226]
+            - link "clickclock" [ref=e228] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e229]
+      - paragraph [ref=e233]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

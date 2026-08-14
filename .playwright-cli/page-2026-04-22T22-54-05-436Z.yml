@@ -1,0 +1,45 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Petrotekno Logo" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e7]
+      - generic [ref=e8]:
+        - button "Inicio" [ref=e9] [cursor=pointer]
+        - button "Servicios" [ref=e10] [cursor=pointer]
+        - button "Obras" [ref=e11] [cursor=pointer]
+        - button "Contacto" [ref=e12] [cursor=pointer]
+  - paragraph [ref=e17]: Cargando obra...
+  - contentinfo [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - link "Petrotekno Logo" [ref=e22] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e23]
+          - paragraph [ref=e24]: Ingeniería que transforma el paisaje.
+        - generic [ref=e25]:
+          - heading "Contacto" [level=3] [ref=e26]
+          - paragraph [ref=e27]: Av. Reforma 222, CDMX
+          - paragraph [ref=e28]:
+            - link "contacto@petrotekno.mx" [ref=e29] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e30]:
+            - link "+52 (55) 1234 5678" [ref=e31] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e32]:
+          - heading "Síguenos" [level=3] [ref=e33]
+          - generic [ref=e34]:
+            - link "Facebook" [ref=e35] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e36]
+            - link "LinkedIn" [ref=e38] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e39]
+            - link "Twitter" [ref=e43] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e44]
+            - link "Instagram" [ref=e46] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e47]
+      - paragraph [ref=e51]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

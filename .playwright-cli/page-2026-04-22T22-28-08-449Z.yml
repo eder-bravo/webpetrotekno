@@ -1,0 +1,197 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Petrotekno Logo" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e7]
+      - generic [ref=e8]:
+        - button "Inicio" [ref=e9] [cursor=pointer]
+        - button "Servicios" [ref=e10] [cursor=pointer]
+        - button "Obras" [ref=e11] [cursor=pointer]
+        - button "Contacto" [ref=e12] [cursor=pointer]
+  - generic [ref=e13]:
+    - generic [ref=e15]: Your browser does not support the video tag.
+    - generic [ref=e17]:
+      - heading "CONSTRUYENDO EL FUTURO" [level=1] [ref=e18]:
+        - text: CONSTRUYENDO
+        - text: EL FUTURO
+      - paragraph [ref=e19]: Infraestructura de clase mundial, ingeniería de precisión y compromiso sólido.
+      - generic [ref=e20]:
+        - link "Descargar CV" [ref=e21] [cursor=pointer]:
+          - /url: http://localhost:8000/api/config/cv-empresa
+        - link "Contáctanos" [ref=e22] [cursor=pointer]:
+          - /url: /contacto
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - heading "Nuestros Servicios" [level=2] [ref=e26]
+      - paragraph [ref=e28]: Soluciones integrales para desafíos de ingeniería complejos.
+    - generic [ref=e29]:
+      - link "Servicio para Editar Hola mundo LEER MÁS →" [ref=e30] [cursor=pointer]:
+        - /url: /servicios/servicio-para-editar
+        - img [ref=e32]
+        - heading "Servicio para Editar" [level=3] [ref=e35]
+        - paragraph [ref=e36]: Hola mundo
+        - generic [ref=e37]: LEER MÁS →
+      - link "Servicio Editado Correctamente Construcción de edificios de gran altura con tecnología de punta y materiales de primera calidad. LEER MÁS →" [ref=e38] [cursor=pointer]:
+        - /url: /servicios/servicio-editado-correctamente
+        - img [ref=e40]
+        - heading "Servicio Editado Correctamente" [level=3] [ref=e43]
+        - paragraph [ref=e44]: Construcción de edificios de gran altura con tecnología de punta y materiales de primera calidad.
+        - generic [ref=e45]: LEER MÁS →
+      - link "Infraestructura Vial Diseño y construcción de carreteras, autopistas y vías de comunicación terrestre. LEER MÁS →" [ref=e46] [cursor=pointer]:
+        - /url: /servicios/infraestructura-vial
+        - img [ref=e48]
+        - heading "Infraestructura Vial" [level=3] [ref=e51]
+        - paragraph [ref=e52]: Diseño y construcción de carreteras, autopistas y vías de comunicación terrestre.
+        - generic [ref=e53]: LEER MÁS →
+      - link "Construcción Industrial Plantas industriales, naves de manufactura y centros de distribución logística. LEER MÁS →" [ref=e54] [cursor=pointer]:
+        - /url: /servicios/construccion-industrial
+        - img [ref=e56]
+        - heading "Construcción Industrial" [level=3] [ref=e59]
+        - paragraph [ref=e60]: Plantas industriales, naves de manufactura y centros de distribución logística.
+        - generic [ref=e61]: LEER MÁS →
+      - link "Obras de Puentes Diseño estructural y construcción de puentes vehiculares y peatonales. LEER MÁS →" [ref=e62] [cursor=pointer]:
+        - /url: /servicios/obras-de-puentes
+        - img [ref=e64]
+        - heading "Obras de Puentes" [level=3] [ref=e67]
+        - paragraph [ref=e68]: Diseño estructural y construcción de puentes vehiculares y peatonales.
+        - generic [ref=e69]: LEER MÁS →
+      - link "Car service club esto es una descripcion detalla de un servicio lmadao car service club LEER MÁS →" [ref=e70] [cursor=pointer]:
+        - /url: /servicios/car-service-club
+        - img [ref=e72]
+        - heading "Car service club" [level=3] [ref=e75]
+        - paragraph [ref=e76]: esto es una descripcion detalla de un servicio lmadao car service club
+        - generic [ref=e77]: LEER MÁS →
+  - generic [ref=e80]:
+    - generic [ref=e81]:
+      - heading "CAPACIDAD TÉCNICA" [level=2] [ref=e82]
+      - paragraph [ref=e83]: Nuestra capacidad técnica y financiera, sumada al profesionalismo y seriedad con que emprendemos y ejecutamos cada proyecto, nos hace una empresa confiable y competitiva.
+      - generic [ref=e84]:
+        - heading "Capacidad operativa" [level=3] [ref=e85]
+        - generic [ref=e86]:
+          - button "Empresas" [ref=e87] [cursor=pointer]
+          - button "Certificaciones" [ref=e88] [cursor=pointer]
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - img [ref=e92]
+        - generic [ref=e95]:
+          - generic [ref=e96]: MAQUINARIA MAYOR
+          - generic [ref=e97]: "365"
+      - generic [ref=e99]:
+        - img [ref=e101]
+        - generic [ref=e104]:
+          - generic [ref=e105]: MAQUINARIA MENOR
+          - generic [ref=e106]: "741"
+      - generic [ref=e108]:
+        - img [ref=e110]
+        - generic [ref=e113]:
+          - generic [ref=e114]: VEHÍCULOS
+          - generic [ref=e115]: "618"
+  - generic [ref=e117]:
+    - generic [ref=e118]:
+      - heading "Nuestro Impacto" [level=2] [ref=e119]
+      - paragraph [ref=e121]: Datos que respaldan nuestro compromiso con la excelencia y la sociedad.
+    - generic [ref=e122]:
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - img [ref=e125]
+          - generic [ref=e128]: 0%
+        - generic [ref=e129]:
+          - heading "Clientes Satisfechos" [level=3] [ref=e130]
+          - paragraph [ref=e131]: Obras entregadas a tiempo
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - img [ref=e134]
+          - generic [ref=e137]: 0%
+        - generic [ref=e138]:
+          - heading "Fuerza Laboral" [level=3] [ref=e139]
+          - paragraph [ref=e140]: Mujeres en el sector construcción
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - img [ref=e143]
+          - generic [ref=e146]: 0%
+        - generic [ref=e147]:
+          - heading "Sustentabilidad" [level=3] [ref=e148]
+          - paragraph [ref=e149]: Materiales reciclados en obras
+  - generic [ref=e151]:
+    - generic [ref=e152]:
+      - heading "Obras más Destacadas" [level=2] [ref=e153]
+      - paragraph [ref=e155]: Desde nuestros inicios hemos participado en grandes obras que van desde la construcción de naves industriales, la fabricación y ensamble de estructuras.
+    - img "Map of Mexico" [ref=e157]
+    - generic [ref=e190]:
+      - generic [ref=e193]: Estados con obras (clic para ver)
+      - generic [ref=e196]: Próximamente
+  - generic [ref=e198]:
+    - generic [ref=e199]:
+      - heading "Obras Destacadas" [level=2] [ref=e200]
+      - paragraph [ref=e202]: Nuestros proyectos más representativos y de mayor impacto.
+    - generic [ref=e203]:
+      - generic [ref=e204] [cursor=pointer]:
+        - img "Carretera Tampico-Mante" [ref=e205]
+        - generic [ref=e206]:
+          - generic [ref=e207]: Infraestructura Vial
+          - heading "Carretera Tampico-Mante" [level=3] [ref=e208]
+      - generic [ref=e209] [cursor=pointer]:
+        - img "Autopista Monterrey-Saltillo" [ref=e210]
+        - generic [ref=e211]:
+          - generic [ref=e212]: Infraestructura Vial
+          - heading "Autopista Monterrey-Saltillo" [level=3] [ref=e213]
+      - generic [ref=e214] [cursor=pointer]:
+        - img "Planta Automotriz García" [ref=e215]
+        - generic [ref=e216]:
+          - generic [ref=e217]: Industrial / Energía
+          - heading "Planta Automotriz García" [level=3] [ref=e218]
+      - generic [ref=e219] [cursor=pointer]:
+        - img "Puerto de Veracruz - Modernización" [ref=e220]
+        - generic [ref=e221]:
+          - generic [ref=e222]: Infraestructura
+          - heading "Puerto de Veracruz - Modernización" [level=3] [ref=e223]
+      - generic [ref=e224] [cursor=pointer]:
+        - img "Refinería Tula" [ref=e225]
+        - generic [ref=e226]:
+          - generic [ref=e227]: Industrial / Energía
+          - heading "Refinería Tula" [level=3] [ref=e228]
+      - generic [ref=e229] [cursor=pointer]:
+        - img "Parque Eólico La Venta" [ref=e230]
+        - generic [ref=e231]:
+          - generic [ref=e232]: Industrial / Energía
+          - heading "Parque Eólico La Venta" [level=3] [ref=e233]
+      - generic [ref=e234] [cursor=pointer]:
+        - img "Carretera Tampico Tuxpn" [ref=e235]
+        - generic [ref=e236]:
+          - generic [ref=e237]: Infraestructura Vial
+          - heading "Carretera Tampico Tuxpn" [level=3] [ref=e238]
+    - link "Ver todas las obras" [ref=e240] [cursor=pointer]:
+      - /url: /obras
+      - text: Ver todas las obras
+      - img [ref=e241]
+  - contentinfo [ref=e243]:
+    - generic [ref=e244]:
+      - generic [ref=e245]:
+        - generic [ref=e246]:
+          - link "Petrotekno Logo" [ref=e247] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e248]
+          - paragraph [ref=e249]: Ingeniería que transforma el paisaje.
+        - generic [ref=e250]:
+          - heading "Contacto" [level=3] [ref=e251]
+          - paragraph [ref=e252]: Av. Reforma 222, CDMX
+          - paragraph [ref=e253]:
+            - link "contacto@petrotekno.mx" [ref=e254] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e255]:
+            - link "+52 (55) 1234 5678" [ref=e256] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e257]:
+          - heading "Síguenos" [level=3] [ref=e258]
+          - generic [ref=e259]:
+            - link "Facebook Contrataciones" [ref=e260] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e261]
+            - link "google" [ref=e263] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e264]
+            - link "clickclock" [ref=e266] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e267]
+      - paragraph [ref=e271]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

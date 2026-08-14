@@ -1,0 +1,16 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - img [ref=e8]
+      - heading "Petrotekno CMS" [level=1] [ref=e11]
+      - paragraph [ref=e12]: Ingresa el código de acceso
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: Código de Acceso
+        - generic [ref=e16]:
+          - textbox "Código de Acceso" [active] [ref=e17]:
+            - /placeholder: ••••••••
+          - button [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+      - button "Ingresar al Panel" [ref=e22] [cursor=pointer]
+  - paragraph [ref=e23]: Panel de Gestión de Contenido

@@ -1,0 +1,63 @@
+- generic [ref=e3]:
+  - navigation [ref=e195]:
+    - generic [ref=e196]:
+      - link "Petrotekno Logo" [ref=e197] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e198]
+      - generic [ref=e199]:
+        - button "Inicio" [ref=e200] [cursor=pointer]
+        - button "Servicios" [ref=e201] [cursor=pointer]
+        - button "Obras" [ref=e202] [cursor=pointer]
+        - button "Contacto" [ref=e203] [cursor=pointer]
+  - generic [ref=e205]:
+    - link "Volver a obras" [ref=e207] [cursor=pointer]:
+      - /url: /obras
+      - img [ref=e208]
+      - text: Volver a obras
+    - img "Planta Petroquímica del Norte" [ref=e277]
+    - generic [ref=e212]:
+      - generic [ref=e214]:
+        - img [ref=e215]
+        - text: Industrial / Energía
+      - heading "Planta Petroquímica del Norte" [level=1] [ref=e278]
+    - navigation [ref=e218]:
+      - button "Obra anterior Planta Petroquímica Madero" [active] [ref=e279] [cursor=pointer]:
+        - img [ref=e221]
+        - generic [ref=e223]:
+          - generic [ref=e224]: Obra anterior
+          - generic [ref=e225]: Planta Petroquímica Madero
+      - button "Siguiente obra Carretera Tampico-Mante" [ref=e280] [cursor=pointer]:
+        - generic [ref=e228]:
+          - generic [ref=e229]: Siguiente obra
+          - generic [ref=e230]: Carretera Tampico-Mante
+        - img [ref=e231]
+  - contentinfo [ref=e233]:
+    - generic [ref=e234]:
+      - generic [ref=e235]:
+        - generic [ref=e236]:
+          - link "Petrotekno Logo" [ref=e237] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e238]
+          - paragraph [ref=e239]: Ingeniería que transforma el paisaje.
+        - generic [ref=e240]:
+          - heading "Contacto" [level=3] [ref=e241]
+          - paragraph [ref=e242]: Av. Reforma 222, CDMX
+          - paragraph [ref=e243]:
+            - link "contacto@petrotekno.mx" [ref=e244] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e245]:
+            - link "+52 (55) 1234 5678" [ref=e246] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e247]:
+          - heading "Síguenos" [level=3] [ref=e248]
+          - generic [ref=e249]:
+            - link "Facebook Contrataciones" [ref=e250] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e251]
+            - link "google" [ref=e253] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e254]
+            - link "clickclock" [ref=e256] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e257]
+      - paragraph [ref=e261]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

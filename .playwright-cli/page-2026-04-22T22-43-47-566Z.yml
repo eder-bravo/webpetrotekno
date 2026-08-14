@@ -1,0 +1,182 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Petrotekno Logo" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e7]
+      - generic [ref=e8]:
+        - button "Inicio" [ref=e9] [cursor=pointer]
+        - button "Servicios" [ref=e10] [cursor=pointer]
+        - button "Obras" [ref=e11] [cursor=pointer]
+        - button "Contacto" [ref=e12] [cursor=pointer]
+  - generic [ref=e14]:
+    - generic [ref=e15]:
+      - link "Volver al inicio" [ref=e16] [cursor=pointer]:
+        - /url: /
+        - img [ref=e17]
+        - text: Volver al inicio
+      - heading "Todas Nuestras Obras" [level=1] [ref=e19]
+      - paragraph [ref=e20]: Conoce todos los proyectos que hemos realizado a lo largo de nuestra trayectoria.
+      - button "Filtrar por estado" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - generic [ref=e26]: Filtrar por estado
+        - img [ref=e27]
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - img [ref=e33]
+            - heading "Tamaulipas" [level=2] [ref=e36]
+          - generic [ref=e37]: 6 obras
+        - generic [ref=e38]:
+          - generic [ref=e39] [cursor=pointer]:
+            - img "Puerto Industrial de Altamira" [ref=e40]
+            - generic [ref=e41]:
+              - generic [ref=e42]: Infraestructura
+              - heading "Puerto Industrial de Altamira" [level=3] [ref=e43]
+          - generic [ref=e44] [cursor=pointer]:
+            - img "Planta Petroquímica Madero" [ref=e45]
+            - generic [ref=e46]:
+              - generic [ref=e47]: Industrial / Energía
+              - heading "Planta Petroquímica Madero" [level=3] [ref=e48]
+          - generic [ref=e49] [cursor=pointer]:
+            - img "Carretera Tampico-Mante" [ref=e50]
+            - generic [ref=e51]:
+              - generic [ref=e52]: Infraestructura Vial
+              - heading "Carretera Tampico-Mante" [level=3] [ref=e53]
+          - generic [ref=e54] [cursor=pointer]:
+            - img "Centro Logístico Reynosa" [ref=e55]
+            - generic [ref=e56]:
+              - generic [ref=e57]: Industrial
+              - heading "Centro Logístico Reynosa" [level=3] [ref=e58]
+          - generic [ref=e59] [cursor=pointer]:
+            - img "Parque Industrial Victoria" [ref=e60]
+            - generic [ref=e61]:
+              - generic [ref=e62]: Industrial
+              - heading "Parque Industrial Victoria" [level=3] [ref=e63]
+          - generic [ref=e64] [cursor=pointer]:
+            - img "Carretera Tampico Tuxpn" [ref=e65]
+            - generic [ref=e66]:
+              - generic [ref=e67]: Infraestructura Vial
+              - heading "Carretera Tampico Tuxpn" [level=3] [ref=e68]
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - img [ref=e72]
+            - heading "Otros" [level=2] [ref=e75]
+          - generic [ref=e76]: 4 obras
+        - generic [ref=e77]:
+          - generic [ref=e78] [cursor=pointer]:
+            - img "Obra para Editar" [ref=e79]
+            - generic [ref=e80]:
+              - generic [ref=e81]: Industrial
+              - heading "Obra para Editar" [level=3] [ref=e82]
+          - generic [ref=e83] [cursor=pointer]:
+            - img "Planta Petroquímica del Norte" [ref=e84]
+            - generic [ref=e85]:
+              - generic [ref=e86]: Industrial / Energía
+              - heading "Planta Petroquímica del Norte" [level=3] [ref=e87]
+          - generic [ref=e88] [cursor=pointer]:
+            - img "Obra Editada Correctamente" [ref=e89]
+            - generic [ref=e90]:
+              - generic [ref=e91]: Edificación Vertical
+              - heading "Obra Editada Correctamente" [level=3] [ref=e92]
+          - generic [ref=e93] [cursor=pointer]:
+            - img "Hospital Regional del Sur" [ref=e94]
+            - generic [ref=e95]:
+              - generic [ref=e96]: Edificación Pública
+              - heading "Hospital Regional del Sur" [level=3] [ref=e97]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - img [ref=e101]
+            - heading "Nuevo León" [level=2] [ref=e104]
+          - generic [ref=e105]: 5 obras
+        - generic [ref=e106]:
+          - generic [ref=e107] [cursor=pointer]:
+            - img "Torre Corporativa Monterrey" [ref=e108]
+            - generic [ref=e109]:
+              - generic [ref=e110]: Edificación Vertical
+              - heading "Torre Corporativa Monterrey" [level=3] [ref=e111]
+          - generic [ref=e112] [cursor=pointer]:
+            - img "Centro Comercial Apodaca" [ref=e113]
+            - generic [ref=e114]:
+              - generic [ref=e115]: Edificación Pública
+              - heading "Centro Comercial Apodaca" [level=3] [ref=e116]
+          - generic [ref=e117] [cursor=pointer]:
+            - img "Autopista Monterrey-Saltillo" [ref=e118]
+            - generic [ref=e119]:
+              - generic [ref=e120]: Infraestructura Vial
+              - heading "Autopista Monterrey-Saltillo" [level=3] [ref=e121]
+          - generic [ref=e122] [cursor=pointer]:
+            - img "Planta Automotriz García" [ref=e123]
+            - generic [ref=e124]:
+              - generic [ref=e125]: Industrial / Energía
+              - heading "Planta Automotriz García" [level=3] [ref=e126]
+          - generic [ref=e127] [cursor=pointer]:
+            - img "Hospital Regional San Nicolás" [ref=e128]
+            - generic [ref=e129]:
+              - generic [ref=e130]: Edificación Pública
+              - heading "Hospital Regional San Nicolás" [level=3] [ref=e131]
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - img [ref=e135]
+            - heading "Veracruz" [level=2] [ref=e138]
+          - generic [ref=e139]: 5 obras
+        - generic [ref=e140]:
+          - generic [ref=e141] [cursor=pointer]:
+            - img "Puerto de Veracruz - Modernización" [ref=e142]
+            - generic [ref=e143]:
+              - generic [ref=e144]: Infraestructura
+              - heading "Puerto de Veracruz - Modernización" [level=3] [ref=e145]
+          - generic [ref=e146] [cursor=pointer]:
+            - img "Refinería Tula" [ref=e147]
+            - generic [ref=e148]:
+              - generic [ref=e149]: Industrial / Energía
+              - heading "Refinería Tula" [level=3] [ref=e150]
+          - generic [ref=e151] [cursor=pointer]:
+            - img "Boulevard Costero Veracruz" [ref=e152]
+            - generic [ref=e153]:
+              - generic [ref=e154]: Infraestructura Vial
+              - heading "Boulevard Costero Veracruz" [level=3] [ref=e155]
+          - generic [ref=e156] [cursor=pointer]:
+            - img "Parque Eólico La Venta" [ref=e157]
+            - generic [ref=e158]:
+              - generic [ref=e159]: Industrial / Energía
+              - heading "Parque Eólico La Venta" [level=3] [ref=e160]
+          - generic [ref=e161] [cursor=pointer]:
+            - img "Centro de Convenciones Xalapa" [ref=e162]
+            - generic [ref=e163]:
+              - generic [ref=e164]: Edificación Pública
+              - heading "Centro de Convenciones Xalapa" [level=3] [ref=e165]
+  - contentinfo [ref=e166]:
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - link "Petrotekno Logo" [ref=e170] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e171]
+          - paragraph [ref=e172]: Ingeniería que transforma el paisaje.
+        - generic [ref=e173]:
+          - heading "Contacto" [level=3] [ref=e174]
+          - paragraph [ref=e175]: Av. Reforma 222, CDMX
+          - paragraph [ref=e176]:
+            - link "contacto@petrotekno.mx" [ref=e177] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e178]:
+            - link "+52 (55) 1234 5678" [ref=e179] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e180]:
+          - heading "Síguenos" [level=3] [ref=e181]
+          - generic [ref=e182]:
+            - link "Facebook Contrataciones" [ref=e183] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e184]
+            - link "google" [ref=e186] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e187]
+            - link "clickclock" [ref=e189] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e190]
+      - paragraph [ref=e194]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

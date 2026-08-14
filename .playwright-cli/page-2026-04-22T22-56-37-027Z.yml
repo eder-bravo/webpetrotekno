@@ -1,0 +1,104 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Petrotekno Logo" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e7]
+      - generic [ref=e8]:
+        - button "Inicio" [ref=e9] [cursor=pointer]
+        - button "Servicios" [ref=e10] [cursor=pointer]
+        - button "Obras" [ref=e11] [cursor=pointer]
+        - button "Contacto" [ref=e12] [cursor=pointer]
+  - generic [ref=e14]:
+    - link "Volver a obras" [ref=e52] [cursor=pointer]:
+      - /url: /obras
+      - img [ref=e53]
+      - text: Volver a obras
+    - img "Carretera Tampico-Mante" [ref=e102]
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - img [ref=e60]
+          - text: Infraestructura Vial
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - text: Tamaulipas
+      - heading "Carretera Tampico-Mante" [level=1] [ref=e103]
+      - generic [ref=e67]:
+        - blockquote [ref=e104]:
+          - heading "Hola Mundo 2" [level=2] [ref=e105]
+        - separator [ref=e106]
+        - iframe [ref=e108]:
+          - generic [active] [ref=f9e1]:
+            - generic "Reproductor de video de YouTube" [ref=f9e3]
+            - generic [ref=f9e5]:
+              - generic:
+                - generic:
+                  - button "Reproducir video" [ref=f9e10] [cursor=pointer]
+                  - button "Ocultar controles del reproductor" [ref=f9e12] [cursor=pointer]
+                  - generic [ref=f9e14]:
+                    - generic [ref=f9e19]:
+                      - generic [ref=f9e20]:
+                        - 'link "Olivia Rodrigo Explores #ASMR | W Magazine" [ref=f9e21] [cursor=pointer]':
+                          - /url: https://www.youtube.com/watch?v=ks2EjbDewyc
+                        - link "W Magazine" [ref=f9e22] [cursor=pointer]:
+                          - /url: /channel/UCB_TGajnJymiSmu6zWkjW2Q
+                          - generic [ref=f9e23]: W Magazine
+                      - generic [ref=f9e24]:
+                        - button [ref=f9e25] [cursor=pointer]
+                        - generic [ref=f9e27]:
+                          - generic: W Magazine
+                          - generic: 1.08 M de suscriptores
+                    - generic [ref=f9e28]:
+                      - button "Compartir" [ref=f9e31] [cursor=pointer]:
+                        - generic [ref=f9e35]:
+                          - img
+                      - link "Mirar en YouTube" [ref=f9e42] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=ks2EjbDewyc
+                        - generic [ref=f9e45]:
+                          - text: Mirar en
+                          - img [ref=f9e47]:
+                            - generic [ref=f9e49]:
+                              - img
+        - paragraph [ref=e109]: Construcción y modernización de carretera de 4 carriles.
+    - navigation [ref=e74]:
+      - button "Obra anterior Planta Petroquímica del Norte" [active] [ref=e110] [cursor=pointer]:
+        - img [ref=e77]
+        - generic [ref=e79]:
+          - generic [ref=e80]: Obra anterior
+          - generic [ref=e81]: Planta Petroquímica del Norte
+      - button "Siguiente obra Centro Logístico Reynosa" [ref=e111] [cursor=pointer]:
+        - generic [ref=e84]:
+          - generic [ref=e85]: Siguiente obra
+          - generic [ref=e86]: Centro Logístico Reynosa
+        - img [ref=e87]
+  - contentinfo [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - link "Petrotekno Logo" [ref=e22] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e23]
+          - paragraph [ref=e24]: Ingeniería que transforma el paisaje.
+        - generic [ref=e25]:
+          - heading "Contacto" [level=3] [ref=e26]
+          - paragraph [ref=e27]: Av. Reforma 222, CDMX
+          - paragraph [ref=e28]:
+            - link "contacto@petrotekno.mx" [ref=e29] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e30]:
+            - link "+52 (55) 1234 5678" [ref=e31] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e32]:
+          - heading "Síguenos" [level=3] [ref=e33]
+          - generic [ref=e34]:
+            - link "Facebook Contrataciones" [ref=e89] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e90]
+            - link "google" [ref=e92] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e36]
+            - link "clickclock" [ref=e93] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e94]
+      - paragraph [ref=e51]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.

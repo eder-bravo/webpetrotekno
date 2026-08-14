@@ -1,0 +1,69 @@
+- generic [ref=e3]:
+  - navigation [ref=e161]:
+    - generic [ref=e162]:
+      - link "Petrotekno Logo" [ref=e163] [cursor=pointer]:
+        - /url: /
+        - img "Petrotekno Logo" [ref=e164]
+      - generic [ref=e165]:
+        - button "Inicio" [ref=e166] [cursor=pointer]
+        - button "Servicios" [ref=e167] [cursor=pointer]
+        - button "Obras" [ref=e168] [cursor=pointer]
+        - button "Contacto" [ref=e169] [cursor=pointer]
+  - generic [ref=e171]:
+    - link "Volver a obras" [ref=e173] [cursor=pointer]:
+      - /url: /obras
+      - img [ref=e174]
+      - text: Volver a obras
+    - img "Puerto Industrial de Altamira" [ref=e177]
+    - generic [ref=e178]:
+      - generic [ref=e179]:
+        - generic [ref=e180]:
+          - img [ref=e181]
+          - text: Infraestructura
+        - generic [ref=e183]:
+          - img [ref=e184]
+          - text: Tamaulipas
+      - heading "Puerto Industrial de Altamira" [level=1] [ref=e187]
+      - generic [ref=e188]:
+        - heading "Visión General del Proyecto" [level=2] [ref=e189]
+        - paragraph [ref=e190]: El Puerto Industrial de Altamira representa uno de los proyectos de infraestructura portuaria más importantes del noreste de México. Con una inversión significativa, este desarrollo cuenta con capacidad para recibir buques de carga de gran calado, incluyendo portacontenedores y buques graneleros.
+        - heading "Alcance de la Obra" [level=2] [ref=e191]
+        - paragraph [ref=e192]: El proyecto abarcó la construcción de muelles de atraque de 300 metros de longitud, áreas de almacenamiento de 50,000 metros cuadrados, y la instalación de grúas pórtico de última generación. Además, se desarrollaron vialidades internas de acceso y sistemas de control logístico automatizado.
+        - heading "Impacto Económico" [level=2] [ref=e193]
+        - paragraph [ref=e194]: Este puerto fortalece la conectividad marítima de la región, facilitando el comercio internacional y generando más de 2,000 empleos directos e indirectos en la zona.
+    - navigation [ref=e195]:
+      - button "Siguiente obra Carretera Tampico-Mante" [ref=e199] [cursor=pointer]:
+        - generic [ref=e200]:
+          - generic [ref=e201]: Siguiente obra
+          - generic [ref=e202]: Carretera Tampico-Mante
+        - img [ref=e203]
+  - contentinfo [ref=e205]:
+    - generic [ref=e206]:
+      - generic [ref=e207]:
+        - generic [ref=e208]:
+          - link "Petrotekno Logo" [ref=e209] [cursor=pointer]:
+            - /url: /
+            - img "Petrotekno Logo" [ref=e210]
+          - paragraph [ref=e211]: Ingeniería que transforma el paisaje.
+        - generic [ref=e212]:
+          - heading "Contacto" [level=3] [ref=e213]
+          - paragraph [ref=e214]: Av. Reforma 222, CDMX
+          - paragraph [ref=e215]:
+            - link "contacto@petrotekno.mx" [ref=e216] [cursor=pointer]:
+              - /url: mailto:contacto@petrotekno.mx
+          - paragraph [ref=e217]:
+            - link "+52 (55) 1234 5678" [ref=e218] [cursor=pointer]:
+              - /url: tel:+52(55)12345678
+        - generic [ref=e219]:
+          - heading "Síguenos" [level=3] [ref=e220]
+          - generic [ref=e221]:
+            - link "Facebook Contrataciones" [ref=e222] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e223]
+            - link "google" [ref=e225] [cursor=pointer]:
+              - /url: https://www.google.com
+              - img [ref=e226]
+            - link "clickclock" [ref=e228] [cursor=pointer]:
+              - /url: https://ldkjlsdkjfsdlkfjsd.com
+              - img [ref=e229]
+      - paragraph [ref=e233]: © 2026 Petrotekno Ingeniería y Construcción. Todos los derechos reservados.
