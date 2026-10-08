@@ -1,0 +1,80 @@
+name: webpetrotekno
+
+services:
+  backend:
+    build:
+      context: ./petrotekno-cms
+      dockerfile: Dockerfile
+    image: webpetrotekno-backend:local
+    restart: unless-stopped
+    env_file:
+      - /srv/secrets/webpetrotekno.env
+    environment:
+      - APP_NAME=Petrotekno CMS
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=https://petrotekno.ederbravo.com
+      - APP_LOCALE=es
+      - APP_FALLBACK_LOCALE=es
+      - LOG_CHANNEL=stack
+      - LOG_LEVEL=error
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/data/database.sqlite
+      - SESSION_DRIVER=file
+      - SESSION_LIFETIME=120
+      - CACHE_STORE=file
+      - QUEUE_CONNECTION=sync
+      - FILESYSTEM_DISK=local
+    volumes:
+      - /srv/data/webpetrotekno/storage:/var/www/html/storage/app/public
+      - /srv/data/webpetrotekno/database:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/config"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      edge:
+        aliases:
+          - petrotekno-backend
+      internal:
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  frontend:
+    build:
+      context: ./webpetrotekno
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=/api
+    image: webpetrotekno-frontend:local
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      edge:
+        aliases:
+          - petrotekno-frontend
+      internal:
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  edge:
+    external: true
+  internal:
+    internal: true

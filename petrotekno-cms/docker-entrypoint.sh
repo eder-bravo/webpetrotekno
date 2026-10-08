@@ -3,10 +3,9 @@ set -e
 
 echo "🚀 Iniciando Petrotekno CMS..."
 
-# Verificar que las variables de entorno críticas están configuradas
+# Verificar que las variables de entorno criticas estan configuradas
 if [ -z "$APP_KEY" ]; then
-    echo "❌ Error: APP_KEY no está configurada"
-    echo "   Por favor configura las variables de entorno en Dokploy"
+    echo "❌ Error: APP_KEY no esta configurada"
     exit 1
 fi
 
@@ -14,11 +13,12 @@ echo "✅ Variables de entorno cargadas correctamente"
 
 # Asegurar que la base de datos SQLite existe
 echo "📦 Verificando base de datos SQLite..."
-if [ ! -f /var/www/html/database/database.sqlite ]; then
-    echo "   Creando database.sqlite..."
-    touch /var/www/html/database/database.sqlite
-    chown www-data:www-data /var/www/html/database/database.sqlite
-    chmod 664 /var/www/html/database/database.sqlite
+DB_FILE="${DB_DATABASE:-/var/www/html/database/database.sqlite}"
+DB_DIR=$(dirname "$DB_FILE")
+mkdir -p "$DB_DIR"
+if [ ! -f "$DB_FILE" ]; then
+    echo "   Creando $DB_FILE..."
+    touch "$DB_FILE"
 fi
 
 # Dar permisos correctos
@@ -45,18 +45,20 @@ fi
 # Eliminar symlink anterior si existe (para recrearlo correctamente)
 rm -f /var/www/html/public/storage
 
-# Aplicar permisos correctos - IMPORTANTE: usar 777 para volúmenes Docker
+# Aplicar permisos correctos
 chmod -R 777 /var/www/html/storage
 chmod -R 777 /var/www/html/bootstrap/cache
 chmod -R 777 /var/www/html/database
+chmod -R 777 "$DB_DIR"
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
 chown -R www-data:www-data /var/www/html/database
+chown -R www-data:www-data "$DB_DIR"
 
 echo "✅ Permisos configurados"
 
-# Limpiar cachés previos
-echo "🧹 Limpiando cachés..."
+# Limpiar caches previos
+echo "🧹 Limpiando caches..."
 php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
@@ -70,13 +72,13 @@ php artisan migrate --force --no-interaction
 echo "🌱 Verificando seeders..."
 php artisan db:seed --force --no-interaction || echo "   Seeders ya ejecutados o no necesarios"
 
-# Optimizaciones de Laravel para producción
-echo "⚡ Optimizando aplicación..."
+# Optimizaciones de Laravel para produccion
+echo "⚡ Optimizando aplicacion..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Crear enlace simbólico de storage (forzar recreación)
+# Crear enlace simbolico de storage (forzar recreacion)
 echo "🔗 Configurando storage link..."
 php artisan storage:link --force || echo "   Error creando storage link"
 
@@ -92,10 +94,10 @@ fi
 echo "🐘 Iniciando PHP-FPM..."
 php-fpm -D
 
-# Verificar que PHP-FPM está corriendo
+# Verificar que PHP-FPM esta corriendo
 sleep 2
 if ! pgrep "php-fpm" > /dev/null; then
-    echo "❌ Error: PHP-FPM no se inició correctamente"
+    echo "❌ Error: PHP-FPM no se inicio correctamente"
     exit 1
 fi
 
@@ -103,5 +105,5 @@ echo "✅ PHP-FPM iniciado correctamente"
 
 # Iniciar Nginx en foreground
 echo "🌐 Iniciando Nginx en puerto 8080..."
-echo "✨ Petrotekno CMS está listo!"
+echo "✨ Petrotekno CMS esta listo!"
 nginx -g "daemon off;"
