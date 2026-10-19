@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class ServicioController extends Controller
@@ -47,8 +49,9 @@ class ServicioController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
-            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
+
+        $this->validarSlug($validated['titulo']);
 
         // Subir imagen principal
         if ($request->hasFile('imagen')) {
@@ -71,7 +74,7 @@ class ServicioController extends Controller
     {
         return Inertia::render('Panel/Servicios/Form', [
             'servicio' => $servicio,
-            'iconos' => $this->getIconos(),
+            'iconos' => $this->getIconos($servicio),
         ]);
     }
 
@@ -89,26 +92,28 @@ class ServicioController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
-            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'eliminar_imagen' => 'boolean',
         ]);
 
-        // Subir nueva imagen principal
+        $this->validarSlug($validated['titulo'], $servicio->id);
+
+        $eliminarImagen = (bool) ($validated['eliminar_imagen'] ?? false);
+        unset($validated['eliminar_imagen']);
+        $imagenAnterior = $servicio->imagen;
+
         if ($request->hasFile('imagen')) {
-            if ($servicio->imagen) {
-                Storage::disk('public')->delete($servicio->imagen);
-            }
             $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
+        } elseif ($eliminarImagen) {
+            $validated['imagen'] = null;
         } else {
-            // Si no hay nueva imagen, no modificar la existente
             unset($validated['imagen']);
         }
 
-        // Igual para meta_image
-        if (!$request->hasFile('meta_image')) {
-            unset($validated['meta_image']);
-        }
-
         $servicio->update($validated);
+
+        if ($imagenAnterior && $imagenAnterior !== $servicio->imagen) {
+            Storage::disk('public')->delete($imagenAnterior);
+        }
 
         return redirect()->route('panel.servicios.index')
             ->with('success', 'Servicio actualizado exitosamente.');
@@ -149,9 +154,9 @@ class ServicioController extends Controller
     /**
      * Iconos disponibles (Phosphor Icons)
      */
-    private function getIconos(): array
+    private function getIconos(?Servicio $servicio = null): array
     {
-        return [
+        $iconos = [
             'Buildings' => 'Edificios',
             'Truck' => 'Camión',
             'Hammer' => 'Martillo',
@@ -160,8 +165,31 @@ class ServicioController extends Controller
             'HardHat' => 'Casco',
             'Crane' => 'Grúa',
             'Factory' => 'Fábrica',
-            'Road' => 'Carretera',
-            'Bridge' => 'Puente',
+            'Path' => 'Carretera',
+            'BridgeIcon' => 'Puente',
         ];
+
+        if ($servicio?->icono && !array_key_exists($servicio->icono, $iconos)) {
+            $iconos[$servicio->icono] = match ($servicio->icono) {
+                'Road' => 'Carretera (anterior)',
+                'Bridge' => 'Puente (anterior)',
+                default => $servicio->icono.' (anterior)',
+            };
+        }
+
+        return $iconos;
+    }
+
+    private function validarSlug(string $titulo, ?int $exceptoId = null): void
+    {
+        $query = Servicio::where('slug', Str::slug($titulo));
+        if ($exceptoId) {
+            $query->where('id', '!=', $exceptoId);
+        }
+        if ($query->exists()) {
+            throw ValidationException::withMessages([
+                'titulo' => 'Ya existe un servicio con este título o una dirección web equivalente.',
+            ]);
+        }
     }
 }

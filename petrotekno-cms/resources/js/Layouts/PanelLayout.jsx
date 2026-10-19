@@ -12,6 +12,7 @@ import {
     Sun,
     Moon,
     ChevronDown,
+    Mail,
 } from 'lucide-react';
 
 export default function PanelLayout({ children, title }) {
@@ -39,6 +40,7 @@ export default function PanelLayout({ children, title }) {
         { name: 'Obras', href: '/panel/obras', icon: Building2 },
         { name: 'Servicios', href: '/panel/servicios', icon: Wrench },
         { name: 'Redes Sociales', href: '/panel/redes', icon: Share2 },
+        { name: 'Mensajes', href: '/panel/mensajes', icon: Mail },
         { name: 'Configuración', href: '/panel/configuracion', icon: Settings },
     ];
 

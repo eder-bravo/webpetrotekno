@@ -8,21 +8,34 @@
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
+    gap: 48px;
     margin-bottom: 60px;
 }
 
-.footer-logo-img {
-    height: 80px;
-    width: auto;
-    margin-bottom: 25px;
-    /* border-radius: 12px; Removed for sharp aesthetic */
-    /* border: 2px solid rgba(255, 255, 255, 0.1); */
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); Removed per user request */
+.footer-brand {
+    max-width: 420px;
 }
 
-.footer-logo p {
+.footer-wordmark {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: .05em;
+    transition: color .25s ease;
+}
+
+.footer-wordmark:hover {
+    color: #dce5ef;
+}
+
+.footer-brand p {
     color: var(--text-muted);
+    max-width: 34ch;
+    line-height: 1.7;
 }
 
 .footer-contact h3,
@@ -55,6 +68,6 @@
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 30px;
-    color: #555;
+    color: #a4b3c7;
     font-size: 0.9rem;
 }

@@ -1,17 +1,16 @@
-import { Head, Link, useForm, usePage, router } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import PanelLayout from '@/Layouts/PanelLayout';
 import TiptapEditor from '@/Components/TiptapEditor';
-import { ArrowLeft, Save, Upload, X, CheckCircle } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { ArrowLeft, Save, Upload, X } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 export default function ObraForm({ obra, categorias, estados }) {
     const isEditing = !!obra;
     const [imagePreview, setImagePreview] = useState(obra?.imagen ? `/storage/${obra.imagen}` : null);
     const [imageError, setImageError] = useState(null);
-    const { flash } = usePage().props;
     const imageInputRef = useRef(null);
 
-    const { data, setData, post, put, processing, errors, recentlySuccessful } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         nombre: obra?.nombre || '',
         categoria: obra?.categoria || '',
         estado: obra?.estado || '',
@@ -21,6 +20,8 @@ export default function ObraForm({ obra, categorias, estados }) {
         meta_title: obra?.meta_title || '',
         meta_description: obra?.meta_description || '',
         imagen: null,
+        imagen_ilustrativa: obra?.imagen_ilustrativa ?? false,
+        eliminar_imagen: false,
     });
 
     const handleSubmit = (e) => {
@@ -59,7 +60,7 @@ export default function ObraForm({ obra, categorias, estados }) {
                 return;
             }
             
-            setData('imagen', file);
+            setData((current) => ({ ...current, imagen: file, eliminar_imagen: false }));
             const reader = new FileReader();
             reader.onload = (e) => {
                 setImagePreview(e.target.result);
@@ -69,7 +70,12 @@ export default function ObraForm({ obra, categorias, estados }) {
     };
 
     const removeImage = () => {
-        setData('imagen', null);
+        setData((current) => ({
+            ...current,
+            imagen: null,
+            imagen_ilustrativa: false,
+            eliminar_imagen: Boolean(obra?.imagen),
+        }));
         setImagePreview(null);
         setImageError(null);
         if (imageInputRef.current) {
@@ -107,7 +113,7 @@ export default function ObraForm({ obra, categorias, estados }) {
                                     value={data.nombre}
                                     onChange={(e) => setData('nombre', e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                    placeholder="Ej: Torre Corporativa Zenith"
+                                    placeholder="Ej: Rehabilitación de pavimento en Monterrey"
                                 />
                                 {errors.nombre && (
                                     <p className="mt-1 text-sm text-red-500">{errors.nombre}</p>
@@ -184,44 +190,65 @@ export default function ObraForm({ obra, categorias, estados }) {
                     {/* Imagen principal */}
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            Imagen principal
+                            Foto principal de la obra
                         </h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            Aparece en la ficha y en las tarjetas de obras. Se puede cambiar o quitar cuando quieras.
+                        </p>
+
+                        <input
+                            ref={imageInputRef}
+                            id="obra-imagen"
+                            type="file"
+                            className="sr-only"
+                            accept="image/jpeg,image/png,image/gif,image/webp"
+                            onChange={handleImageChange}
+                        />
 
                         {imagePreview ? (
-                            <div className="relative inline-block">
+                            <div>
                                 <img
                                     src={imagePreview}
-                                    alt="Preview"
-                                    className="max-w-xs h-48 object-cover rounded-lg"
+                                    alt="Vista previa de la foto de la obra"
+                                    className="w-full max-w-xl aspect-video object-cover rounded-lg"
                                 />
-                                <button
-                                    type="button"
-                                    onClick={removeImage}
-                                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                                >
-                                    <X className="w-4 h-4" />
-                                </button>
+                                <div className="flex flex-wrap gap-3 mt-3">
+                                    <button type="button" onClick={() => imageInputRef.current?.click()} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-medium">
+                                        <Upload className="w-4 h-4" /> Cambiar foto
+                                    </button>
+                                    <button type="button" onClick={removeImage} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <X className="w-4 h-4" /> Quitar foto
+                                    </button>
+                                </div>
                             </div>
                         ) : (
-                            <div 
+                            <button
+                                type="button"
                                 onClick={() => imageInputRef.current?.click()}
                                 className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors"
                             >
                                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
                                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                                    Click para subir imagen
+                                    Elegir foto de la obra
                                 </span>
                                 <span className="text-xs text-gray-400 mt-1">
                                     PNG, JPG, WebP hasta 10MB
                                 </span>
+                            </button>
+                        )}
+                        {imagePreview && (
+                            <label className="flex items-start gap-3 mt-5 max-w-xl cursor-pointer">
                                 <input
-                                    ref={imageInputRef}
-                                    type="file"
-                                    className="hidden"
-                                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
-                                    onChange={handleImageChange}
+                                    type="checkbox"
+                                    checked={data.imagen_ilustrativa}
+                                    onChange={(e) => setData('imagen_ilustrativa', e.target.checked)}
+                                    className="w-4 h-4 mt-1 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500"
                                 />
-                            </div>
+                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                    Esta imagen es ilustrativa y no muestra la obra real.
+                                    <span className="block text-xs text-gray-500 dark:text-gray-400 mt-1">Esta indicación queda registrada en el CMS; no aparece una etiqueta sobre la foto pública.</span>
+                                </span>
+                            </label>
                         )}
                         {(errors.imagen || imageError) && (
                             <p className="mt-2 text-sm text-red-500">{errors.imagen || imageError}</p>

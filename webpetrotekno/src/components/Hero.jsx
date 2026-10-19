@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import './Hero.css';
 
 import videoBg from '../assets/video_petro.mp4';
 import videoPoster from '../assets/video_poster.jpg';
+import { useConfig } from '../hooks/useApi';
 
 const normalizeApiBaseUrl = (rawBaseUrl) => {
     if (!rawBaseUrl) return '/api';
@@ -14,8 +15,12 @@ const normalizeApiBaseUrl = (rawBaseUrl) => {
 
 const Hero = () => {
     const [videoLoaded, setVideoLoaded] = useState(false);
+    const reduceMotion = useReducedMotion();
+    const { data: config } = useConfig();
     const apiBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
     const cvUrl = `${apiBaseUrl}/config/cv-empresa`;
+    const portfolioUrl = config?.portafolio_url || '/obras';
+    const isExternalPortfolio = /^https?:\/\//i.test(portfolioUrl);
 
     return (
         <section id="hero" className="hero">
@@ -40,43 +45,61 @@ const Hero = () => {
             <div className="container hero-content">
                 <motion.h1
                     className="hero-title"
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={reduceMotion ? false : { opacity: 0, y: 36 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <span className="text-white">CONSTRUYENDO</span> <br />
-                    <span className="text-primary">EL FUTURO</span>
+                    <span className="text-white">{config?.hero_titulo || 'CONSTRUYENDO'}</span> <br />
+                    <span className="text-primary">{config?.hero_destacado || 'EL FUTURO'}</span>
                 </motion.h1>
 
                 <motion.p
                     className="hero-subtitle"
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={reduceMotion ? false : { opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
+                    transition={{ duration: 0.8, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    Infraestructura de clase mundial, ingeniería de precisión y compromiso sólido.
+                    {config?.hero_subtitulo || 'Infraestructura de clase mundial, ingeniería de precisión y compromiso sólido.'}
                 </motion.p>
 
                 <motion.div
                     className="hero-buttons"
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={reduceMotion ? false : { opacity: 0, y: 22 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
+                    transition={{ duration: 0.7, delay: 0.58, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <a
+                    {config?.cv_disponible && <a
                         href={cvUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn"
                     >
                         Descargar CV
-                    </a>
+                    </a>}
+                    {!config?.cv_disponible && <a
+                        href={portfolioUrl}
+                        target={isExternalPortfolio ? '_blank' : undefined}
+                        rel={isExternalPortfolio ? 'noopener noreferrer' : undefined}
+                        className="btn"
+                    >
+                        Ver portafolio
+                    </a>}
                     <a href="/contacto" className="btn btn-outline">Contáctanos</a>
                 </motion.div>
             </div>
+
+            <motion.div
+                className="hero-scroll-cue"
+                aria-hidden="true"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.25, duration: 0.7 }}
+            >
+                <span>Explora Petrotekno</span>
+                <span className="hero-scroll-track"><span /></span>
+            </motion.div>
         </section>
     );
 };
 
 export default Hero;
-

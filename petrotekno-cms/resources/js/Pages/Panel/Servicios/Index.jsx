@@ -1,6 +1,6 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import PanelLayout from '@/Layouts/PanelLayout';
-import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical, CheckCircle, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical, CheckCircle, X, Building2, Truck, Hammer, Ruler, Wrench, HardHat, Factory, Route } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import {
     DndContext,
@@ -20,6 +20,21 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 function SortableItem({ servicio, onDelete }) {
+    const iconos = {
+        Buildings: Building2,
+        Truck,
+        Hammer,
+        Ruler,
+        Wrench,
+        HardHat,
+        Crane: Building2,
+        Factory,
+        Road: Route,
+        Path: Route,
+        Bridge: Route,
+        BridgeIcon: Route,
+    };
+    const Icono = iconos[servicio.icono] || Wrench;
     const {
         attributes,
         listeners,
@@ -48,9 +63,7 @@ function SortableItem({ servicio, onDelete }) {
             </button>
 
             <div className="w-12 h-12 flex-shrink-0 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
-                <span className="text-yellow-600 dark:text-yellow-400 text-lg">
-                    {servicio.icono ? '🔧' : '📦'}
-                </span>
+                <Icono className="w-6 h-6 text-yellow-600 dark:text-yellow-400" aria-hidden="true" />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -124,25 +137,28 @@ export default function ServiciosIndex({ servicios: initialServicios }) {
     const handleDragEnd = async (event) => {
         const { active, over } = event;
 
-        if (active.id !== over.id) {
-            setServicios((items) => {
-                const oldIndex = items.findIndex((i) => i.id === active.id);
-                const newIndex = items.findIndex((i) => i.id === over.id);
-                const newItems = arrayMove(items, oldIndex, newIndex);
-
-                fetch('/panel/servicios/reorder', {
+        if (over && active.id !== over.id) {
+            const oldIndex = servicios.findIndex((item) => item.id === active.id);
+            const newIndex = servicios.findIndex((item) => item.id === over.id);
+            const newItems = arrayMove(servicios, oldIndex, newIndex);
+            setServicios(newItems);
+            try {
+                const response = await fetch('/panel/servicios/reorder', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
                     },
                     body: JSON.stringify({
                         orden: newItems.map((item) => item.id),
                     }),
                 });
-
-                return newItems;
-            });
+                if (!response.ok) throw new Error('No se pudo guardar el orden');
+            } catch (error) {
+                setServicios(servicios);
+                alert('No se pudo guardar el orden de servicios. Inténtalo de nuevo.');
+            }
         }
     };
 

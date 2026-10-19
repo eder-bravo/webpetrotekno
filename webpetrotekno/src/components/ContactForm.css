@@ -1,20 +1,18 @@
-/* Contact Form Styles */
 .contact-form-section {
-    background: white;
-    padding: 40px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    background: var(--white);
+    padding: 0;
 }
 
 .contact-form-section h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    margin-bottom: 14px;
     color: var(--secondary);
 }
 
 .form-description {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin-bottom: 30px;
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 36px;
     line-height: 1.6;
 }
 
@@ -39,7 +37,7 @@
 .contact-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    gap: 24px;
 }
 
 .form-group {
@@ -60,20 +58,21 @@
 
 .form-group input,
 .form-group textarea {
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d9e0e8;
     font-family: var(--font-body);
     font-size: 0.95rem;
     transition: var(--transition-fast);
-    background-color: #f9f9f9;
+    background-color: #f8fafc;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #004488;
+    border-color: #9b7800;
     background-color: white;
-    box-shadow: 0 0 0 3px rgba(0, 68, 136, 0.1);
+    box-shadow: 0 0 0 3px rgba(240, 196, 0, 0.18);
 }
 
 .form-group textarea {
@@ -89,8 +88,8 @@
     justify-content: center;
     gap: 10px;
     padding: 15px 40px;
-    background: #004488;
-    color: var(--white);
+    background: var(--primary);
+    color: var(--secondary);
     font-family: var(--font-heading);
     font-weight: 600;
     text-transform: uppercase;
@@ -102,9 +101,8 @@
 }
 
 .btn-submit:hover:not(:disabled) {
-    background: #003366;
+    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 68, 136, 0.3);
 }
 
 .btn-submit:disabled {
@@ -113,10 +111,6 @@
 }
 
 @media (max-width: 768px) {
-    .contact-form-section {
-        padding: 30px 20px;
-    }
-
     .contact-form {
         grid-template-columns: 1fr;
     }
@@ -125,7 +119,4 @@
         margin-bottom: 5px;
     }
 
-    .contact-form-section h2 {
-        font-size: 1.75rem;
-    }
 }

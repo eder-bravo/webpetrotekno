@@ -1,6 +1,7 @@
 .technical-capacity {
-    background-color: var(--white);
+    background-color: var(--bg-soft);
     color: #333;
+    overflow-x: clip;
 }
 
 .tech-layout {
@@ -37,6 +38,42 @@
     line-height: 1.8;
     max-width: 500px;
     margin-bottom: 40px;
+}
+
+.tech-resources {
+    flex: 1;
+    min-width: 300px;
+    border-top: 1px solid #d8e1e9;
+}
+
+.tech-resources-label {
+    display: block;
+    margin: 22px 0 10px;
+    color: #004488;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.tech-resource {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 4px;
+    border-bottom: 1px solid #d8e1e9;
+    color: var(--secondary);
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: .025em;
+    text-transform: uppercase;
+}
+
+.tech-resource svg {
+    flex: 0 0 auto;
+    color: #24598a;
 }
 
 .tech-subtitle {

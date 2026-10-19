@@ -20,7 +20,7 @@ class UploadController extends Controller
         $path = $request->file('image')->store('contenido/imagenes', 'public');
 
         return response()->json([
-            'url' => Storage::url($path),
+            'url' => asset('storage/'.$path),
         ]);
     }
 
@@ -36,7 +36,7 @@ class UploadController extends Controller
         $path = $request->file('video')->store('contenido/videos', 'public');
 
         return response()->json([
-            'url' => Storage::url($path),
+            'url' => asset('storage/'.$path),
         ]);
     }
 

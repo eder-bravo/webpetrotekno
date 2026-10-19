@@ -1,7 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Recycle, Layers3, FlaskConical } from 'lucide-react';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
+import { useConfig } from '../hooks/useApi';
 import './Stats.css';
 
 const StatCircle = ({ percentage, label, sublabel, color = "var(--primary)" }) => {
@@ -39,12 +41,64 @@ const StatCircle = ({ percentage, label, sublabel, color = "var(--primary)" }) =
 };
 
 const Stats = () => {
-    // Data inspired by generic corporate stats or the user's reference
+    const { data: config } = useConfig();
+    const reduceMotion = useReducedMotion();
     const statsData = [
-        { percentage: 98, label: "Clientes Satisfechos", sublabel: "Obras entregadas a tiempo", color: "#004488" },
-        { percentage: 45, label: "Fuerza Laboral", sublabel: "Mujeres en el sector construcción", color: "#007BFF" },
-        { percentage: 85, label: "Sustentabilidad", sublabel: "Materiales reciclados en obras", color: "#28a745" }
-    ];
+        { key: 'impacto_clientes', label: 'Clientes satisfechos', color: '#004488' },
+        { key: 'impacto_laboral', label: 'Fuerza laboral', color: '#007BFF' },
+        { key: 'impacto_sustentabilidad', label: 'Sustentabilidad', color: '#28a745' },
+    ].filter(({ key }) => config?.[`${key}_valor`] !== undefined && config[`${key}_valor`] !== '')
+        .map(({ key, label, color }) => ({
+            percentage: Number(config[`${key}_valor`]),
+            label,
+            sublabel: config[`${key}_texto`] || '',
+            color,
+        }));
+
+    const benefits = String(config?.beneficios || '')
+        .split(/\r?\n/)
+        .map((line) => {
+            const [title, ...description] = line.split('|');
+            return { title: title?.trim(), description: description.join('|').trim() };
+        })
+        .filter(({ title }) => title)
+        .slice(0, 6);
+
+    if (statsData.length === 0 && benefits.length === 0) return null;
+
+    if (statsData.length === 0) {
+        const icons = [Recycle, Layers3, FlaskConical];
+        return <section id="stats" className="stats benefits section-padding">
+            <div className="container">
+                <div className="section-header">
+                    <span className="benefits-eyebrow">Nuestra especialidad</span>
+                    <h2 className="section-title">{config?.beneficios_titulo || 'Valor del reciclado'}</h2>
+                    <div className="section-line" />
+                    {config?.beneficios_intro && <p className="section-subtitle">{config.beneficios_intro}</p>}
+                </div>
+                <div className="benefits-grid">
+                    {benefits.map(({ title, description }, index) => {
+                        const Icon = icons[index % icons.length];
+                        return <motion.article
+                            className="benefit-card"
+                            key={`${title}-${index}`}
+                            initial={reduceMotion ? false : { opacity: 0, y: 32 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ duration: 0.68, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            <div className="benefit-card-top">
+                                <Icon size={31} strokeWidth={1.5} aria-hidden="true" />
+                                <span>{String(index + 1).padStart(2, '0')}</span>
+                            </div>
+                            <h3>{title}</h3>
+                            {description && <p>{description}</p>}
+                        </motion.article>;
+                    })}
+                </div>
+            </div>
+        </section>;
+    }
 
     return (
         <section id="stats" className="stats section-padding">

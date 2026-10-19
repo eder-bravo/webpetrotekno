@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import './ContactForm.css';
+import { postContacto } from '../services/api';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -27,17 +28,7 @@ const ContactForm = () => {
         setError(null);
 
         try {
-            const response = await fetch('/api/contacto', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al enviar el mensaje');
-            }
+            await postContacto(formData);
 
             setSubmitted(true);
             setFormData({
@@ -103,7 +94,7 @@ const ContactForm = () => {
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group full-width">
                     <label htmlFor="asunto">Asunto *</label>
                     <input
                         type="text"

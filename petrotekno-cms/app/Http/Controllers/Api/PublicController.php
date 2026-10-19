@@ -8,6 +8,7 @@ use App\Models\Obra;
 use App\Models\RedSocial;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PublicController extends Controller
 {
@@ -39,9 +40,10 @@ class PublicController extends Controller
                 'nombre' => $obra->nombre,
                 'slug' => $obra->slug,
                 'imagen' => $obra->imagen ? asset('storage/' . $obra->imagen) : null,
+                'imagen_ilustrativa' => $obra->imagen_ilustrativa,
                 'categoria' => $obra->categoria,
                 'estado' => $obra->estado,
-                'contenido' => $obra->contenido,
+                'contenido' => $this->publicarContenido($obra->contenido),
                 'meta_title' => $obra->meta_title,
                 'meta_description' => $obra->meta_description,
             ];
@@ -117,9 +119,10 @@ class PublicController extends Controller
             'nombre' => $obra->nombre,
             'slug' => $obra->slug,
             'imagen' => $obra->imagen ? asset('storage/' . $obra->imagen) : null,
+            'imagen_ilustrativa' => $obra->imagen_ilustrativa,
             'categoria' => $obra->categoria,
             'estado' => $obra->estado,
-            'contenido' => $obra->contenido,
+            'contenido' => $this->publicarContenido($obra->contenido),
             'meta_title' => $obra->meta_title,
             'meta_description' => $obra->meta_description,
             'navegacion' => [
@@ -147,7 +150,7 @@ class PublicController extends Controller
                 'slug' => $servicio->slug,
                 'icono' => $servicio->icono,
                 'descripcion_corta' => $servicio->descripcion_corta,
-                'contenido' => $servicio->contenido,
+                'contenido' => $this->publicarContenido($servicio->contenido),
                 'imagen' => $servicio->imagen ? asset('storage/' . $servicio->imagen) : null,
                 'meta_title' => $servicio->meta_title,
                 'meta_description' => $servicio->meta_description,
@@ -174,7 +177,7 @@ class PublicController extends Controller
             'slug' => $servicio->slug,
             'icono' => $servicio->icono,
             'descripcion_corta' => $servicio->descripcion_corta,
-            'contenido' => $servicio->contenido,
+            'contenido' => $this->publicarContenido($servicio->contenido),
             'imagen' => $servicio->imagen ? asset('storage/' . $servicio->imagen) : null,
             'meta_title' => $servicio->meta_title,
             'meta_description' => $servicio->meta_description,
@@ -188,8 +191,15 @@ class PublicController extends Controller
     {
         $config = Configuracion::todas();
 
-        // No incluir el logo (se sirve desde /images/logo.png)
+        $logo = $config['logo'] ?? null;
+        $config['logo_url'] = $logo && Storage::disk('public')->exists($logo)
+            ? asset('storage/'.$logo)
+            : asset('images/logo.png');
         unset($config['logo']);
+
+        $cv = $config['cv_empresa'] ?? null;
+        $config['cv_disponible'] = (bool) ($cv && Storage::disk('public')->exists($cv));
+        unset($config['cv_empresa']);
 
         // Eliminar código de acceso de la respuesta pública
         unset($config['codigo_acceso']);
@@ -250,6 +260,20 @@ class PublicController extends Controller
             'Content-Type' => $mimeType,
             'Content-Disposition' => $disposition . '; filename="' . $fileName . '"',
         ]);
+    }
+
+    /** Give existing editor uploads an absolute CMS URL for the separate public frontend. */
+    private function publicarContenido(?string $contenido): ?string
+    {
+        if (!$contenido) {
+            return $contenido;
+        }
+
+        return preg_replace_callback(
+            '/\b(src|poster)=("|\')\/storage\/([^"\']+)\2/i',
+            fn ($match) => $match[1].'='.$match[2].asset('storage/'.$match[3]).$match[2],
+            $contenido
+        );
     }
 
 }

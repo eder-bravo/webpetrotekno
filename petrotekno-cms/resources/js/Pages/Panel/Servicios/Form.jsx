@@ -20,6 +20,7 @@ export default function ServicioForm({ servicio, iconos }) {
         meta_title: servicio?.meta_title || '',
         meta_description: servicio?.meta_description || '',
         imagen: null,
+        eliminar_imagen: false,
     });
 
     const handleSubmit = (e) => {
@@ -58,7 +59,7 @@ export default function ServicioForm({ servicio, iconos }) {
                 return;
             }
             
-            setData('imagen', file);
+            setData((current) => ({ ...current, imagen: file, eliminar_imagen: false }));
             const reader = new FileReader();
             reader.onload = (e) => {
                 setImagePreview(e.target.result);
@@ -68,7 +69,7 @@ export default function ServicioForm({ servicio, iconos }) {
     };
 
     const removeImage = () => {
-        setData('imagen', null);
+        setData((current) => ({ ...current, imagen: null, eliminar_imagen: Boolean(servicio?.imagen) }));
         setImagePreview(null);
         setImageError(null);
         if (imageInputRef.current) {
@@ -106,7 +107,7 @@ export default function ServicioForm({ servicio, iconos }) {
                                     value={data.titulo}
                                     onChange={(e) => setData('titulo', e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                    placeholder="Ej: Edificación Vertical"
+                                    placeholder="Ej: Reciclado de pavimento asfáltico"
                                 />
                                 {errors.titulo && (
                                     <p className="mt-1 text-sm text-red-500">{errors.titulo}</p>
@@ -152,7 +153,7 @@ export default function ServicioForm({ servicio, iconos }) {
                                     onChange={(e) => setData('descripcion_corta', e.target.value)}
                                     rows={2}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                    placeholder="Descripción que aparece en la tarjeta del servicio"
+                                    placeholder="Resumen para la tarjeta y la portada del servicio"
                                     maxLength={500}
                                 />
                                 <p className="mt-1 text-xs text-gray-400">
@@ -167,6 +168,9 @@ export default function ServicioForm({ servicio, iconos }) {
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             Imagen del servicio
                         </h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            Se mostrará como fondo de la tarjeta y portada de la página del servicio.
+                        </p>
 
                         {imagePreview ? (
                             <div className="relative inline-block">

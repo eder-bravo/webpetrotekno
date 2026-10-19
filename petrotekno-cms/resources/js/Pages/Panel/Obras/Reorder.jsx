@@ -162,7 +162,7 @@ export default function ObrasReorder({ obras: paginatedObras, estados = [], esta
     const handleDragEnd = (event) => {
         const { active, over } = event;
 
-        if (active.id !== over.id) {
+        if (over && active.id !== over.id) {
             setObras((items) => {
                 const oldIndex = items.findIndex((i) => i.id === active.id);
                 const newIndex = items.findIndex((i) => i.id === over.id);
@@ -176,25 +176,30 @@ export default function ObrasReorder({ obras: paginatedObras, estados = [], esta
     const handleSave = async () => {
         setSaving(true);
         try {
-            // Calcular las posiciones globales basadas en el offset de la página
+            // Preserve the positions occupied by this page/filter, so moving one
+            // project cannot overwrite the order of projects outside the view.
+            const posiciones = paginatedObras.data.map((item) => item.orden);
             const orden = obras.map((item, index) => ({
                 id: item.id,
-                orden: indexOffset + index + 1
+                orden: posiciones[index]
             }));
 
-            await fetch('/panel/obras/reorder', {
+            const response = await fetch('/panel/obras/reorder', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({ orden }),
             });
+            if (!response.ok) throw new Error('No se pudo guardar el orden');
             setSaved(true);
             setHasChanges(false);
             setTimeout(() => setSaved(false), 3000);
         } catch (error) {
             console.error('Error saving order:', error);
+            alert('No se pudo guardar el orden. Inténtalo de nuevo.');
         } finally {
             setSaving(false);
         }

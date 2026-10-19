@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@400;600;700&display=swap');
 
 :root {
   /* Colors */
-  --primary: #FFFF00;
-  /* Logo Exact Match */
-  --primary-dark: #E6E600;
+  --primary: #F0C400;
+  --primary-dark: #D9AD00;
   --secondary: #0A192F;
   /* Deep Navy/Charcoal */
   --secondary-light: #172A46;
   --accent: #007BFF;
   /* Electric Blue for tech vibes */
 
-  --bg-dark: #0F1115;
+  --bg-dark: #0A192F;
+  --bg-soft: #EEF2F5;
   --bg-light: #F9FAFB;
   --text-main: #1F2937;
   --text-light: #F3F4F6;
@@ -25,7 +25,7 @@
 
   /* Spacing */
   --container-width: 1200px;
-  --header-height: 80px;
+  --header-height: 96px;
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -64,6 +64,11 @@ a {
   color: inherit;
 }
 
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
 ul {
   list-style: none;
 }
@@ -71,6 +76,16 @@ ul {
 img {
   max-width: 100%;
   display: block;
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + 12px);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 80px;
+  }
 }
 
 /* Utilities */
@@ -117,4 +132,15 @@ img {
   font-size: 2.5rem;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.section-header {
+  margin-bottom: clamp(2.75rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.section-header .section-subtitle {
+  max-width: 700px;
+  margin-inline: auto;
+  line-height: 1.65;
 }

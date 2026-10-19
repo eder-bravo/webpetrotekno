@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class ObraController extends Controller
@@ -17,7 +18,8 @@ class ObraController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Obra::ordenados();
+        $filtroVisibilidad = $request->query('visibilidad') === 'inactivas' ? 'inactivas' : 'activas';
+        $query = Obra::where('activo', $filtroVisibilidad === 'activas')->ordenados();
 
         // Filtrar por estado si se especifica
         if ($request->filled('estado')) {
@@ -25,10 +27,11 @@ class ObraController extends Controller
         }
 
         $obras = $query->paginate(10)->withQueryString();
-        $totalDestacados = Obra::where('destacado', true)->count();
+        $totalDestacados = Obra::where('activo', true)->where('destacado', true)->count();
+        $totalInactivas = Obra::where('activo', false)->count();
 
         // Obtener estados que tienen obras para el filtro
-        $estadosConObras = Obra::whereNotNull('estado')
+        $estadosConObras = Obra::where('activo', $filtroVisibilidad === 'activas')->whereNotNull('estado')
             ->distinct()
             ->pluck('estado')
             ->toArray();
@@ -36,9 +39,11 @@ class ObraController extends Controller
         return Inertia::render('Panel/Obras/Index', [
             'obras' => $obras,
             'totalDestacados' => $totalDestacados,
+            'totalInactivas' => $totalInactivas,
             'estados' => Obra::getEstadosMexico(),
             'estadosConObras' => $estadosConObras,
             'filtroEstado' => $request->estado,
+            'filtroVisibilidad' => $filtroVisibilidad,
         ]);
     }
 
@@ -90,14 +95,17 @@ class ObraController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria' => 'nullable|string|max:255',
-            'estado' => ['nullable', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
+            'estado' => ['required', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
             'contenido' => 'nullable|string',
             'destacado' => 'boolean',
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB max (PHP limit)
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'imagen_ilustrativa' => 'boolean',
         ]);
+
+        $this->validarSlug($validated['nombre']);
 
         // Subir imagen principal
         if ($request->hasFile('imagen')) {
@@ -120,7 +128,7 @@ class ObraController extends Controller
     {
         return Inertia::render('Panel/Obras/Form', [
             'obra' => $obra,
-            'categorias' => $this->getCategorias(),
+            'categorias' => $this->getCategorias($obra),
             'estados' => Obra::getEstadosMexico(),
         ]);
     }
@@ -133,28 +141,37 @@ class ObraController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'categoria' => 'nullable|string|max:255',
-            'estado' => ['nullable', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
+            'estado' => ['required', 'string', Rule::in(array_keys(Obra::getEstadosMexico()))],
             'contenido' => 'nullable|string',
             'destacado' => 'boolean',
             'activo' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
+            'imagen_ilustrativa' => 'boolean',
+            'eliminar_imagen' => 'boolean',
         ]);
 
-        // Subir nueva imagen principal
+        $this->validarSlug($validated['nombre'], $obra->id);
+
+        $eliminarImagen = (bool) ($validated['eliminar_imagen'] ?? false);
+        unset($validated['eliminar_imagen']);
+        $imagenAnterior = $obra->imagen;
+
         if ($request->hasFile('imagen')) {
-            // Eliminar imagen anterior
-            if ($obra->imagen) {
-                Storage::disk('public')->delete($obra->imagen);
-            }
             $validated['imagen'] = $request->file('imagen')->store('obras', 'public');
+        } elseif ($eliminarImagen) {
+            $validated['imagen'] = null;
+            $validated['imagen_ilustrativa'] = false;
         } else {
-            // Si no hay nueva imagen, no modificar la existente
             unset($validated['imagen']);
         }
 
         $obra->update($validated);
+
+        if ($imagenAnterior && $imagenAnterior !== $obra->imagen) {
+            Storage::disk('public')->delete($imagenAnterior);
+        }
 
         return redirect()->route('panel.obras.index')
             ->with('success', 'Obra actualizada exitosamente.');
@@ -197,15 +214,35 @@ class ObraController extends Controller
     /**
      * Obtener categorías existentes
      */
-    private function getCategorias(): array
+    private function getCategorias(?Obra $obra = null): array
     {
-        return [
-            'Edificación Vertical',
-            'Industrial / Energía',
-            'Infraestructura',
-            'Industrial',
-            'Edificación Pública',
-            'Infraestructura Vial',
+        $categorias = [
+            'Rehabilitación vial',
+            'Construcción de pavimento',
+            'Conservación carretera',
+            'Reciclado de pavimento',
+            'Infraestructura vial',
         ];
+
+        // Only offer asphalt-related categories for new work. An older record
+        // can still retain its current category while it is being edited.
+        if ($obra?->categoria && !in_array($obra->categoria, $categorias, true)) {
+            $categorias[] = $obra->categoria;
+        }
+
+        return $categorias;
+    }
+
+    private function validarSlug(string $nombre, ?int $exceptoId = null): void
+    {
+        $query = Obra::where('slug', Str::slug($nombre));
+        if ($exceptoId) {
+            $query->where('id', '!=', $exceptoId);
+        }
+        if ($query->exists()) {
+            throw ValidationException::withMessages([
+                'nombre' => 'Ya existe una obra con este nombre o una dirección web equivalente.',
+            ]);
+        }
     }
 }

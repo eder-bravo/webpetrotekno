@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\PublicController;
+use App\Http\Controllers\Api\ContactoController;
 use Illuminate\Support\Facades\Route;
 
 // API pública (sin autenticación)
@@ -12,3 +13,4 @@ Route::get('/servicios/{slug}', [PublicController::class, 'servicio']);
 Route::get('/config', [PublicController::class, 'config']);
 Route::get('/config/cv-empresa', [PublicController::class, 'descargarCv']);
 Route::get('/redes', [PublicController::class, 'redes']);
+Route::post('/contacto', [ContactoController::class, 'store'])->middleware('throttle:5,1');

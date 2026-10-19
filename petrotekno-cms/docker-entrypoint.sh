@@ -68,9 +68,9 @@ php artisan cache:clear || true
 echo "🗄️  Ejecutando migraciones..."
 php artisan migrate --force --no-interaction
 
-# Ejecutar seeders si es primera vez (verificar si hay datos)
-echo "🌱 Verificando seeders..."
-php artisan db:seed --force --no-interaction || echo "   Seeders ya ejecutados o no necesarios"
+# Crear solamente valores de configuración que aún no existan.
+echo "🌱 Verificando configuración inicial..."
+php artisan db:seed --force --no-interaction
 
 # Optimizaciones de Laravel para produccion
 echo "⚡ Optimizando aplicacion..."

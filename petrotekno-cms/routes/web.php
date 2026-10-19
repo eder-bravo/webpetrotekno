@@ -7,6 +7,7 @@ use App\Http\Controllers\Panel\ObraController;
 use App\Http\Controllers\Panel\RedSocialController;
 use App\Http\Controllers\Panel\ServicioController;
 use App\Http\Controllers\Panel\UploadController;
+use App\Http\Controllers\Panel\MensajeContactoController;
 use App\Http\Middleware\CodigoAcceso;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::prefix('panel')->name('panel.')->middleware(CodigoAcceso::class)->group(f
     
     // Redes Sociales
     Route::get('redes', [RedSocialController::class, 'index'])->name('redes.index');
+    Route::get('mensajes', [MensajeContactoController::class, 'index'])->name('mensajes.index');
     Route::post('redes', [RedSocialController::class, 'store'])->name('redes.store');
     Route::put('redes/{red}', [RedSocialController::class, 'update'])->name('redes.update');
     Route::delete('redes/{red}', [RedSocialController::class, 'destroy'])->name('redes.destroy');

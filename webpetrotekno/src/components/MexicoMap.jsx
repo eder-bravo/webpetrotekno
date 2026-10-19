@@ -75,7 +75,7 @@ const MexicoMap = () => {
                     <h2 className="section-title">Obras más <span className="text-blue">Destacadas</span></h2>
                     <div className="section-line"></div>
                     <p className="section-subtitle">
-                        Desde nuestros inicios hemos participado en grandes obras que van desde la construcción de naves industriales, la fabricación y ensamble de estructuras.
+                        Explora las obras publicadas por estado.
                     </p>
                 </div>
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\CodigoAcceso;
-use App\Models\Configuracion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
 
 class AuthController extends Controller
@@ -31,11 +31,19 @@ class AuthController extends Controller
             'codigo' => 'required|string',
         ]);
 
+        $key = 'panel-login:'.$request->ip();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return back()->withErrors(['codigo' => 'Demasiados intentos. Espera un minuto e intenta de nuevo.']);
+        }
+
         if (CodigoAcceso::verificar($request->codigo)) {
+            RateLimiter::clear($key);
+            $request->session()->regenerate();
             session(['panel_autenticado' => true]);
             return redirect()->route('panel.dashboard');
         }
 
+        RateLimiter::hit($key, 60);
         return back()->withErrors([
             'codigo' => 'El código de acceso es incorrecto.',
         ]);
@@ -46,7 +54,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        session()->forget('panel_autenticado');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('panel.login');
     }
 }

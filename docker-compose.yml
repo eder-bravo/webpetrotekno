@@ -27,6 +27,7 @@ services:
       - APP_NAME=Petrotekno CMS
       - APP_ENV=local
       - APP_KEY=${APP_KEY:-base64:iFY1y0lhKpRBrDoo85ATTsyNzGervYO5+Xu/mBnPyH4=}
+      - PANEL_ACCESS_CODE=${PANEL_ACCESS_CODE:-petrotekno2024}
       - APP_DEBUG=true
       - APP_URL=http://localhost:8080
       - APP_LOCALE=es
@@ -35,6 +36,7 @@ services:
       - LOG_CHANNEL=stack
       - LOG_LEVEL=debug
       - DB_CONNECTION=sqlite
+      - DB_DATABASE=/data/database.sqlite
       - SESSION_DRIVER=file
       - SESSION_LIFETIME=120
       - CACHE_STORE=file
@@ -43,7 +45,7 @@ services:
     volumes:
       # Persistencia de datos
       - backend_storage:/var/www/html/storage/app/public
-      - backend_database:/var/www/html/database
+      - backend_database:/data
       # Config nginx para desarrollo (sin HTTPS forzado)
       - ./petrotekno-cms/nginx.dev.conf:/etc/nginx/nginx.conf:ro
     healthcheck:

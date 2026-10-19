@@ -56,6 +56,10 @@ export function useServicios() {
     return useApi(() => import('../services/api.js').then(m => m.getServicios()));
 }
 
+export function useServicio(slug) {
+    return useApi(() => import('../services/api.js').then(m => m.getServicio(slug)), [slug]);
+}
+
 /**
  * Hook para obtener obras
  */

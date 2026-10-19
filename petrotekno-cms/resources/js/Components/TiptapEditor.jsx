@@ -4,6 +4,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Youtube from '@tiptap/extension-youtube';
 import Placeholder from '@tiptap/extension-placeholder';
+import VideoNode from './VideoNode';
 import { useCallback, useRef, useState, useEffect, memo } from 'react';
 import {
     Bold,
@@ -262,6 +263,7 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
                     class: 'w-full aspect-video rounded-lg my-4',
                 },
             }),
+            VideoNode,
             Placeholder.configure({
                 placeholder,
             }),
@@ -280,13 +282,17 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
         },
     });
 
-    // Initialize preview text on mount
+    // Keep the editor in sync when Inertia opens another record in the same form.
     useEffect(() => {
-        if (editor && content) {
-            const text = editor.getText();
-            setPreviewText(text.length > 100 ? text.substring(0, 100) + '...' : text);
+        if (!editor || isFullscreen) return;
+        const nextContent = content || '';
+        if (nextContent !== currentContentRef.current) {
+            currentContentRef.current = nextContent;
+            editor.commands.setContent(nextContent, { emitUpdate: false });
         }
-    }, [editor]);
+        const text = editor.getText();
+        setPreviewText(text.length > 100 ? text.substring(0, 100) + '...' : text);
+    }, [editor, content]);
 
     // Clear upload status after 3 seconds
     useEffect(() => {
@@ -410,12 +416,7 @@ function TiptapEditor({ content, onChange, placeholder = 'Escribe el contenido a
 
             if (response.ok) {
                 const data = await response.json();
-                editor.chain().focus().insertContent(`
-                    <video controls class="w-full rounded-lg my-4">
-                        <source src="${data.url}" type="video/mp4">
-                        Tu navegador no soporta videos.
-                    </video>
-                `).run();
+                editor.chain().focus().insertContent({ type: 'uploadedVideo', attrs: { src: data.url } }).run();
                 setUploadStatus({ type: 'success', message: 'Video subido correctamente' });
             } else {
                 const errorData = await response.json().catch(() => ({}));

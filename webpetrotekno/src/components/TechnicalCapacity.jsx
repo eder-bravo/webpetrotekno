@@ -1,65 +1,78 @@
 import React from 'react';
-import { Truck, Wrench, Car } from '@phosphor-icons/react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Truck, Wrench, Car, Factory, UsersThree } from '@phosphor-icons/react';
+import { useConfig } from '../hooks/useApi';
 import './TechnicalCapacity.css';
 
 const TechnicalCapacity = () => {
+    const { data: config } = useConfig();
+    const reduceMotion = useReducedMotion();
+    const metrics = [
+        { key: 'maquinaria_mayor', label: 'Maquinaria mayor', Icon: Truck },
+        { key: 'maquinaria_menor', label: 'Maquinaria menor', Icon: Wrench },
+        { key: 'vehiculos', label: 'Vehículos', Icon: Car },
+    ].filter(({ key }) => config?.[key] !== undefined && config[key] !== '');
+    const resources = String(config?.capacidad_recursos || '')
+        .split(/\r?\n/)
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .slice(0, 4);
+    const resourceIcons = [Factory, Truck, UsersThree, Wrench];
+
+    if (!config?.capacidad_descripcion && metrics.length === 0 && resources.length === 0) return null;
+
     return (
         <section className="technical-capacity section-padding">
             <div className="container">
                 <div className="tech-layout">
                     {/* Left Column: Text */}
-                    <div className="tech-text">
+                    <motion.div
+                        className="tech-text"
+                        initial={reduceMotion ? false : { opacity: 0, x: -28 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.25 }}
+                        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                    >
                         <h2 className="tech-title">CAPACIDAD <span className="text-blue">TÉCNICA</span></h2>
-                        <p className="tech-description">
-                            Nuestra capacidad técnica y financiera, sumada al profesionalismo y seriedad con que emprendemos y ejecutamos cada proyecto, nos hace una empresa confiable y competitiva.
-                        </p>
-
-                        {/* Added styling for the "Operativa" part if needed, or keeping it simple based on image 1 */}
-                        <div className="mt-large">
-                            <h3 className="tech-subtitle">Capacidad operativa</h3>
-                            <div className="tech-buttons">
-                                <button className="btn-tech btn-blue">Empresas</button>
-                                <button className="btn-tech btn-outline-blue">Certificaciones</button>
-                            </div>
-                        </div>
-                    </div>
+                        {config.capacidad_descripcion && <p className="tech-description">{config.capacidad_descripcion}</p>}
+                    </motion.div>
 
                     {/* Right Column: Stats List */}
-                    <div className="tech-stats-list">
-                        <div className="tech-stat-row">
-                            <div className="tech-icon-wrapper">
-                                <Truck size={60} weight="duotone" className="text-blue-light" />
-                            </div>
-                            <div className="tech-stat-info">
-                                <span className="tech-stat-label">MAQUINARIA MAYOR</span>
-                                <span className="tech-stat-number">365</span>
-                            </div>
-                        </div>
-
-                        <div className="tech-stat-divider"></div>
-
-                        <div className="tech-stat-row">
-                            <div className="tech-icon-wrapper">
-                                <Wrench size={60} weight="duotone" className="text-blue-light" />
-                            </div>
-                            <div className="tech-stat-info">
-                                <span className="tech-stat-label">MAQUINARIA MENOR</span>
-                                <span className="tech-stat-number">741</span>
-                            </div>
-                        </div>
-
-                        <div className="tech-stat-divider"></div>
-
-                        <div className="tech-stat-row">
-                            <div className="tech-icon-wrapper">
-                                <Car size={60} weight="duotone" className="text-blue-light" />
-                            </div>
-                            <div className="tech-stat-info">
-                                <span className="tech-stat-label">VEHÍCULOS</span>
-                                <span className="tech-stat-number">618</span>
-                            </div>
-                        </div>
-                    </div>
+                    {metrics.length > 0 && <div className="tech-stats-list">
+                        {metrics.map(({ key, label, Icon }, index) => <React.Fragment key={key}>
+                            {index > 0 && <div className="tech-stat-divider" />}
+                            <motion.div
+                                className="tech-stat-row"
+                                initial={reduceMotion ? false : { opacity: 0, x: 24 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                                <div className="tech-icon-wrapper"><Icon size={60} weight="duotone" className="text-blue-light" /></div>
+                                <div className="tech-stat-info">
+                                    <span className="tech-stat-label">{label}</span>
+                                    <span className="tech-stat-number">{config[key]}</span>
+                                </div>
+                            </motion.div>
+                        </React.Fragment>)}
+                    </div>}
+                    {metrics.length === 0 && resources.length > 0 && <div className="tech-resources" aria-label="Recursos operativos">
+                        <span className="tech-resources-label">Capacidad operativa</span>
+                        {resources.map((resource, index) => {
+                            const Icon = resourceIcons[index % resourceIcons.length];
+                            return <motion.div
+                                key={`${resource}-${index}`}
+                                className="tech-resource"
+                                initial={reduceMotion ? false : { opacity: 0, x: 24 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, amount: 0.35 }}
+                                transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                                <Icon size={30} weight="duotone" aria-hidden="true" />
+                                <span>{resource}</span>
+                            </motion.div>;
+                        })}
+                    </div>}
                 </div>
             </div>
         </section>

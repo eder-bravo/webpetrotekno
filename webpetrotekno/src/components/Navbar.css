@@ -26,20 +26,18 @@
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-shrink: 0;
 }
 
 .logo-img {
-    height: 55px;
+    height: 67px;
     width: auto;
-    /* border-radius: 12px; Removed for sharp edges */
-    /* border: 2px solid rgba(255, 255, 255, 0.1); Removed for cleaner look */
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); Removed per user request */
-    transition: transform 0.3s ease;
+    object-fit: contain;
+    transition: opacity 0.25s ease;
 }
 
-.logo-img:hover {
-    transform: scale(1.05);
+.logo:hover .logo-img {
+    opacity: 0.86;
 }
 
 .text-primary {
@@ -114,6 +112,8 @@
 
 .menu-toggle {
     display: none;
+    position: relative;
+    z-index: 1001;
     background: none;
     border: none;
     color: var(--white);
@@ -121,21 +121,40 @@
 }
 
 @media (max-width: 768px) {
+    .logo-img {
+        height: 58px;
+    }
+
     .nav-links {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 70%;
-        height: 100vh;
+        width: min(82vw, 340px);
+        height: 100dvh;
         background: var(--secondary);
         flex-direction: column;
         justify-content: center;
+        align-items: stretch;
+        gap: 18px;
+        padding: 96px 28px 40px;
         transition: right 0.3s ease;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
     }
 
     .nav-links.active {
         right: 0;
+    }
+
+    .nav-links .nav-button {
+        width: 100%;
+        padding: 10px 0;
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    .nav-links .btn-nav {
+        padding: 11px 20px;
+        text-align: center;
     }
 
     .menu-toggle {

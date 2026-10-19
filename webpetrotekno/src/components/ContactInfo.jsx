@@ -4,9 +4,10 @@ import { useConfig } from '../hooks/useApi';
 import './ContactInfo.css';
 
 const fallbackConfig = {
-    contacto_direccion: 'Av. Reforma 222, CDMX',
-    contacto_email: 'contacto@petrotekno.mx',
-    contacto_telefono: '+52 (55) 1234 5678',
+    contacto_direccion: '',
+    contacto_email: '',
+    contacto_telefono: '',
+    contacto_horario: '',
 };
 
 const ContactInfo = () => {
@@ -18,7 +19,7 @@ const ContactInfo = () => {
             <h2>Información de contacto</h2>
 
             <div className="info-cards">
-                <a href={`tel:${displayConfig.contacto_telefono?.replace(/\s/g, '')}`} className="info-card">
+                {displayConfig.contacto_telefono && <a href={`tel:${displayConfig.contacto_telefono.replace(/\s/g, '')}`} className="info-card">
                     <div className="icon-box">
                         <Phone size={32} />
                     </div>
@@ -27,9 +28,9 @@ const ContactInfo = () => {
                     <span className="contact-link">
                         Llamar ahora
                     </span>
-                </a>
+                </a>}
 
-                <a href={`mailto:${displayConfig.contacto_email}`} className="info-card">
+                {displayConfig.contacto_email && <a href={`mailto:${displayConfig.contacto_email}`} className="info-card">
                     <div className="icon-box">
                         <Mail size={32} />
                     </div>
@@ -38,9 +39,9 @@ const ContactInfo = () => {
                     <span className="contact-link">
                         Enviar email
                     </span>
-                </a>
+                </a>}
 
-                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="info-card">
+                {displayConfig.contacto_direccion && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(displayConfig.contacto_direccion)}`} target="_blank" rel="noopener noreferrer" className="info-card">
                     <div className="icon-box">
                         <MapPin size={32} />
                     </div>
@@ -49,16 +50,15 @@ const ContactInfo = () => {
                     <span className="contact-link">
                         Ver en mapa
                     </span>
-                </a>
+                </a>}
 
-                <div className="info-card">
+                {displayConfig.contacto_horario && <div className="info-card">
                     <div className="icon-box">
                         <Clock size={32} />
                     </div>
                     <h3>Horario de atención</h3>
-                    <p>Lunes a Viernes<br />9:00 AM - 6:00 PM</p>
-                    <p className="timezone">Hora de México</p>
-                </div>
+                    <p>{displayConfig.contacto_horario}</p>
+                </div>}
             </div>
 
             <div className="contact-message">

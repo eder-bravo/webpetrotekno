@@ -1,20 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, MapPin, X, Filter, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { ArrowLeft, ArrowUpRight, MapPin, X, Filter, ChevronDown } from 'lucide-react';
 import { useObras } from '../hooks/useApi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-// Imágenes de fallback
-import p1 from '../assets/img4.webp';
-import p2 from '../assets/img6.webp';
-import p3 from '../assets/img5.webp';
-import p4 from '../assets/img1.webp';
-import p5 from '../assets/img2.webp';
-import p6 from '../assets/img3.webp';
 import '../components/Portfolio.css';
 import './Obras.css';
 
-const fallbackImages = [p1, p2, p3, p4, p5, p6];
 
 // Mapa de estados mexicanos (mismo que en el backend)
 const ESTADOS_MEXICO = {
@@ -52,6 +45,42 @@ const ESTADOS_MEXICO = {
     'zac': 'Zacatecas',
 };
 
+const reveal = { duration: 0.7, ease: [0.22, 1, 0.36, 1] };
+
+function ObraCard({ obra, index, reduceMotion, onOpen }) {
+    return (
+        <motion.a
+            href={`/obras/${obra.slug}`}
+            className={`portfolio-item obra-list-card ${obra.imagen ? '' : 'portfolio-item-no-image'}`}
+            onClick={(event) => {
+                if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onOpen(obra.slug);
+            }}
+            aria-label={`Ver obra: ${obra.nombre}`}
+            initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.12 }}
+            whileHover={reduceMotion ? undefined : { y: -6 }}
+            transition={{ ...reveal, delay: Math.min(index, 3) * 0.075 }}
+        >
+            {obra.imagen && <img
+                src={obra.imagen}
+                alt={obra.nombre}
+                loading="lazy"
+                decoding="async"
+                width="800"
+                height="600"
+            />}
+            <div className="portfolio-overlay">
+                <span className="portfolio-cat">{obra.categoria}</span>
+                <h3 className="portfolio-title">{obra.nombre}</h3>
+            </div>
+            <span className="obra-card-corner" aria-hidden="true"><ArrowUpRight size={21} /></span>
+        </motion.a>
+    );
+}
+
 function Obras() {
     const [searchParams, setSearchParams] = useSearchParams();
     const estadoParam = searchParams.get('estado');
@@ -60,6 +89,13 @@ function Obras() {
     
     const { data: obras, loading, error } = useObras();
     const navigate = useNavigate();
+    const reduceMotion = useReducedMotion();
+
+    useEffect(() => {
+        document.title = 'Obras de pavimentación y reciclado | Petrotekno';
+        const meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.content = 'Conoce obras de construcción, rehabilitación y reciclado de pavimentos asfálticos documentadas por Petrotekno.';
+    }, []);
 
     // Actualizar selectedEstado cuando cambia el parámetro de URL
     useEffect(() => {
@@ -81,13 +117,6 @@ function Obras() {
 
     const handleObraClick = (slug) => {
         navigate(`/obras/${slug}`);
-    };
-
-    const getImage = (obra, index) => {
-        if (obra.imagen && typeof obra.imagen === 'string' && obra.imagen.startsWith('http')) {
-            return obra.imagen;
-        }
-        return fallbackImages[index % fallbackImages.length];
     };
 
     // Filtrar obras por estado seleccionado
@@ -156,18 +185,25 @@ function Obras() {
     return (
         <>
             <Navbar />
-            <section className="portfolio section-padding obras-page" style={{ paddingTop: '120px', minHeight: '100vh' }}>
+            <section className="portfolio section-padding obras-page">
                 <div className="container">
                     {/* Header */}
-                    <div className="obras-header">
-                        <a 
-                            href="/"
-                            onClick={handleGoHome}
-                            className="back-link"
-                        >
-                            <ArrowLeft size={18} />
-                            Volver al inicio
-                        </a>
+                    <motion.div
+                        className="obras-header"
+                        initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={reveal}
+                    >
+                        <div className="obras-header-top">
+                            <a href="/" onClick={handleGoHome} className="back-link">
+                                <ArrowLeft size={18} /> Volver al inicio
+                            </a>
+                            <span className="obras-header-count">
+                                <strong>{String(filteredObras.length).padStart(2, '0')}</strong>
+                                {filteredObras.length === 1 ? ' obra' : ' obras'}
+                            </span>
+                        </div>
+                        <span className="obras-eyebrow">Portafolio / Petrotekno</span>
                         <h1 className="section-title" style={{ textAlign: 'left' }}>
                             Todas Nuestras <span className="text-primary">Obras</span>
                         </h1>
@@ -181,6 +217,9 @@ function Obras() {
                                 <button 
                                     className={`filter-button ${selectedEstado ? 'active' : ''}`}
                                     onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                    aria-expanded={isFilterOpen}
+                                    aria-controls="obras-filter-menu"
+                                    type="button"
                                 >
                                     <Filter size={18} />
                                     <span>
@@ -191,8 +230,16 @@ function Obras() {
                                     <ChevronDown size={18} className={`chevron ${isFilterOpen ? 'open' : ''}`} />
                                 </button>
                                 
+                                <AnimatePresence>
                                 {isFilterOpen && (
-                                    <div className="filter-menu">
+                                    <motion.div
+                                        id="obras-filter-menu"
+                                        className="filter-menu"
+                                        initial={reduceMotion ? false : { opacity: 0, y: -8, scale: 0.97 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={reduceMotion ? undefined : { opacity: 0, y: -6, scale: 0.98 }}
+                                        transition={{ duration: reduceMotion ? 0 : 0.22, ease: 'easeOut' }}
+                                    >
                                         <button 
                                             className={`filter-option ${!selectedEstado ? 'selected' : ''}`}
                                             onClick={() => handleEstadoChange('')}
@@ -209,8 +256,9 @@ function Obras() {
                                                 {ESTADOS_MEXICO[estado] || estado}
                                             </button>
                                         ))}
-                                    </div>
+                                    </motion.div>
                                 )}
+                                </AnimatePresence>
                             </div>
 
                             {selectedEstado && (
@@ -229,7 +277,7 @@ function Obras() {
                                 <span className="badge-count">{filteredObras.length} {filteredObras.length === 1 ? 'obra' : 'obras'}</span>
                             </div>
                         )}
-                    </div>
+                    </motion.div>
 
                     {loading && (
                         <div className="loading-message">
@@ -246,10 +294,18 @@ function Obras() {
                     {/* Contenido agrupado por estado */}
                     {!loading && !selectedEstado && Object.keys(obrasPorEstado).length > 0 && (
                         <div className="obras-grouped">
-                            {Object.entries(obrasPorEstado).map(([estado, obrasEstado]) => (
-                                <div key={estado} className="estado-section">
+                            {Object.entries(obrasPorEstado).map(([estado, obrasEstado], sectionIndex) => (
+                                <motion.section
+                                    key={estado}
+                                    className="estado-section"
+                                    initial={reduceMotion ? false : { opacity: 0, y: 22 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, amount: 0.06 }}
+                                    transition={reveal}
+                                >
                                     <div className="estado-header">
                                         <div className="estado-title">
+                                            <span className="estado-index">{String(sectionIndex + 1).padStart(2, '0')}</span>
                                             <MapPin size={24} />
                                             <h2>{estado === 'sin_estado' ? 'Otras Obras' : ESTADOS_MEXICO[estado] || estado}</h2>
                                         </div>
@@ -259,29 +315,10 @@ function Obras() {
                                     </div>
                                     <div className="portfolio-grid">
                                         {obrasEstado.map((obra, index) => (
-                                            <div 
-                                                key={obra.id || index} 
-                                                className="portfolio-item"
-                                                onClick={() => handleObraClick(obra.slug)}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <img
-                                                    src={getImage(obra, index)}
-                                                    alt={obra.nombre}
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    width="800"
-                                                    height="600"
-                                                    style={{ objectFit: 'cover' }}
-                                                />
-                                                <div className="portfolio-overlay">
-                                                    <span className="portfolio-cat">{obra.categoria}</span>
-                                                    <h3 className="portfolio-title">{obra.nombre}</h3>
-                                                </div>
-                                            </div>
+                                            <ObraCard key={obra.id || index} obra={obra} index={index} reduceMotion={reduceMotion} onOpen={handleObraClick} />
                                         ))}
                                     </div>
-                                </div>
+                                </motion.section>
                             ))}
                         </div>
                     )}
@@ -290,26 +327,7 @@ function Obras() {
                     {!loading && selectedEstado && (
                         <div className="portfolio-grid" style={{ paddingBottom: '4rem' }}>
                             {filteredObras.map((obra, index) => (
-                                <div 
-                                    key={obra.id || index} 
-                                    className="portfolio-item"
-                                    onClick={() => handleObraClick(obra.slug)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <img
-                                        src={getImage(obra, index)}
-                                        alt={obra.nombre}
-                                        loading="lazy"
-                                        decoding="async"
-                                        width="800"
-                                        height="600"
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                    <div className="portfolio-overlay">
-                                        <span className="portfolio-cat">{obra.categoria}</span>
-                                        <h3 className="portfolio-title">{obra.nombre}</h3>
-                                    </div>
-                                </div>
+                                <ObraCard key={obra.id || index} obra={obra} index={index} reduceMotion={reduceMotion} onOpen={handleObraClick} />
                             ))}
                         </div>
                     )}

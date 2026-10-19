@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LogoLink from './LogoLink';
 import logoFallback from '../assets/logo_blanco.png';
+import { useConfig } from '../hooks/useApi';
 import './Navbar.css';
 
 const normalizeApiBaseUrl = (rawBaseUrl) => {
@@ -12,16 +13,17 @@ const normalizeApiBaseUrl = (rawBaseUrl) => {
     return trimmed.replace(/\/api$/, '');
 };
 
-const Navbar = () => {
+const Navbar = ({ overlayOnTop = false }) => {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [logoSrc, setLogoSrc] = useState(logoFallback);
+    const { data: config } = useConfig();
     const navigate = useNavigate();
     const location = useLocation();
     
     const apiBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
     const currentMinute = Math.floor(Date.now() / 60000);
-    const logoUrl = apiBaseUrl ? `${apiBaseUrl}/images/logo.png?v=${currentMinute}` : `/images/logo.png?v=${currentMinute}`;
+    const logoUrl = config?.logo_url || (apiBaseUrl ? `${apiBaseUrl}/images/logo.png?v=${currentMinute}` : `/images/logo.png?v=${currentMinute}`);
 
     useEffect(() => {
         const img = new Image();
@@ -38,16 +40,16 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Si no estamos en la home, el navbar siempre debe tener fondo
     const isHome = location.pathname === '/';
-    const shouldHaveBackground = !isHome || scrolled;
+    const shouldHaveBackground = !(isHome || overlayOnTop) || scrolled;
 
     const handleNavigation = (path) => {
         setMenuOpen(false);
+        const scrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
         if (path === '/') {
             // Si ya estamos en home, scroll al top
             if (location.pathname === '/') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: scrollBehavior });
             } else {
                 // Si no, navegar a home y scroll al top
                 navigate('/');
@@ -59,7 +61,7 @@ const Navbar = () => {
             if (location.pathname === '/') {
                 // Scroll to section if on home page
                 const element = document.querySelector(path);
-                element?.scrollIntoView({ behavior: 'smooth' });
+                element?.scrollIntoView({ behavior: scrollBehavior });
             } else {
                 // Navigate to home and then scroll to section
                 navigate('/');
@@ -67,7 +69,7 @@ const Navbar = () => {
                     window.scrollTo({ top: 0, behavior: 'instant' });
                     setTimeout(() => {
                         const element = document.querySelector(path);
-                        element?.scrollIntoView({ behavior: 'smooth' });
+                        element?.scrollIntoView({ behavior: scrollBehavior });
                     }, 200);
                 }, 150);
             }
@@ -86,14 +88,15 @@ const Navbar = () => {
                     <img src={logoSrc} alt="Petrotekno Logo" className="logo-img" />
                 </LogoLink>
 
-                <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
+                <div id="main-navigation" className={`nav-links ${menuOpen ? 'active' : ''}`}>
                     <button onClick={() => handleNavigation('/')} className="nav-button">Inicio</button>
-                    <button onClick={() => handleNavigation('#services')} className="nav-button">Servicios</button>
+                    <button onClick={() => handleNavigation(isHome ? '#services' : '/servicios')} className="nav-button">Servicios</button>
+                    {config?.proceso_pasos && <button onClick={() => handleNavigation('#proceso')} className="nav-button">Proceso</button>}
                     <button onClick={() => handleNavigation('#portfolio')} className="nav-button">Obras</button>
                     <button onClick={() => handleNavigation('/contacto')} className="nav-button btn btn-nav">Contacto</button>
                 </div>
 
-                <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+                <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="main-navigation">
                     {menuOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>

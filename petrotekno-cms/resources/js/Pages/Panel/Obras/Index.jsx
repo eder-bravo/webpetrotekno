@@ -170,7 +170,7 @@ function Pagination({ links, meta }) {
     );
 }
 
-export default function ObrasIndex({ obras: paginatedObras, totalDestacados, estados, estadosConObras, filtroEstado }) {
+export default function ObrasIndex({ obras: paginatedObras, totalDestacados, totalInactivas, estados, estadosConObras, filtroEstado, filtroVisibilidad }) {
     const [deleteModal, setDeleteModal] = useState({ open: false, obra: null });
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(!!flash?.success);
@@ -201,7 +201,19 @@ export default function ObrasIndex({ obras: paginatedObras, totalDestacados, est
     };
 
     const handleFilterChange = (estado) => {
-        router.get('/panel/obras', estado ? { estado } : {}, {
+        router.get('/panel/obras', {
+            ...(estado ? { estado } : {}),
+            ...(filtroVisibilidad === 'inactivas' ? { visibilidad: 'inactivas' } : {}),
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
+
+    const handleVisibilityChange = (visibilidad) => {
+        router.get('/panel/obras', {
+            ...(visibilidad === 'inactivas' ? { visibilidad: 'inactivas' } : {}),
+        }, {
             preserveState: true,
             preserveScroll: true,
         });
@@ -227,7 +239,7 @@ export default function ObrasIndex({ obras: paginatedObras, totalDestacados, est
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {meta.total} obra{meta.total !== 1 ? 's' : ''} en total
+                        {meta.total} obra{meta.total !== 1 ? 's' : ''} {filtroVisibilidad === 'inactivas' ? 'inactivas' : 'publicadas'}
                         {filtroEstado && (
                             <span className="ml-1">
                                 en <strong className="text-gray-700 dark:text-gray-300">{estados[filtroEstado]}</strong>
@@ -243,6 +255,7 @@ export default function ObrasIndex({ obras: paginatedObras, totalDestacados, est
                             {totalDestacados} obras destacadas
                         </span>
                         {' '} • Recomendado: mantener entre 3 y 6 destacadas
+                        {totalInactivas > 0 && ` • ${totalInactivas} inactivas`}
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -265,6 +278,15 @@ export default function ObrasIndex({ obras: paginatedObras, totalDestacados, est
 
             {/* Filtro por estado */}
             <div className="mb-6 flex items-center gap-3">
+                <select
+                    aria-label="Visibilidad de las obras"
+                    value={filtroVisibilidad}
+                    onChange={(e) => handleVisibilityChange(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                >
+                    <option value="activas">Publicadas</option>
+                    <option value="inactivas">Inactivas</option>
+                </select>
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <Filter className="w-4 h-4" />
                     <span>Filtrar por estado:</span>
@@ -312,7 +334,7 @@ export default function ObrasIndex({ obras: paginatedObras, totalDestacados, est
             ) : (
                 <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
                     <p className="text-gray-500 dark:text-gray-400 mb-4">
-                        No hay obras registradas
+                        No hay obras {filtroVisibilidad === 'inactivas' ? 'inactivas' : 'publicadas'}
                     </p>
                     <Link
                         href="/panel/obras/create"

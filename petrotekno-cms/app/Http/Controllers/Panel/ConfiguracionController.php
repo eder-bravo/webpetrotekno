@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CodigoAcceso;
 use App\Models\Configuracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class ConfiguracionController extends Controller
@@ -31,54 +33,67 @@ class ConfiguracionController extends Controller
             'contacto_direccion' => 'nullable|string|max:500',
             'contacto_email' => 'nullable|email|max:255',
             'contacto_telefono' => 'nullable|string|max:50',
+            'contacto_horario' => 'nullable|string|max:120',
             'site_title' => 'nullable|string|max:255',
             'site_description' => 'nullable|string|max:500',
             'slogan' => 'nullable|string|max:255',
+            'hero_titulo' => 'nullable|string|max:120',
+            'hero_destacado' => 'nullable|string|max:120',
+            'hero_subtitulo' => 'nullable|string|max:300',
+            'capacidad_descripcion' => 'nullable|string|max:600',
+            'capacidad_recursos' => 'nullable|string|max:800',
+            'beneficios_titulo' => 'nullable|string|max:120',
+            'beneficios_intro' => 'nullable|string|max:300',
+            'beneficios' => 'nullable|string|max:1800',
+            'proceso_titulo' => 'nullable|string|max:120',
+            'proceso_intro' => 'nullable|string|max:300',
+            'proceso_pasos' => 'nullable|string|max:1200',
+            'portafolio_url' => 'nullable|url:http,https|max:500',
+            'maquinaria_mayor' => 'nullable|integer|min:0|max:100000',
+            'maquinaria_menor' => 'nullable|integer|min:0|max:100000',
+            'vehiculos' => 'nullable|integer|min:0|max:100000',
+            'impacto_clientes_valor' => 'nullable|integer|between:0,100',
+            'impacto_clientes_texto' => 'nullable|string|max:200',
+            'impacto_laboral_valor' => 'nullable|integer|between:0,100',
+            'impacto_laboral_texto' => 'nullable|string|max:200',
+            'impacto_sustentabilidad_valor' => 'nullable|integer|between:0,100',
+            'impacto_sustentabilidad_texto' => 'nullable|string|max:200',
             'logo' => 'nullable|image|mimes:png|max:2048',
             'cv_empresa' => 'nullable|file|mimes:pdf|max:10240',
+            'eliminar_cv' => 'sometimes|boolean',
         ]);
 
         // Guardar configuraciones de texto
         foreach ($validated as $clave => $valor) {
-            if (!in_array($clave, ['logo', 'cv_empresa']) && $valor !== null) {
-                Configuracion::establecer($clave, $valor, 'text');
+            if (!in_array($clave, ['logo', 'cv_empresa', 'eliminar_cv'])) {
+                Configuracion::establecer($clave, $valor ?? '', 'text');
             }
         }
 
-        // Subir logo si se proporciona - siempre lo guarda como logo.png en public/images
+        // El disco public está montado en un volumen persistente.
         if ($request->hasFile('logo')) {
-            $logoFile = $request->file('logo');
-
-            // Asegurar que existe el directorio
-            $publicImagesPath = public_path('images');
-            if (!file_exists($publicImagesPath)) {
-                mkdir($publicImagesPath, 0755, true);
+            $logoAnterior = Configuracion::obtener('logo');
+            $logoPath = $request->file('logo')->store('config/logos', 'public');
+            Configuracion::establecer('logo', $logoPath, 'image');
+            if ($logoAnterior) {
+                Storage::disk('public')->delete($logoAnterior);
             }
-
-            // Eliminar logo anterior si existe
-            $logoPath = public_path('images/logo.png');
-            if (file_exists($logoPath)) {
-                unlink($logoPath);
-            }
-
-            // Mover el archivo a public/images/logo.png
-            $logoFile->move($publicImagesPath, 'logo.png');
         }
 
         // Subir CV de empresa si se proporciona
         if ($request->hasFile('cv_empresa')) {
             $cvActual = Configuracion::obtener('cv_empresa');
+            $cvPath = $request->file('cv_empresa')->store('config/cv', 'public');
+            Configuracion::establecer('cv_empresa', $cvPath, 'file');
             if ($cvActual) {
                 Storage::disk('public')->delete($cvActual);
             }
-
-            // Obtener extensión del archivo subido
-            $extension = $request->file('cv_empresa')->getClientOriginalExtension();
-            $fileName = 'CV-petrotekno.' . $extension;
-
-            // Guardar con nombre legible
-            $cvPath = $request->file('cv_empresa')->storeAs('config', $fileName, 'public');
-            Configuracion::establecer('cv_empresa', $cvPath, 'file');
+        } elseif ($validated['eliminar_cv'] ?? false) {
+            $cvActual = Configuracion::obtener('cv_empresa');
+            Configuracion::establecer('cv_empresa', '', 'file');
+            if ($cvActual) {
+                Storage::disk('public')->delete($cvActual);
+            }
         }
 
         return redirect()->route('panel.configuracion.index')
@@ -96,15 +111,13 @@ class ConfiguracionController extends Controller
             'codigo_confirmacion' => 'required|same:codigo_nuevo',
         ]);
 
-        $codigoActual = Configuracion::obtener('codigo_acceso');
-
-        if ($request->codigo_actual !== $codigoActual) {
+        if (!CodigoAcceso::verificar($request->codigo_actual)) {
             return back()->withErrors([
                 'codigo_actual' => 'El código actual es incorrecto.',
             ]);
         }
 
-        Configuracion::establecer('codigo_acceso', $request->codigo_nuevo, 'text');
+        Configuracion::establecer('codigo_acceso', Hash::make($request->codigo_nuevo), 'text');
 
         return redirect()->route('panel.configuracion.index')
             ->with('success', 'Código de acceso actualizado exitosamente.');

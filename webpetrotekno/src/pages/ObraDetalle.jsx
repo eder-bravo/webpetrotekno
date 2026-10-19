@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, ChevronLeft, ChevronRight, Folder } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowDown, ArrowLeft, MapPin, ChevronLeft, ChevronRight, Folder } from 'lucide-react';
 import { useObra } from '../hooks/useApi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -42,10 +43,13 @@ const ESTADOS_MEXICO = {
     'zac': 'Zacatecas',
 };
 
+const reveal = { duration: 0.75, ease: [0.22, 1, 0.36, 1] };
+
 function ObraDetalle() {
     const { slug } = useParams();
     const navigate = useNavigate();
     const { data: obra, loading, error } = useObra(slug);
+    const reduceMotion = useReducedMotion();
 
     // Scroll al inicio cuando se carga la página o cambia el slug
     useEffect(() => {
@@ -83,6 +87,14 @@ function ObraDetalle() {
     const handleNavigation = (navSlug) => {
         navigate(`/obras/${navSlug}`);
     };
+
+    const titleWords = obra?.nombre?.trim().split(/\s+/) || [];
+    const enIndex = titleWords.findIndex((word, index) => index > 1 && word.toLowerCase() === 'en');
+    const titleBreak = titleWords.length > 1
+        ? (enIndex > 1 ? enIndex : Math.ceil(titleWords.length / 2))
+        : titleWords.length;
+    const titleFirst = titleWords.slice(0, titleBreak).join(' ');
+    const titleSecond = titleWords.slice(titleBreak).join(' ');
 
     if (loading) {
         return (
@@ -124,51 +136,103 @@ function ObraDetalle() {
 
     return (
         <>
-            <Navbar />
-            <section className="obra-detalle-page">
-                <div className="container">
-                    {/* Header */}
-                    <div className="obra-detalle-header">
-                        <a href="/obras" onClick={handleGoBack} className="back-link">
-                            <ArrowLeft size={18} />
-                            Volver a obras
-                        </a>
+            <Navbar overlayOnTop={Boolean(obra.imagen)} />
+            {obra.imagen && (
+                <section className="obra-portada" aria-labelledby="obra-portada-titulo">
+                    <motion.img
+                        className="obra-portada-imagen"
+                        src={obra.imagen}
+                        alt={obra.imagen_ilustrativa ? 'Imagen ilustrativa de trabajos de pavimentación' : `Vista de ${obra.nombre}`}
+                        loading="eager"
+                        initial={reduceMotion ? false : { opacity: 0, scale: 1.06 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                    <div className="obra-portada-sombra" aria-hidden="true" />
+                    <div className="container obra-portada-contenido">
+                        <div className="obra-portada-principal">
+                            <motion.nav
+                                className="obra-portada-kicker"
+                                aria-label="Ruta de navegación"
+                                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ ...reveal, delay: 0.12 }}
+                            >
+                                <a href="/obras" onClick={handleGoBack} aria-label="Volver a obras">Obras</a>
+                                <span aria-hidden="true"> / </span>
+                                <span>Petrotekno</span>
+                            </motion.nav>
+                            <h1 id="obra-portada-titulo" className="obra-portada-titulo">
+                                <motion.span
+                                    initial={reduceMotion ? false : { opacity: 0, y: 32 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ ...reveal, delay: 0.2 }}
+                                >{titleFirst}</motion.span>
+                                {titleSecond && <motion.span
+                                    className="obra-portada-destacado"
+                                    initial={reduceMotion ? false : { opacity: 0, y: 32 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ ...reveal, delay: 0.3 }}
+                                >{titleSecond}</motion.span>}
+                            </h1>
+                            <motion.div
+                                className="obra-portada-meta"
+                                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ ...reveal, delay: 0.46 }}
+                            >
+                                {obra.categoria && <span><Folder size={17} /> {obra.categoria}</span>}
+                                {obra.estado && <span><MapPin size={17} /> {ESTADOS_MEXICO[obra.estado] || obra.estado}</span>}
+                            </motion.div>
+                        </div>
+                        <div className="obra-portada-pie">
+                            <motion.a
+                                href="#obra-contenido"
+                                className="obra-portada-explorar"
+                                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ ...reveal, delay: 0.62 }}
+                            >Explorar la obra <ArrowDown size={17} /></motion.a>
+                        </div>
                     </div>
-
-                    {/* Imagen Principal */}
-                    {obra.imagen && (
-                        <div className="obra-imagen-hero">
-                            <img 
-                                src={obra.imagen} 
-                                alt={obra.nombre}
-                                loading="eager"
-                            />
-                        </div>
-                    )}
-
-                    {/* Información de la Obra */}
+                </section>
+            )}
+            <section id="obra-contenido" className={`obra-detalle-page ${obra.imagen ? 'obra-detalle-con-portada' : ''}`}>
+                <div className="container">
                     <div className="obra-info">
-                        <div className="obra-meta">
-                            {obra.categoria && (
-                                <span className="obra-categoria">
-                                    <Folder size={16} />
-                                    {obra.categoria}
-                                </span>
-                            )}
-                            {obra.estado && (
-                                <span className="obra-estado">
-                                    <MapPin size={16} />
-                                    {ESTADOS_MEXICO[obra.estado] || obra.estado}
-                                </span>
-                            )}
-                        </div>
+                        {obra.imagen ? (
+                            <motion.div
+                                className="obra-contenido-encabezado"
+                                initial={reduceMotion ? false : { opacity: 0, y: 22 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.2 }}
+                                transition={reveal}
+                            >
+                                <span>El proyecto</span>
+                                <h2>Sobre esta obra</h2>
+                            </motion.div>
+                        ) : (
+                            <>
+                                <div className="obra-detalle-header">
+                                    <a href="/obras" onClick={handleGoBack} className="back-link">
+                                        <ArrowLeft size={18} /> Volver a obras
+                                    </a>
+                                </div>
+                                <div className="obra-meta">
+                                    {obra.categoria && <span className="obra-categoria"><Folder size={16} />{obra.categoria}</span>}
+                                    {obra.estado && <span className="obra-estado"><MapPin size={16} />{ESTADOS_MEXICO[obra.estado] || obra.estado}</span>}
+                                </div>
+                                <h1 className="obra-titulo">{obra.nombre}</h1>
+                            </>
+                        )}
 
-                        <h1 className="obra-titulo">{obra.nombre}</h1>
-
-                        {/* Contenido Detallado */}
                         {obra.contenido && (
-                            <div 
+                            <motion.div
                                 className="obra-contenido"
+                                initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0 }}
+                                transition={{ ...reveal, delay: 0.1 }}
                                 dangerouslySetInnerHTML={{ __html: obra.contenido }}
                             />
                         )}
@@ -176,7 +240,13 @@ function ObraDetalle() {
 
                     {/* Navegación Anterior/Siguiente */}
                     {obra.navegacion && (obra.navegacion.anterior || obra.navegacion.siguiente) && (
-                        <nav className="obra-navegacion">
+                        <motion.nav
+                            className="obra-navegacion"
+                            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.15 }}
+                            transition={reveal}
+                        >
                             <div className="nav-item nav-anterior">
                                 {obra.navegacion.anterior ? (
                                     <button 
@@ -210,7 +280,7 @@ function ObraDetalle() {
                                     <div className="nav-placeholder"></div>
                                 )}
                             </div>
-                        </nav>
+                        </motion.nav>
                     )}
                 </div>
             </section>

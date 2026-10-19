@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Obra;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,10 +18,5 @@ class DatabaseSeeder extends Seeder
             ConfiguracionSeeder::class,
         ]);
 
-        if (Obra::count() === 0) {
-            $this->call([
-                ObrasSeeder::class,
-            ]);
-        }
     }
 }

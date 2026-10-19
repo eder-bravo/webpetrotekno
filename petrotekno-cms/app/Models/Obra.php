@@ -13,6 +13,7 @@ class Obra extends Model
         'nombre',
         'slug',
         'imagen',
+        'imagen_ilustrativa',
         'categoria',
         'estado',
         'contenido',
@@ -26,6 +27,7 @@ class Obra extends Model
     protected $casts = [
         'destacado' => 'boolean',
         'activo' => 'boolean',
+        'imagen_ilustrativa' => 'boolean',
         'orden' => 'integer',
     ];
 

@@ -121,25 +121,28 @@ export default function RedesIndex({ redes: initialRedes, iconos }) {
     const handleDragEnd = async (event) => {
         const { active, over } = event;
 
-        if (active.id !== over.id) {
-            setRedes((items) => {
-                const oldIndex = items.findIndex((i) => i.id === active.id);
-                const newIndex = items.findIndex((i) => i.id === over.id);
-                const newItems = arrayMove(items, oldIndex, newIndex);
-
-                fetch('/panel/redes/reorder', {
+        if (over && active.id !== over.id) {
+            const oldIndex = redes.findIndex((item) => item.id === active.id);
+            const newIndex = redes.findIndex((item) => item.id === over.id);
+            const newItems = arrayMove(redes, oldIndex, newIndex);
+            setRedes(newItems);
+            try {
+                const response = await fetch('/panel/redes/reorder', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
                     },
                     body: JSON.stringify({
                         orden: newItems.map((item) => item.id),
                     }),
                 });
-
-                return newItems;
-            });
+                if (!response.ok) throw new Error('No se pudo guardar el orden');
+            } catch (error) {
+                setRedes(redes);
+                alert('No se pudo guardar el orden de redes. Inténtalo de nuevo.');
+            }
         }
     };
 

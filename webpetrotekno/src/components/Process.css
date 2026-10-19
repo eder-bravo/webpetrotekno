@@ -1,0 +1,122 @@
+.process {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background: linear-gradient(125deg, #0b1a2e, #112a45 65%, #0b1a2e);
+}
+
+.process::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(145deg, transparent 0 75px, rgba(255, 255, 255, .018) 76px 77px);
+    pointer-events: none;
+}
+
+.process .container {
+    position: relative;
+}
+
+.process-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 52px;
+}
+
+.process-eyebrow {
+    color: var(--primary);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.process-heading h2 {
+    margin-top: 12px;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 1.05;
+}
+
+.process-heading p {
+    max-width: 410px;
+    color: #c4d0dc;
+    line-height: 1.75;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border: 1px solid rgba(255, 255, 255, .13);
+    background: rgba(255, 255, 255, .13);
+}
+
+.process-step {
+    min-height: 185px;
+    padding: 28px;
+    background: #11243a;
+    transition: background .35s ease;
+}
+
+.process-step:hover {
+    background: #193550;
+}
+
+.process-number {
+    color: var(--primary);
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: .12em;
+}
+
+.process-rule {
+    display: block;
+    width: 32px;
+    height: 1px;
+    margin: 24px 0 16px;
+    background: rgba(255, 255, 255, .4);
+    transition: width .35s ease, background .35s ease;
+}
+
+.process-step:hover .process-rule {
+    width: 65px;
+    background: var(--primary);
+}
+
+.process-step h3 {
+    font-size: 1.25rem;
+    line-height: 1.2;
+}
+
+@media (max-width: 800px) {
+    .process-heading {
+        display: block;
+    }
+
+    .process-heading p {
+        margin-top: 18px;
+    }
+
+    .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .process-step {
+        min-height: 145px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .process-step,
+    .process-rule {
+        transition: none;
+    }
+}

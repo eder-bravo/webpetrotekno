@@ -6,7 +6,8 @@ import { useState } from 'react';
 export default function ConfiguracionIndex({ configuracion }) {
     // Estado para controlar si se está mostrando un preview temporal o el logo guardado
     const [isPreviewingNewLogo, setIsPreviewingNewLogo] = useState(false);
-    const [logoPreview, setLogoPreview] = useState('/images/logo.png?' + Date.now());
+    const savedLogoUrl = configuracion.logo ? `/storage/${configuracion.logo}` : '/images/logo.png';
+    const [logoPreview, setLogoPreview] = useState(savedLogoUrl);
     const [cvFileName, setCvFileName] = useState(
         configuracion.cv_empresa ? configuracion.cv_empresa.split('/').pop() : null
     );
@@ -16,11 +17,34 @@ export default function ConfiguracionIndex({ configuracion }) {
         contacto_direccion: configuracion.contacto_direccion || '',
         contacto_email: configuracion.contacto_email || '',
         contacto_telefono: configuracion.contacto_telefono || '',
+        contacto_horario: configuracion.contacto_horario || '',
         site_title: configuracion.site_title || '',
         site_description: configuracion.site_description || '',
         slogan: configuracion.slogan || '',
+        hero_titulo: configuracion.hero_titulo || '',
+        hero_destacado: configuracion.hero_destacado || '',
+        hero_subtitulo: configuracion.hero_subtitulo || '',
+        capacidad_descripcion: configuracion.capacidad_descripcion || '',
+        capacidad_recursos: configuracion.capacidad_recursos || '',
+        beneficios_titulo: configuracion.beneficios_titulo || '',
+        beneficios_intro: configuracion.beneficios_intro || '',
+        beneficios: configuracion.beneficios || '',
+        proceso_titulo: configuracion.proceso_titulo || '',
+        proceso_intro: configuracion.proceso_intro || '',
+        proceso_pasos: configuracion.proceso_pasos || '',
+        portafolio_url: configuracion.portafolio_url || '',
+        maquinaria_mayor: configuracion.maquinaria_mayor ?? '',
+        maquinaria_menor: configuracion.maquinaria_menor ?? '',
+        vehiculos: configuracion.vehiculos ?? '',
+        impacto_clientes_valor: configuracion.impacto_clientes_valor ?? '',
+        impacto_clientes_texto: configuracion.impacto_clientes_texto || '',
+        impacto_laboral_valor: configuracion.impacto_laboral_valor ?? '',
+        impacto_laboral_texto: configuracion.impacto_laboral_texto || '',
+        impacto_sustentabilidad_valor: configuracion.impacto_sustentabilidad_valor ?? '',
+        impacto_sustentabilidad_texto: configuracion.impacto_sustentabilidad_texto || '',
         logo: null,
         cv_empresa: null,
+        eliminar_cv: false,
     });
 
     const passwordForm = useForm({
@@ -33,12 +57,16 @@ export default function ConfiguracionIndex({ configuracion }) {
         e.preventDefault();
         post('/panel/configuracion', {
             forceFormData: true,
-            onSuccess: () => {
+            onSuccess: (page) => {
                 // Después de guardar exitosamente, resetear el estado
                 const newTimestamp = Date.now();
-                setLogoPreview('/images/logo.png?' + newTimestamp);
+                const savedLogo = page.props.configuracion?.logo;
+                setLogoPreview(savedLogo ? `/storage/${savedLogo}?${newTimestamp}` : '/images/logo.png');
                 setIsPreviewingNewLogo(false);
                 setData('logo', null);
+                setData('cv_empresa', null);
+                setData('eliminar_cv', false);
+                setCvFileName(page.props.configuracion?.cv_empresa?.split('/').pop() || null);
             },
         });
     };
@@ -69,20 +97,26 @@ export default function ConfiguracionIndex({ configuracion }) {
     const removeLogo = () => {
         setData('logo', null);
         setIsPreviewingNewLogo(false);
-        setLogoPreview('/images/logo.png?' + Date.now());
+        setLogoPreview(savedLogoUrl);
     };
 
     const handleCvChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
             setData('cv_empresa', file);
+            setData('eliminar_cv', false);
             setCvFileName(file.name);
         }
     };
 
     const removeCv = () => {
-        setData('cv_empresa', null);
-        setCvFileName(null);
+        if (data.cv_empresa) {
+            setData('cv_empresa', null);
+            setCvFileName(configuracion.cv_empresa?.split('/').pop() || null);
+        } else if (configuracion.cv_empresa) {
+            setData('eliminar_cv', true);
+            setCvFileName(null);
+        }
     };
 
     return (
@@ -159,6 +193,7 @@ export default function ConfiguracionIndex({ configuracion }) {
                                     <button
                                         type="button"
                                         onClick={removeCv}
+                                        aria-label={data.cv_empresa ? 'Cancelar selección del CV' : 'Eliminar CV al guardar'}
                                         className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                                     >
                                         <X className="w-5 h-5" />
@@ -181,7 +216,8 @@ export default function ConfiguracionIndex({ configuracion }) {
                                     />
                                 </label>
                             )}
-                            {configuracion.cv_empresa && !data.cv_empresa && (
+                            {data.eliminar_cv && <p className="text-sm text-red-600">El CV se eliminará al guardar la configuración.</p>}
+                            {configuracion.cv_empresa && !data.cv_empresa && !data.eliminar_cv && (
                                 <a
                                     href={`/storage/${configuracion.cv_empresa}`}
                                     target="_blank"
@@ -191,6 +227,103 @@ export default function ConfiguracionIndex({ configuracion }) {
                                     Ver CV actual
                                 </a>
                             )}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Enlace al portafolio público</label>
+                                <input type="url" value={data.portafolio_url} onChange={(e) => setData('portafolio_url', e.target.value)} placeholder="https://…" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Se muestra en la portada cuando no hay un CV subido.</p>
+                                {errors.portafolio_url && <p className="mt-1 text-sm text-red-500">{errors.portafolio_url}</p>}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Portada</h2>
+                        <div className="space-y-4">
+                            {[
+                                ['hero_titulo', 'Primera línea del título'],
+                                ['hero_destacado', 'Línea destacada'],
+                                ['hero_subtitulo', 'Texto debajo del título'],
+                            ].map(([key, label]) => (
+                                <div key={key}>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+                                    <input type="text" value={data[key]} onChange={(e) => setData(key, e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Capacidad e impacto</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Las cifras vacías no aparecen en la web. Publica solo datos que la empresa pueda comprobar.</p>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descripción de capacidad técnica</label>
+                                <textarea value={data.capacidad_descripcion} onChange={(e) => setData('capacidad_descripcion', e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Recursos operativos</label>
+                                <textarea value={data.capacidad_recursos} onChange={(e) => setData('capacidad_recursos', e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Un recurso por línea. Aparecen cuando no hay cifras verificadas de maquinaria.</p>
+                            </div>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                {[
+                                    ['maquinaria_mayor', 'Maquinaria mayor'],
+                                    ['maquinaria_menor', 'Maquinaria menor'],
+                                    ['vehiculos', 'Vehículos'],
+                                ].map(([key, label]) => <div key={key}>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+                                    <input type="number" min="0" value={data[key]} onChange={(e) => setData(key, e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                    {errors[key] && <p className="mt-1 text-sm text-red-500">{errors[key]}</p>}
+                                </div>)}
+                            </div>
+                            {[
+                                ['impacto_clientes', 'Clientes satisfechos'],
+                                ['impacto_laboral', 'Fuerza laboral'],
+                                ['impacto_sustentabilidad', 'Sustentabilidad'],
+                            ].map(([prefix, label]) => <div key={prefix} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label} (%)</label>
+                                    <input type="number" min="0" max="100" value={data[`${prefix}_valor`]} onChange={(e) => setData(`${prefix}_valor`, e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                    {errors[`${prefix}_valor`] && <p className="mt-1 text-sm text-red-500">{errors[`${prefix}_valor`]}</p>}
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Qué mide esta cifra</label>
+                                    <input type="text" value={data[`${prefix}_texto`]} onChange={(e) => setData(`${prefix}_texto`, e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                </div>
+                            </div>)}
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Beneficios y proceso</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Estas secciones recuperan el espacio visual de los indicadores anteriores con información editable y comprobable.</p>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Título de beneficios</label>
+                                <input type="text" value={data.beneficios_titulo} onChange={(e) => setData('beneficios_titulo', e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Introducción de beneficios</label>
+                                <input type="text" value={data.beneficios_intro} onChange={(e) => setData('beneficios_intro', e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tarjetas de beneficios</label>
+                                <textarea value={data.beneficios} onChange={(e) => setData('beneficios', e.target.value)} rows={4} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Una tarjeta por línea: Título | Descripción.</p>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Título del proceso</label>
+                                <input type="text" value={data.proceso_titulo} onChange={(e) => setData('proceso_titulo', e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Introducción del proceso</label>
+                                <input type="text" value={data.proceso_intro} onChange={(e) => setData('proceso_intro', e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Etapas del proceso</label>
+                                <textarea value={data.proceso_pasos} onChange={(e) => setData('proceso_pasos', e.target.value)} rows={6} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Una etapa por línea, en el orden en que debe mostrarse.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -289,6 +422,10 @@ export default function ConfiguracionIndex({ configuracion }) {
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     placeholder="+52 (55) 1234 5678"
                                 />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Horario de atención</label>
+                                <input type="text" value={data.contacto_horario} onChange={(e) => setData('contacto_horario', e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Lunes a viernes, 9:00–18:00" />
                             </div>
                         </div>
                     </div>

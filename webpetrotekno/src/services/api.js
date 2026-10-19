@@ -80,6 +80,20 @@ export async function getRedes() {
     return fetchAPI('/redes');
 }
 
+export async function postContacto(data) {
+    const response = await fetch(`${API_URL}/contacto`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+        throw new Error(response.status === 429
+            ? 'Has enviado demasiados mensajes. Intenta de nuevo en un minuto.'
+            : 'No se pudo enviar el mensaje. Intenta de nuevo.');
+    }
+    return response.json();
+}
+
 /**
  * Obtener todos los datos necesarios para la página principal
  */

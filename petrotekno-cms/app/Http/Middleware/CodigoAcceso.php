@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Configuracion;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class CodigoAcceso
@@ -28,7 +29,8 @@ class CodigoAcceso
      */
     public static function verificar(string $codigo): bool
     {
-        $codigoGuardado = Configuracion::obtener('codigo_acceso', 'petrotekno2024');
-        return $codigo === $codigoGuardado;
+        $codigoGuardado = Configuracion::obtener('codigo_acceso');
+
+        return is_string($codigoGuardado) && Hash::check($codigo, $codigoGuardado);
     }
 }
