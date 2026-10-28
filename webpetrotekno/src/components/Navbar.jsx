@@ -87,7 +87,6 @@ const Navbar = ({ overlayOnTop = false }) => {
                     <button onClick={() => handleNavigation(isHome ? '#services' : '/servicios')} className="nav-button">Servicios</button>
                     {/* El proceso se conserva en el inicio y en el detalle del servicio de reciclado. */}
                     {/* {config?.proceso_pasos && <button onClick={() => handleNavigation('#proceso')} className="nav-button">Proceso</button>} */}
-                    {config?.ahulados_descripcion && <button onClick={() => handleNavigation('#asfaltos-ahulados')} className="nav-button">Asfaltos ahulados</button>}
                     <button onClick={() => handleNavigation('#portfolio')} className="nav-button">Obras</button>
                     <Button onClick={() => handleNavigation('/contacto')} variant="inverse" size="compact">Contacto</Button>
                 </div>
