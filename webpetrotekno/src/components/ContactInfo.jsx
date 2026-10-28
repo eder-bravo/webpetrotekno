@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import { useConfig } from '../hooks/useApi';
 import './ContactInfo.css';
+import SectionHeading from './SectionHeading';
 
 const fallbackConfig = {
     contacto_direccion: '',
@@ -16,7 +17,7 @@ const ContactInfo = () => {
 
     return (
         <div className="contact-info-section">
-            <h2>Información de contacto</h2>
+            <SectionHeading align="start" size="content">Información de contacto</SectionHeading>
 
             <div className="info-cards">
                 {displayConfig.contacto_telefono && <a href={`tel:${displayConfig.contacto_telefono.replace(/\s/g, '')}`} className="info-card">

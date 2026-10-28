@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 import { useReducedMotion } from 'framer-motion';
 import { useServicios } from '../hooks/useApi';
 import { ServiceCard } from '../components/Services';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SectionHeading from '../components/SectionHeading';
+import BackLink from '../components/BackLink';
 import './Servicios.css';
 
 export default function Servicios() {
@@ -26,12 +26,12 @@ export default function Servicios() {
             <div className="container">
                 <header className="servicios-header">
                     <div className="servicios-header-top">
-                        <Link to="/" className="servicios-back"><ArrowLeft size={17} aria-hidden="true" /> Volver al inicio</Link>
-                        {!loading && !error && <span className="servicios-count">{String(servicios?.length || 0).padStart(2, '0')} servicios</span>}
+                        <BackLink to="/">Volver al inicio</BackLink>
+                        {!loading && !error && <span className="catalog-count"><strong>{String(servicios?.length || 0).padStart(2, '0')}</strong> {servicios?.length === 1 ? 'servicio' : 'servicios'}</span>}
                     </div>
-                    <span className="services-eyebrow">Lo que hacemos</span>
-                    <h1>Todos Nuestros <span>Servicios</span></h1>
-                    <p>Soluciones para construir, rehabilitar y conservar infraestructura vial.</p>
+                    <SectionHeading as="h1" size="page" align="start" eyebrow="Lo que hacemos" description="Soluciones para construir, rehabilitar y conservar infraestructura vial.">
+                        Todos nuestros <span className="section-heading__accent">Servicios</span>
+                    </SectionHeading>
                 </header>
                 {loading && <p className="servicios-state">Cargando servicios...</p>}
                 {error && <p className="servicios-state">No pudimos cargar los servicios. Inténtalo de nuevo más tarde.</p>}

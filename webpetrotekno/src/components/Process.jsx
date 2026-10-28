@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useConfig } from '../hooks/useApi';
+import SectionHeading from './SectionHeading';
 import './Process.css';
 
 const Process = () => {
@@ -10,6 +12,12 @@ const Process = () => {
         .map((step) => step.trim())
         .filter(Boolean)
         .slice(0, 8);
+
+    useEffect(() => {
+        if (steps.length && window.location.hash === '#proceso') {
+            document.getElementById('proceso')?.scrollIntoView({ behavior: 'instant' });
+        }
+    }, [steps.length]);
 
     if (steps.length === 0) return null;
 
@@ -22,8 +30,9 @@ const Process = () => {
                     viewport={{ once: true, amount: .4 }}
                     transition={{ duration: .7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <span className="process-eyebrow">Del pavimento existente a una nueva carpeta</span>
-                    <h2>{config?.proceso_titulo || 'Nuestro proceso'}</h2>
+                    <SectionHeading align="start" inverse eyebrow="Del pavimento existente a una nueva carpeta">
+                        {config?.proceso_titulo || 'Nuestro proceso'}
+                    </SectionHeading>
                 </motion.div>
                 {config?.proceso_intro && <p>{config.proceso_intro}</p>}
             </div>

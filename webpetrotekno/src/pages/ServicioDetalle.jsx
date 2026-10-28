@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ArrowDown, ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { ArrowDown } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useServicio } from '../hooks/useApi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Process from '../components/Process';
+import Button from '../components/Button';
+import SectionHeading from '../components/SectionHeading';
+import BackLink from '../components/BackLink';
 import './ServicioDetalle.css';
 
 const reveal = { duration: .75, ease: [0.22, 1, 0.36, 1] };
@@ -17,10 +21,14 @@ function splitTitle(title = '') {
 
 export default function ServicioDetalle() {
     const { slug } = useParams();
+    const { hash } = useLocation();
     const { data: servicio, loading, error } = useServicio(slug);
     const reduceMotion = useReducedMotion();
 
     useEffect(() => { window.scrollTo(0, 0); }, [slug]);
+    useEffect(() => {
+        if (servicio && hash) document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
+    }, [servicio, hash]);
     useEffect(() => {
         if (!servicio) return;
         document.title = servicio.meta_title || `${servicio.titulo} | Petrotekno`;
@@ -37,7 +45,7 @@ export default function ServicioDetalle() {
             {loading || error || !servicio ? <section className="servicio-detalle-state">
                 <div className="container">
                     <p>{loading ? 'Cargando servicio...' : 'Servicio no encontrado'}</p>
-                    {!loading && <Link to="/servicios" className="servicio-detalle-back"><ArrowLeft size={18} /> Volver a servicios</Link>}
+                    {!loading && <BackLink to="/servicios" inverse>Volver a servicios</BackLink>}
                 </div>
             </section> : <>
                 <section className={`servicio-portada ${servicio.imagen ? 'servicio-portada-con-imagen' : ''}`} aria-labelledby="servicio-portada-titulo">
@@ -70,18 +78,18 @@ export default function ServicioDetalle() {
                     <div className="container servicio-detalle-content-grid">
                         <motion.div className="servicio-detalle-content-heading" initial={reduceMotion ? false : { opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .3 }} transition={reveal}>
-                            <span className="servicio-detalle-section-label">Lo que hacemos</span>
-                            <h2>El servicio</h2>
+                            <SectionHeading align="start" size="content" eyebrow="Lo que hacemos">El servicio</SectionHeading>
                         </motion.div>
                         <div className="servicio-detalle-rich-text">
                             {servicio.contenido ? <div dangerouslySetInnerHTML={{ __html: servicio.contenido }} /> : <p>{servicio.descripcion_corta}</p>}
                         </div>
                     </div>
                 </section>
+                {slug === 'reciclado-de-pavimento-asfaltico-en-caliente' && <Process />}
                 <section className="servicio-detalle-contact">
                     <div className="container servicio-detalle-contact-inner">
-                        <div><span className="servicio-detalle-section-label">Hablemos de tu proyecto</span><h2>¿Necesitas más información?</h2></div>
-                        <Link to="/contacto" className="servicio-detalle-contact-link">Contáctanos <ArrowUpRight size={20} aria-hidden="true" /></Link>
+                        <SectionHeading align="start" size="content" inverse eyebrow="Hablemos de tu proyecto">¿Necesitas más información?</SectionHeading>
+                        <Button to="/contacto" arrow>Contáctanos</Button>
                     </div>
                 </section>
             </>}

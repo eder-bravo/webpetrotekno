@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LogoLink from './LogoLink';
+import Button from './Button';
 import logoFallback from '../assets/logo_blanco.png';
 import { useConfig } from '../hooks/useApi';
 import './Navbar.css';
@@ -63,15 +64,8 @@ const Navbar = ({ overlayOnTop = false }) => {
                 const element = document.querySelector(path);
                 element?.scrollIntoView({ behavior: scrollBehavior });
             } else {
-                // Navigate to home and then scroll to section
-                navigate('/');
-                setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                    setTimeout(() => {
-                        const element = document.querySelector(path);
-                        element?.scrollIntoView({ behavior: scrollBehavior });
-                    }, 200);
-                }, 150);
+                // Home resuelve el ancla cuando el contenido del CMS está disponible.
+                navigate(`/${path}`);
             }
         } else {
             navigate(path);
@@ -91,9 +85,11 @@ const Navbar = ({ overlayOnTop = false }) => {
                 <div id="main-navigation" className={`nav-links ${menuOpen ? 'active' : ''}`}>
                     <button onClick={() => handleNavigation('/')} className="nav-button">Inicio</button>
                     <button onClick={() => handleNavigation(isHome ? '#services' : '/servicios')} className="nav-button">Servicios</button>
-                    {config?.proceso_pasos && <button onClick={() => handleNavigation('#proceso')} className="nav-button">Proceso</button>}
+                    {/* El proceso se conserva en el inicio y en el detalle del servicio de reciclado. */}
+                    {/* {config?.proceso_pasos && <button onClick={() => handleNavigation('#proceso')} className="nav-button">Proceso</button>} */}
+                    {config?.ahulados_descripcion && <button onClick={() => handleNavigation('#asfaltos-ahulados')} className="nav-button">Asfaltos ahulados</button>}
                     <button onClick={() => handleNavigation('#portfolio')} className="nav-button">Obras</button>
-                    <button onClick={() => handleNavigation('/contacto')} className="nav-button btn btn-nav">Contacto</button>
+                    <Button onClick={() => handleNavigation('/contacto')} variant="inverse" size="compact">Contacto</Button>
                 </div>
 
                 <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="main-navigation">

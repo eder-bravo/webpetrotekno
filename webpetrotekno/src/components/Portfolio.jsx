@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import Button from './Button';
+import SectionHeading from './SectionHeading';
 import { useObras } from '../hooks/useApi';
 import './Portfolio.css';
 
@@ -13,14 +14,6 @@ const Portfolio = () => {
     
     // Usar datos de la API o fallback
     const displayData = obras || [];
-
-    const handleVerObras = (e) => {
-        e.preventDefault();
-        navigate('/obras');
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }, 0);
-    };
 
     const handleObraClick = (slug) => {
         navigate(`/obras/${slug}`);
@@ -36,11 +29,9 @@ const Portfolio = () => {
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <h2 className="section-title">Obras <span className="text-primary">Destacadas</span></h2>
-                    <div className="section-line"></div>
-                    <p className="section-subtitle">
-                        Proyectos documentados en el portafolio oficial de Petrotekno.
-                    </p>
+                    <SectionHeading eyebrow="Nuestro trabajo" description="Proyectos documentados en el portafolio oficial de Petrotekno.">
+                        Obras <span className="section-heading__accent">Destacadas</span>
+                    </SectionHeading>
                 </motion.div>
 
                 {loading && (
@@ -88,11 +79,8 @@ const Portfolio = () => {
                 {!loading && displayData.length === 0 && <p className="section-subtitle">Próximamente publicaremos nuestras obras.</p>}
 
                 {/* Botón Ver Más */}
-                <div className="portfolio-cta">
-                    <a href="/obras" onClick={handleVerObras} className="btn-ver-mas">
-                        Ver todas las obras
-                        <ArrowRight size={20} />
-                    </a>
+                <div className="section-actions">
+                    <Button to="/obras" variant="secondary" arrow>Ver todas las obras</Button>
                 </div>
             </div>
         </section>

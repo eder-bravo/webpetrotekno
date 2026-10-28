@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Mexico from '@svg-maps/mexico';
 import { motion } from 'framer-motion';
 import { useObrasPorEstado } from '../hooks/useApi';
+import SectionHeading from './SectionHeading';
 import './MexicoMap.css';
 
-const MexicoMap = () => {
+const MexicoMap = ({ heading }) => {
     const navigate = useNavigate();
     // Cargar datos dinámicos de obras por estado desde la API
     const { data: obrasPorEstado, loading } = useObrasPorEstado();
@@ -72,11 +73,9 @@ const MexicoMap = () => {
         <section id="obras" className="mexico-map-section section-padding">
             <div className="container">
                 <div className="section-header">
-                    <h2 className="section-title">Obras más <span className="text-blue">Destacadas</span></h2>
-                    <div className="section-line"></div>
-                    <p className="section-subtitle">
-                        Explora las obras publicadas por estado.
-                    </p>
+                    <SectionHeading eyebrow="Nuestra presencia" description="Explora las obras publicadas por estado.">
+                        {heading || <>Obras más <span className="section-heading__accent">Destacadas</span></>}
+                    </SectionHeading>
                 </div>
 
                 <div className="map-container" onMouseMove={handleMouseMove}>

@@ -1,13 +1,7 @@
-.servicios-page { min-height: 100vh; padding: clamp(118px, 10vw, 158px) 0 clamp(5rem, 8vw, 8rem); background: #fff; color: #0a192f; }
+.servicios-page { min-height: 100vh; padding: clamp(118px, 10vw, 158px) 0 clamp(5rem, 8vw, 8rem); background: #fff; color: var(--secondary); }
 .servicios-header { margin-bottom: clamp(3rem, 5vw, 5rem); }
 .servicios-header-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: clamp(2.5rem, 4vw, 4.5rem); }
-.servicios-back { display: inline-flex; align-items: center; gap: .5rem; color: #8a6700; font-size: .9rem; transition: color .2s ease; }
-.servicios-back:hover { color: #0a192f; }
-.servicios-count { color: #64748b; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
-.servicios-header h1 { margin: 0; color: #0a192f; font-size: clamp(3rem, 5.2vw, 5.5rem); line-height: 1.03; letter-spacing: -.015em; text-wrap: balance; }
-.servicios-header h1 span { color: #8a6700; }
-.servicios-header p { max-width: 650px; margin: 1.5rem 0 0; color: #475569; font-size: clamp(1rem, 1.35vw, 1.15rem); }
-.servicios-state { min-height: 35vh; color: #475569; }
+.servicios-state { min-height: 35vh; color: var(--color-body); }
 @media (max-width: 640px) {
     .servicios-header-top { align-items: flex-start; }
 }

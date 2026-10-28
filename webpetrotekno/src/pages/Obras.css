@@ -1,7 +1,7 @@
 /* Obras Page Styles */
 .obras-page {
     background-color: #fff;
-    color: #0a192f;
+    color: var(--secondary);
     min-height: 100vh;
     padding-top: clamp(118px, 10vw, 158px);
 }
@@ -10,87 +10,38 @@
     margin-bottom: clamp(3rem, 5vw, 5rem);
 }
 
+.obras-map-disclosure {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-block: 1px solid var(--color-border);
+}
+
+.obras-map-disclosure summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0;
+    color: var(--secondary);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+}
+
+.obras-map-disclosure summary::-webkit-details-marker { display: none; }
+.obras-map-disclosure summary svg { flex-shrink: 0; transition: transform .2s ease; }
+.obras-map-disclosure[open] summary svg { transform: rotate(180deg); }
+.obras-map-disclosure .mexico-map-section { padding: 28px 0; }
+.obras-map-disclosure .container { padding-inline: 0; }
+.obras-map-disclosure .section-header { margin-bottom: 28px; }
+.obras-map-disclosure .section-heading__title { font-size: var(--text-content-title); }
+.obras-map-disclosure .map-container { max-width: 650px; }
+
 .obras-header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: clamp(2.5rem, 4vw, 4.5rem);
-}
-
-.obras-header-top .back-link {
-    margin-bottom: 0;
-}
-
-.obras-header-count {
-    color: #64748b;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.obras-header-count strong {
-    margin-right: .35rem;
-    color: #0a192f;
-    font-family: var(--font-heading, 'Oswald', sans-serif);
-    font-size: 1.2rem;
-    letter-spacing: .04em;
-}
-
-.obras-eyebrow {
-    display: block;
-    margin-bottom: 1rem;
-    color: #8a6700;
-    font-size: .74rem;
-    font-weight: 700;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-}
-
-.obras-page .section-title {
-    color: #0a192f;
-    font-size: clamp(3rem, 5.2vw, 5.5rem);
-    line-height: 1.03;
-    letter-spacing: -.015em;
-    text-wrap: balance;
-}
-
-.obras-page .text-primary {
-    color: #8a6700;
-}
-
-.obras-page .back-link {
-    color: #8a6700;
-}
-
-.obras-page .back-link:hover {
-    color: #0a192f;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #f0c400;
-    text-decoration: none;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.back-link:hover {
-    color: #ffd700;
-}
-
-.obras-description {
-    color: #475569;
-    font-size: clamp(1rem, 1.35vw, 1.15rem);
-    max-width: 650px;
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
 /* Filtros */
@@ -114,7 +65,7 @@
     background-color: #fff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    color: #0a192f;
+    color: var(--secondary);
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -147,7 +98,7 @@
     max-height: 350px;
     overflow-y: auto;
     background-color: #fff;
-    border: 1px solid #dbe2ea;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     box-shadow: 0 12px 32px rgba(10, 25, 47, 0.14);
     z-index: 100;
@@ -162,7 +113,7 @@
     padding: 0.75rem 1rem;
     background: none;
     border: none;
-    color: #334155;
+    color: var(--color-body);
     font-size: 0.9rem;
     text-align: left;
     cursor: pointer;
@@ -172,7 +123,7 @@
 
 .filter-option:hover {
     background-color: #f1f5f9;
-    color: #0a192f;
+    color: var(--secondary);
 }
 
 .filter-option.selected {
@@ -214,7 +165,7 @@
 }
 
 .filter-badge strong {
-    color: #0a192f;
+    color: var(--secondary);
 }
 
 .badge-count {
@@ -234,7 +185,9 @@
 }
 
 .estado-section {
-    border-bottom: 1px solid #e2e8f0;
+    min-width: 0;
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 3rem;
 }
 
@@ -259,7 +212,7 @@
 
 .estado-index {
     margin-right: .4rem;
-    color: #8a6700;
+    color: var(--color-accent);
     font-family: var(--font-heading, 'Oswald', sans-serif);
     font-size: .86rem;
     font-weight: 600;
@@ -267,13 +220,13 @@
 }
 
 .estado-title svg {
-    color: #8a6700;
+    color: var(--color-accent);
 }
 
 .estado-title h2 {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0a192f;
+    color: var(--secondary);
     margin: 0;
     font-family: var(--font-heading, 'Oswald', sans-serif);
     text-transform: uppercase;
@@ -284,7 +237,7 @@
     padding: 0.5rem 1rem;
     background-color: #f1f5f9;
     border-radius: 20px;
-    color: #475569;
+    color: var(--color-body);
     font-size: 0.85rem;
     font-weight: 500;
 }
@@ -294,7 +247,7 @@
 .empty-message {
     text-align: center;
     padding: 4rem 2rem;
-    color: #475569;
+    color: var(--color-body);
     font-size: 1.1rem;
 }
 
@@ -330,7 +283,7 @@
     width: 42px;
     height: 42px;
     background: var(--primary);
-    color: #0a192f;
+    color: var(--secondary);
     opacity: 0;
     transform: translateY(8px);
     transition: opacity .3s ease, transform .3s ease;
@@ -363,10 +316,6 @@
 @media (max-width: 768px) {
     .obras-header-top {
         margin-bottom: 2.75rem;
-    }
-
-    .obras-page .section-title {
-        font-size: clamp(2.7rem, 10vw, 4.6rem);
     }
 
     .obras-filters {

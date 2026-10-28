@@ -9,7 +9,7 @@
 .mexico-map-section .section-line {
     width: 60px;
     height: 4px;
-    background: #004488;
+    background: var(--color-accent);
     margin: 0 auto 20px;
 }
 
@@ -23,7 +23,7 @@
 .mexico-svg-map {
     width: 100%;
     height: auto;
-    stroke: #004488;
+    stroke: var(--color-accent);
     /* Blue outline as requested */
     stroke-width: 1px;
     stroke-linecap: round;
@@ -77,7 +77,7 @@ path.svg-map__location--highlighted:hover {
     z-index: 1000;
     text-align: left;
     min-width: 200px;
-    border-left: 4px solid #004488;
+    border-left: 4px solid var(--color-accent);
     transform: translate(-50%, -100%);
     /* Center above cursor */
     /* Add a small transition for the tooltip movement/appearance if desired, but usually fixed follow is better instant. 
@@ -111,7 +111,7 @@ path.svg-map__location--highlighted:hover {
 }
 
 .map-tooltip .highlight-text {
-    color: #004488;
+    color: var(--color-accent);
     font-weight: 600;
     margin-bottom: 3px;
 }
@@ -145,7 +145,7 @@ path.svg-map__location--highlighted:hover {
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 1px solid #004488;
+    border: 1px solid var(--color-accent);
 }
 
 .legend-highlighted {

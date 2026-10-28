@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import './ContactForm.css';
 import { postContacto } from '../services/api';
+import Button from './Button';
+import SectionHeading from './SectionHeading';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -52,8 +54,7 @@ const ContactForm = () => {
 
     return (
         <div className="contact-form-section">
-            <h2>Envíanos tu mensaje</h2>
-            <p className="form-description">Estaremos encantados de escucharte. Completa el formulario y nos pondremos en contacto contigo lo antes posible.</p>
+            <SectionHeading align="start" size="content" description="Estaremos encantados de escucharte. Completa el formulario y nos pondremos en contacto contigo lo antes posible.">Envíanos tu mensaje</SectionHeading>
 
             {submitted && (
                 <div className="success-message">
@@ -120,7 +121,7 @@ const ContactForm = () => {
                     ></textarea>
                 </div>
 
-                <button type="submit" disabled={loading} className="btn btn-submit">
+                <Button type="submit" disabled={loading} className="contact-form-submit">
                     {loading ? (
                         <>
                             <span>Enviando...</span>
@@ -131,7 +132,7 @@ const ContactForm = () => {
                             Enviar mensaje
                         </>
                     )}
-                </button>
+                </Button>
             </form>
         </div>
     );

@@ -1,0 +1,49 @@
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: var(--control-height);
+    max-width: 100%;
+    padding: 14px 26px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    background: var(--primary);
+    color: var(--secondary);
+    font-family: var(--font-heading);
+    font-size: var(--text-button);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: .04em;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.action-button__label { min-width: 0; overflow-wrap: anywhere; }
+.action-button__arrow { flex-shrink: 0; transition: transform var(--transition-fast); }
+.action-button:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); }
+.action-button:hover:not(:disabled) .action-button__arrow { transform: translateX(4px); }
+.action-button--secondary { border-color: var(--secondary); background: transparent; }
+.action-button--secondary:hover:not(:disabled) { background: var(--secondary); color: var(--white); }
+.action-button--inverse { border-color: var(--white); background: transparent; color: var(--white); }
+.action-button--inverse:hover:not(:disabled) { border-color: var(--white); background: var(--white); color: var(--secondary); }
+.action-button--compact { min-height: 44px; padding: 8px 22px; font-size: .9rem; }
+.action-button:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 4px; }
+.action-button--inverse:focus-visible { outline-color: var(--primary); }
+.action-button:disabled { opacity: .65; cursor: not-allowed; }
+.action-button__label:has(svg) { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+
+.section-actions { display: flex; justify-content: center; margin-top: var(--space-heading); }
+.section-actions .action-button { min-width: min(100%, 280px); }
+
+@media (max-width: 480px) {
+    .action-button { padding-inline: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .action-button, .action-button__arrow { transition: none; }
+    .action-button:hover:not(:disabled), .action-button:hover:not(:disabled) .action-button__arrow { transform: none; }
+}

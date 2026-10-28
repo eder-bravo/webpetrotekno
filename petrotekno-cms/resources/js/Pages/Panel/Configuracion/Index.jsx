@@ -29,6 +29,9 @@ export default function ConfiguracionIndex({ configuracion }) {
         beneficios_titulo: configuracion.beneficios_titulo || '',
         beneficios_intro: configuracion.beneficios_intro || '',
         beneficios: configuracion.beneficios || '',
+        ahulados_titulo: configuracion.ahulados_titulo || '',
+        ahulados_subtitulo: configuracion.ahulados_subtitulo || '',
+        ahulados_descripcion: configuracion.ahulados_descripcion || '',
         proceso_titulo: configuracion.proceso_titulo || '',
         proceso_intro: configuracion.proceso_intro || '',
         proceso_pasos: configuracion.proceso_pasos || '',
@@ -229,7 +232,7 @@ export default function ConfiguracionIndex({ configuracion }) {
                             )}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Enlace al portafolio público</label>
-                                <input type="url" value={data.portafolio_url} onChange={(e) => setData('portafolio_url', e.target.value)} placeholder="https://…" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <input type="text" inputMode="url" value={data.portafolio_url} onChange={(e) => setData('portafolio_url', e.target.value)} placeholder="/obras o https://…" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
                                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Se muestra en la portada cuando no hay un CV subido.</p>
                                 {errors.portafolio_url && <p className="mt-1 text-sm text-red-500">{errors.portafolio_url}</p>}
                             </div>
@@ -296,7 +299,7 @@ export default function ConfiguracionIndex({ configuracion }) {
 
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Beneficios y proceso</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Estas secciones recuperan el espacio visual de los indicadores anteriores con información editable y comprobable.</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Los beneficios se conservan guardados y están ocultos en el inicio. El proceso se muestra en el inicio y en el detalle del servicio de reciclado de pavimento asfáltico en caliente.</p>
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Título de beneficios</label>
@@ -323,6 +326,26 @@ export default function ConfiguracionIndex({ configuracion }) {
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Etapas del proceso</label>
                                 <textarea value={data.proceso_pasos} onChange={(e) => setData('proceso_pasos', e.target.value)} rows={6} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
                                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Una etapa por línea, en el orden en que debe mostrarse.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Asfaltos ahulados</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Aparece en el inicio, después de Servicios y antes de Capacidad técnica. Deja la descripción vacía para ocultar esta sección.</p>
+                        <div className="space-y-4">
+                            {[
+                                ['ahulados_titulo', 'Título', 120],
+                                ['ahulados_subtitulo', 'Subtítulo', 160],
+                            ].map(([key, label, maxLength]) => <div key={key}>
+                                <label htmlFor={key} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+                                <input id={key} type="text" maxLength={maxLength} value={data[key]} onChange={(e) => setData(key, e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                {errors[key] && <p className="mt-1 text-sm text-red-500">{errors[key]}</p>}
+                            </div>)}
+                            <div>
+                                <label htmlFor="ahulados_descripcion" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descripción</label>
+                                <textarea id="ahulados_descripcion" maxLength={1000} value={data.ahulados_descripcion} onChange={(e) => setData('ahulados_descripcion', e.target.value)} rows={4} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                {errors.ahulados_descripcion && <p className="mt-1 text-sm text-red-500">{errors.ahulados_descripcion}</p>}
                             </div>
                         </div>
                     </div>

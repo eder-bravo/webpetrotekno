@@ -8,23 +8,23 @@
 }
 
 .portfolio .section-title .text-primary {
-    color: #8a6700;
+    color: var(--color-accent);
 }
 
 .portfolio .section-line {
     width: 60px;
     height: 4px;
     margin: 0 auto 20px;
-    background: #24598a;
+    background: var(--color-accent);
 }
 
 .portfolio .section-subtitle {
-    color: #536273;
+    color: var(--color-body);
 }
 
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: 20px;
 }
 
@@ -134,8 +134,8 @@
 }
 
 .portfolio-title {
-    font-size: 1.75rem;
-    margin-bottom: 25px;
+    font-size: var(--text-card-title);
+    margin-bottom: 0;
 }
 
 .portfolio-btn {
@@ -157,44 +157,31 @@
 }
 
 /* Botón Ver Más */
-.portfolio-cta {
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-}
+@media (max-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-.btn-ver-mas {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.75rem;
-    background: transparent;
-    border: 2px solid var(--secondary);
-    color: var(--secondary);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+    .portfolio-item {
+        aspect-ratio: 1 / 1;
+        min-height: 270px;
+    }
 
-.btn-ver-mas:hover {
-    background: var(--secondary);
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(10, 25, 47, 0.18);
-}
+    .portfolio-overlay {
+        padding: clamp(18px, 6vw, 30px);
+    }
 
-.btn-ver-mas svg {
-    transition: transform 0.3s ease;
-}
+    .portfolio-title {
+        margin-bottom: 0;
+        font-size: var(--text-card-title);
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
 
-.btn-ver-mas:hover svg {
-    transform: translateX(5px);
+    .portfolio-cat {
+        margin-bottom: 10px;
+        font-size: clamp(.72rem, 3.5vw, .85rem);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -202,9 +189,7 @@
     .portfolio-item-no-image::before,
     .portfolio-overlay,
     .portfolio-cat,
-    .portfolio-title,
-    .btn-ver-mas,
-    .btn-ver-mas svg {
+    .portfolio-title {
         transition: none;
     }
 }

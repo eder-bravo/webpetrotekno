@@ -1,0 +1,77 @@
+/* Surfaces group related content instead of alternating every section. */
+.home-page {
+    --home-paper: var(--white);
+    --home-muted: var(--bg-soft);
+    --home-ink: var(--secondary);
+    --home-accent: var(--color-accent);
+    --home-border: var(--color-border);
+    background: var(--home-paper);
+    color: var(--home-ink);
+}
+
+.home-page > .services,
+.home-page > .rubber-asphalt,
+.home-page > .technical-capacity {
+    background: var(--home-paper);
+}
+
+.home-page > .rubber-asphalt,
+.home-page > .technical-capacity,
+.home-page > .portfolio {
+    position: relative;
+}
+
+.home-page > .rubber-asphalt::before,
+.home-page > .technical-capacity::before,
+.home-page > .portfolio::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: max(20px, calc((100% - var(--container-width)) / 2 + 20px));
+    right: max(20px, calc((100% - var(--container-width)) / 2 + 20px));
+    height: 1px;
+    background: var(--home-border);
+    pointer-events: none;
+}
+
+.home-page .tech-resources-label,
+.home-page .tech-resource svg,
+.home-page .tech-stat-number,
+.home-page .text-blue-light,
+.home-page .rubber-asphalt-subtitle {
+    color: var(--home-accent);
+}
+
+.home-page .rubber-asphalt-diagram,
+.home-page > .process {
+    background: var(--home-ink);
+}
+
+.home-page > .process::before {
+    display: none;
+}
+
+.home-page .process-step {
+    background: #14283f;
+}
+
+.home-page .process-step:hover {
+    background: #1c3652;
+}
+
+.home-page > .mexico-map-section,
+.home-page > .portfolio {
+    background: var(--home-muted);
+}
+
+.home-page .map-container {
+    max-width: 760px;
+}
+
+.home-page .mexico-svg-map {
+    stroke: var(--home-accent);
+}
+
+.home-page .svg-map__location {
+    fill: #d5dde4;
+}

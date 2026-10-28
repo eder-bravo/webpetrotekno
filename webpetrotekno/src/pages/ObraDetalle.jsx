@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowLeft, MapPin, ChevronLeft, ChevronRight, Folder } from 'lucide-react';
 import { useObra } from '../hooks/useApi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Button from '../components/Button';
+import SectionHeading from '../components/SectionHeading';
+import BackLink from '../components/BackLink';
 import './ObraDetalle.css';
 
 // Mapa de estados mexicanos
@@ -122,10 +125,10 @@ function ObraDetalle() {
                         <div className="error-state">
                             <h2>Obra no encontrada</h2>
                             <p>La obra que buscas no existe o ha sido eliminada.</p>
-                            <Link to="/obras" className="btn-back">
+                            <Button to="/obras">
                                 <ArrowLeft size={18} />
                                 Volver a obras
-                            </Link>
+                            </Button>
                         </div>
                     </div>
                 </section>
@@ -208,15 +211,12 @@ function ObraDetalle() {
                                 viewport={{ once: true, amount: 0.2 }}
                                 transition={reveal}
                             >
-                                <span>El proyecto</span>
-                                <h2>Sobre esta obra</h2>
+                                <SectionHeading align="start" size="content" eyebrow="El proyecto">Sobre esta obra</SectionHeading>
                             </motion.div>
                         ) : (
                             <>
                                 <div className="obra-detalle-header">
-                                    <a href="/obras" onClick={handleGoBack} className="back-link">
-                                        <ArrowLeft size={18} /> Volver a obras
-                                    </a>
+                                    <BackLink to="/obras" onClick={handleGoBack}>Volver a obras</BackLink>
                                 </div>
                                 <div className="obra-meta">
                                     {obra.categoria && <span className="obra-categoria"><Folder size={16} />{obra.categoria}</span>}

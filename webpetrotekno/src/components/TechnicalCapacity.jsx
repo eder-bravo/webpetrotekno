@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Truck, Wrench, Car, Factory, UsersThree } from '@phosphor-icons/react';
 import { useConfig } from '../hooks/useApi';
+import SectionHeading from './SectionHeading';
 import './TechnicalCapacity.css';
 
 const TechnicalCapacity = () => {
@@ -33,8 +34,9 @@ const TechnicalCapacity = () => {
                         viewport={{ once: true, amount: 0.25 }}
                         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <h2 className="tech-title">CAPACIDAD <span className="text-blue">TÉCNICA</span></h2>
-                        {config.capacidad_descripcion && <p className="tech-description">{config.capacidad_descripcion}</p>}
+                        <SectionHeading align="start" description={config.capacidad_descripcion}>
+                            Capacidad <span className="section-heading__accent">Técnica</span>
+                        </SectionHeading>
                     </motion.div>
 
                     {/* Right Column: Stats List */}

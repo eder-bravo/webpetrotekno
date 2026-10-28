@@ -50,7 +50,7 @@
     align-items: center;
 }
 
-.nav-links a,
+.nav-links > a:not(.action-button),
 .nav-links .nav-button {
     font-weight: 500;
     font-size: 0.95rem;
@@ -69,8 +69,8 @@
 }
 
 /* Efecto de línea inferior en hover */
-.nav-links a::after,
-.nav-links .nav-button:not(.btn-nav)::after {
+.nav-links > a:not(.action-button)::after,
+.nav-links .nav-button::after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -81,33 +81,15 @@
     transition: width 0.3s ease;
 }
 
-.nav-links a:hover,
-.nav-links .nav-button:not(.btn-nav):hover {
+.nav-links > a:not(.action-button):hover,
+.nav-links .nav-button:hover {
     background: transparent;
     color: #ffffff;
 }
 
-.nav-links a:hover::after,
-.nav-links .nav-button:not(.btn-nav):hover::after {
+.nav-links > a:not(.action-button):hover::after,
+.nav-links .nav-button:hover::after {
     width: 100%;
-}
-
-.nav-links .btn-nav {
-    padding: 8px 24px;
-    font-size: 0.85rem;
-    background: transparent;
-    border: 2px solid var(--white);
-    color: var(--white) !important;
-    text-shadow: none;
-    font-weight: 700;
-    border-radius: 0;
-    transition: all 0.3s ease;
-}
-
-.nav-links .btn-nav:hover {
-    background: var(--primary);
-    color: var(--secondary) !important;
-    border-color: var(--primary);
 }
 
 .menu-toggle {
@@ -150,11 +132,6 @@
         padding: 10px 0;
         text-align: left;
         font-size: 1rem;
-    }
-
-    .nav-links .btn-nav {
-        padding: 11px 20px;
-        text-align: center;
     }
 
     .menu-toggle {

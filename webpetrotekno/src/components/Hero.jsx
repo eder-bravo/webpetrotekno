@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import './Hero.css';
+import Button from './Button';
 
 import videoBg from '../assets/video_petro.mp4';
 import videoPoster from '../assets/video_poster.jpg';
@@ -68,23 +69,21 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.58, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    {config?.cv_disponible && <a
+                    {config?.cv_disponible && <Button
                         href={cvUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn"
                     >
                         Descargar CV
-                    </a>}
-                    {!config?.cv_disponible && <a
+                    </Button>}
+                    {!config?.cv_disponible && <Button
                         href={portfolioUrl}
                         target={isExternalPortfolio ? '_blank' : undefined}
                         rel={isExternalPortfolio ? 'noopener noreferrer' : undefined}
-                        className="btn"
                     >
                         Ver portafolio
-                    </a>}
-                    <a href="/contacto" className="btn btn-outline">Contáctanos</a>
+                    </Button>}
+                    <Button to="/contacto" variant="inverse">Contáctanos</Button>
                 </motion.div>
             </div>
 

@@ -4,6 +4,8 @@ import * as PhosphorIcons from '@phosphor-icons/react';
 import { useServicios } from '../hooks/useApi';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
+import Button from './Button';
+import SectionHeading from './SectionHeading';
 import './Services.css';
 
 const iconMap = {
@@ -63,9 +65,9 @@ const Services = () => {
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <span className="services-eyebrow">Lo que hacemos</span>
-                    <h2 className="section-title">Nuestros <span className="text-primary">Servicios</span></h2>
-                    <p className="section-subtitle">Especialistas en construcción, rehabilitación y reciclado de pavimentos asfálticos.</p>
+                    <SectionHeading eyebrow="Lo que hacemos" description="Especialistas en construcción, rehabilitación y reciclado de pavimentos asfálticos.">
+                        Nuestros <span className="section-heading__accent">Servicios</span>
+                    </SectionHeading>
                 </motion.div>
 
                 <div className="services-grid">
@@ -73,7 +75,7 @@ const Services = () => {
                 </div>
                 {!loading && !error && displayData.length === 0 && <p className="section-subtitle">Próximamente publicaremos nuestros servicios.</p>}
                 {error && <p className="section-subtitle">No pudimos cargar los servicios. Inténtalo de nuevo más tarde.</p>}
-                {displayData.length > 0 && <Link to="/servicios" className="services-all-link">Ver todos los servicios <ArrowUpRight size={20} aria-hidden="true" /></Link>}
+                {displayData.length > 0 && <div className="section-actions"><Button to="/servicios" variant="secondary" arrow>Ver todos los servicios</Button></div>}
             </div>
         </section>
     );

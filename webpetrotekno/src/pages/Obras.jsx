@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, ArrowUpRight, MapPin, X, Filter, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, MapPin, X, Filter, ChevronDown } from 'lucide-react';
 import { useObras } from '../hooks/useApi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import MexicoMap from '../components/MexicoMap';
+import SectionHeading from '../components/SectionHeading';
+import BackLink from '../components/BackLink';
 import '../components/Portfolio.css';
 import './Obras.css';
 
@@ -195,21 +198,15 @@ function Obras() {
                         transition={reveal}
                     >
                         <div className="obras-header-top">
-                            <a href="/" onClick={handleGoHome} className="back-link">
-                                <ArrowLeft size={18} /> Volver al inicio
-                            </a>
-                            <span className="obras-header-count">
+                            <BackLink to="/" onClick={handleGoHome}>Volver al inicio</BackLink>
+                            <span className="catalog-count">
                                 <strong>{String(filteredObras.length).padStart(2, '0')}</strong>
                                 {filteredObras.length === 1 ? ' obra' : ' obras'}
                             </span>
                         </div>
-                        <span className="obras-eyebrow">Portafolio / Petrotekno</span>
-                        <h1 className="section-title" style={{ textAlign: 'left' }}>
-                            Todas Nuestras <span className="text-primary">Obras</span>
-                        </h1>
-                        <p className="obras-description">
-                            Conoce todos los proyectos que hemos realizado a lo largo de nuestra trayectoria.
-                        </p>
+                        <SectionHeading as="h1" size="page" align="start" eyebrow="Portafolio / Petrotekno" description="Conoce todos los proyectos que hemos realizado a lo largo de nuestra trayectoria.">
+                            Todas nuestras <span className="section-heading__accent">Obras</span>
+                        </SectionHeading>
 
                         {/* Filtros */}
                         <div className="obras-filters">
@@ -278,6 +275,11 @@ function Obras() {
                             </div>
                         )}
                     </motion.div>
+
+                    <details className="obras-map-disclosure">
+                        <summary>Explorar obras en el mapa <ChevronDown size={18} aria-hidden="true" /></summary>
+                        <MexicoMap heading="Obras por estado" />
+                    </details>
 
                     {loading && (
                         <div className="loading-message">

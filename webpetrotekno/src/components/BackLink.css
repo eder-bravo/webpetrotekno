@@ -1,0 +1,16 @@
+.navigation-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    color: var(--color-accent);
+    font-family: var(--font-body);
+    font-size: .9rem;
+    line-height: 1.5;
+    transition: color var(--transition-fast);
+}
+.navigation-back svg { flex-shrink: 0; }
+.navigation-back:hover { color: var(--secondary); text-decoration: underline; text-underline-offset: 4px; }
+.navigation-back--inverse { color: var(--primary); }
+.navigation-back--inverse:hover { color: var(--white); }
+@media (prefers-reduced-motion: reduce) { .navigation-back { transition: none; } }

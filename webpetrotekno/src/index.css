@@ -7,8 +7,12 @@
   --secondary: #0A192F;
   /* Deep Navy/Charcoal */
   --secondary-light: #172A46;
-  --accent: #007BFF;
-  /* Electric Blue for tech vibes */
+  --accent: #24598A;
+  --color-accent: var(--accent);
+  --color-gold: #8A6700;
+  --color-body: #536273;
+  --color-body-inverse: #C4D0DC;
+  --color-border: #DCE3EA;
 
   --bg-dark: #0A192F;
   --bg-soft: #EEF2F5;
@@ -22,10 +26,21 @@
   /* Typography */
   --font-heading: 'Oswald', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --text-section-title: clamp(2.1rem, 4.1vw, 3.8rem);
+  --text-page-title: clamp(2.5rem, 5.2vw, 5rem);
+  --text-content-title: clamp(2rem, 3.3vw, 3rem);
+  --text-card-title: clamp(1.4rem, 2.2vw, 1.75rem);
+  --text-hero-title: clamp(2.3rem, 6.3vw, 5.5rem);
+  --text-body: clamp(1rem, 1.35vw, 1.125rem);
+  --text-button: 1rem;
+  --text-eyebrow: .74rem;
 
   /* Spacing */
   --container-width: 1200px;
   --header-height: 96px;
+  --control-height: 56px;
+  --space-section: clamp(64px, 7.5vw, 104px);
+  --space-heading: clamp(32px, 4.5vw, 56px);
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -84,7 +99,7 @@ section[id] {
 
 @media (max-width: 768px) {
   :root {
-    --header-height: 80px;
+    --header-height: 96px;
   }
 }
 
@@ -125,7 +140,7 @@ section[id] {
 }
 
 .section-padding {
-  padding: 100px 0;
+  padding: var(--space-section) 0;
 }
 
 .section-title {
@@ -135,7 +150,7 @@ section[id] {
 }
 
 .section-header {
-  margin-bottom: clamp(2.75rem, 5vw, 4rem);
+  margin-bottom: var(--space-heading);
   text-align: center;
 }
 
@@ -143,4 +158,21 @@ section[id] {
   max-width: 700px;
   margin-inline: auto;
   line-height: 1.65;
+}
+
+.catalog-count {
+  color: var(--color-body);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.catalog-count strong {
+  margin-right: .35rem;
+  color: var(--secondary);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  letter-spacing: .04em;
 }

@@ -45,10 +45,20 @@ class ConfiguracionController extends Controller
             'beneficios_titulo' => 'nullable|string|max:120',
             'beneficios_intro' => 'nullable|string|max:300',
             'beneficios' => 'nullable|string|max:1800',
+            'ahulados_titulo' => 'nullable|string|max:120',
+            'ahulados_subtitulo' => 'nullable|string|max:160',
+            'ahulados_descripcion' => 'nullable|string|max:1000',
             'proceso_titulo' => 'nullable|string|max:120',
             'proceso_intro' => 'nullable|string|max:300',
             'proceso_pasos' => 'nullable|string|max:1200',
-            'portafolio_url' => 'nullable|url:http,https|max:500',
+            'portafolio_url' => ['nullable', 'string', 'max:500', function ($attribute, $value, $fail) {
+                $internalPath = preg_match('~^/(?!/)[a-zA-Z0-9/_-]*$~D', $value);
+                $externalUrl = filter_var($value, FILTER_VALIDATE_URL)
+                    && in_array(parse_url($value, PHP_URL_SCHEME), ['http', 'https'], true);
+                if (!$internalPath && !$externalUrl) {
+                    $fail('Usa una ruta del sitio como /obras o una URL con http o https.');
+                }
+            }],
             'maquinaria_mayor' => 'nullable|integer|min:0|max:100000',
             'maquinaria_menor' => 'nullable|integer|min:0|max:100000',
             'vehiculos' => 'nullable|integer|min:0|max:100000',

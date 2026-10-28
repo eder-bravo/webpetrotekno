@@ -17,33 +17,7 @@
     position: relative;
     z-index: 1;
     text-align: left;
-}
-
-.contact-hero-eyebrow {
-    display: block;
-    margin-bottom: 18px;
-    color: var(--primary);
-    font-size: .75rem;
-    font-weight: 800;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-}
-
-.contact-hero h1 {
-    font-size: clamp(3.25rem, 6vw, 5.5rem);
-    margin-bottom: 20px;
-    line-height: 1.04;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: -.015em;
-    color: var(--white);
-}
-
-.contact-hero p {
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
-    color: #d7dfeb;
-    max-width: 610px;
-    line-height: 1.6;
+    margin-top: 0;
 }
 
 @media (max-width: 768px) {
